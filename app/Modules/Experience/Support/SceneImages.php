@@ -8,7 +8,8 @@ use App\Modules\Experience\Enums\SceneCode;
  * Builds scene and character image URLs from config/corporate.php.
  *
  * Placeholder URLs use a fixed seed per image so they do not change between
- * requests, and never include user, query, or session data.
+ * requests, and never include user, query, or session data. Production
+ * always uses the local assets (release gate: no remote placeholder images).
  */
 final class SceneImages
 {
@@ -28,7 +29,11 @@ final class SceneImages
 
     public function source(): string
     {
-        return config('corporate.scenes.image_source') === self::SOURCE_LOCAL ? self::SOURCE_LOCAL : self::SOURCE_PLACEHOLDER;
+        if (app()->isProduction()) {
+            return self::SOURCE_LOCAL;
+        }
+
+        return config('corporate.scenes.image_source') === self::SOURCE_PLACEHOLDER ? self::SOURCE_PLACEHOLDER : self::SOURCE_LOCAL;
     }
 
     private function url(string $name, int $width, int $height): string

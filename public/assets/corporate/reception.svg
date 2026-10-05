@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Reception">
+<title>Reception</title>
+<rect x="0" y="0" width="1600" height="640" rx="0" fill="#E4ECF4" />
+<rect x="0" y="0" width="1600" height="70" rx="0" fill="#0F766E" opacity="0.9"/>
+<rect x="0" y="622" width="1600" height="18" rx="0" fill="#D7E0EA" />
+<rect x="0" y="640" width="1600" height="260" rx="0" fill="#C9D4E0" />
+<line x1="440" y1="640" x2="-160" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="500" y1="640" x2="0" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="560" y1="640" x2="160" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="620" y1="640" x2="320" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="680" y1="640" x2="480" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="740" y1="640" x2="640" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="800" y1="640" x2="800" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="860" y1="640" x2="960" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="920" y1="640" x2="1120" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="980" y1="640" x2="1280" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1040" y1="640" x2="1440" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1100" y1="640" x2="1600" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1160" y1="640" x2="1760" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1220" y1="640" x2="1920" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1280" y1="640" x2="2080" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1340" y1="640" x2="2240" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1400" y1="640" x2="2400" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1460" y1="640" x2="2560" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1520" y1="640" x2="2720" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<line x1="1580" y1="640" x2="2880" y2="900" stroke="#B7C4D3" stroke-width="2" opacity="0.5"/>
+<rect x="0" y="760" width="1600" height="3" rx="0" fill="#B7C4D3" opacity="0.5"/>
+<rect x="970" y="140" width="320" height="280" rx="8" fill="#FFFFFF" />
+<rect x="980" y="150" width="300" height="260" rx="4" fill="#C9D9F7" />
+<path d="M980 410 L1085.0 293.0 L1160.0 358.0 L1220.0 267.0 L1280 332.0 L1280 410 Z" fill="#CDE8E4" />
+<rect x="1126.0" y="150" width="8" height="260" rx="0" fill="#FFFFFF" />
+<rect x="980" y="276.0" width="300" height="8" rx="0" fill="#FFFFFF" />
+<circle cx="1214.0" cy="215.0" r="26" fill="#FFFFFF" opacity="0.8"/>
+<circle cx="560" cy="210" r="46" fill="#FFFFFF" stroke="#203551" stroke-width="8"/>
+<line x1="560" y1="210" x2="560" y2="182" stroke="#142337" stroke-width="6" stroke-linecap="round"/>
+<line x1="560" y1="210" x2="580" y2="218" stroke="#0F766E" stroke-width="6" stroke-linecap="round"/>
+<circle cx="560" cy="210" r="6" fill="#142337" />
+<g transform="translate(700 150) scale(1.875)"><rect width="64" height="64" rx="16" fill="#0F766E"/><path d="M18 16h28a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H30l-9 7v-7h-3a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6Z" fill="#FFFFFF"/><rect x="21" y="23" width="6" height="6" rx="1.5" fill="#0F766E"/><rect x="29" y="23" width="6" height="6" rx="1.5" fill="#0F766E"/><rect x="37" y="23" width="6" height="6" rx="1.5" fill="#0F766E"/><rect x="21" y="32" width="6" height="6" rx="1.5" fill="#0F766E"/><rect x="29" y="32" width="6" height="6" rx="1.5" fill="#0F766E"/><rect x="37" y="32" width="6" height="6" rx="1.5" fill="#0F766E"/></g>
+<ellipse cx="800" cy="830" rx="430" ry="22" fill="#142337" opacity="0.12"/>
+<rect x="390" y="600" width="820" height="220" rx="18" fill="#115E59" />
+<rect x="370" y="580" width="860" height="40" rx="12" fill="#D9C3A5" />
+<rect x="430" y="650" width="740" height="12" rx="6" fill="#5EAAA0" opacity="0.6"/>
+<g transform="translate(760 680) scale(1.25)"><rect width="64" height="64" rx="16" fill="#FFFFFF"/><path d="M18 16h28a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H30l-9 7v-7h-3a6 6 0 0 1-6-6V22a6 6 0 0 1 6-6Z" fill="#0F766E"/><rect x="21" y="23" width="6" height="6" rx="1.5" fill="#FFFFFF"/><rect x="29" y="23" width="6" height="6" rx="1.5" fill="#FFFFFF"/><rect x="37" y="23" width="6" height="6" rx="1.5" fill="#FFFFFF"/><rect x="21" y="32" width="6" height="6" rx="1.5" fill="#FFFFFF"/><rect x="29" y="32" width="6" height="6" rx="1.5" fill="#FFFFFF"/><rect x="37" y="32" width="6" height="6" rx="1.5" fill="#FFFFFF"/></g>
+<rect x="880" y="470" width="140" height="90" rx="8" fill="#203551" />
+<rect x="888" y="478" width="124" height="74" rx="4" fill="#CDE8E4" />
+<rect x="942.0" y="560" width="16" height="26" rx="0" fill="#526579" />
+<rect x="910.0" y="584" width="80" height="8" rx="4" fill="#526579" />
+<ellipse cx="1420" cy="805" rx="140" ry="14" fill="#142337" opacity="0.12"/>
+<rect x="1290" y="700" width="260" height="60" rx="20" fill="#203551" />
+<rect x="1310" y="760" width="16" height="40" rx="0" fill="#526579" />
+<rect x="1514" y="760" width="16" height="40" rx="0" fill="#526579" />
+<path d="M220 625.0 C129.0 547.0 103.0 664.0 194.0 696.5 Z" fill="#2F8F5B" />
+<path d="M220 625.0 C311.0 521.0 343.5 651.0 248.6 696.5 Z" fill="#1F6B43" />
+<path d="M220 573.0 C181.0 482.0 272.0 469.0 226.5 664.0 Z" fill="#2F8F5B" />
+<path d="M161.5 690.0 L278.5 690.0 L264.2 820 L175.8 820 Z" fill="#E8E1D6" />
+<rect x="157.6" y="679.6" width="124.80000000000001" height="18.2" rx="4" fill="#D9C3A5" />
+<path d="M1330 570.0 C1274.0 522.0 1258.0 594.0 1314.0 614.0 Z" fill="#2F8F5B" />
+<path d="M1330 570.0 C1386.0 506.0 1406.0 586.0 1347.6 614.0 Z" fill="#1F6B43" />
+<path d="M1330 538.0 C1306.0 482.0 1362.0 474.0 1334.0 594.0 Z" fill="#2F8F5B" />
+<path d="M1294.0 610.0 L1366.0 610.0 L1357.2 690 L1302.8 690 Z" fill="#E8E1D6" />
+<rect x="1291.6" y="603.6" width="76.80000000000001" height="11.200000000000001" rx="4" fill="#D9C3A5" />
+</svg>
