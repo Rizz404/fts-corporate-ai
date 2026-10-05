@@ -6,10 +6,12 @@
 */
 
 return [
+    'after' => ':attribute は :date より後の日時にしてください。',
     'array' => ':attribute は一覧で指定してください。',
     'boolean' => ':attribute は「はい」か「いいえ」で指定してください。',
     'confirmed' => ':attribute の確認が一致しません。',
     'current_password' => '現在のパスワードが正しくありません。',
+    'date' => ':attribute は有効な日付ではありません。',
     'different' => ':attribute は :other と異なる値にしてください。',
     'distinct' => ':attribute に重複した値があります。',
     'email' => ':attribute は有効なメールアドレスで入力してください。',

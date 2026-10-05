@@ -6,10 +6,12 @@
 */
 
 return [
+    'after' => ':attribute harus setelah :date.',
     'array' => ':attribute harus berupa daftar.',
     'boolean' => ':attribute harus bernilai ya atau tidak.',
     'confirmed' => 'Konfirmasi :attribute tidak cocok.',
     'current_password' => 'Kata sandi saat ini salah.',
+    'date' => ':attribute bukan tanggal yang valid.',
     'different' => ':attribute harus berbeda dari :other.',
     'distinct' => ':attribute berisi nilai duplikat.',
     'email' => ':attribute harus berupa alamat email yang valid.',
