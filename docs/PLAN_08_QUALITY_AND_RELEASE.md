@@ -117,6 +117,7 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 - Kasus: invalid category/team, owner mismatch, expired/edited draft, duplicate confirm dengan key sama maupun berbeda, concurrent confirm, stale version, illegal transition, staff tim lain, isolasi internal note, replay pesan, reply setelah closed, kehilangan respons.
 - Concurrency memakai dua koneksi/proses PostgreSQL pada database testing nyata tanpa test transaction pembungkus; buktikan satu tiket dan satu efek notifikasi/event. Delivery diuji dengan membaca history dari session pemohon setelah staf membalas.
 - Manual: alur employee→staff→employee termasuk polling 5 detik.
+- Tambahan dari implementasi: edit draft memperpanjang kedaluwarsa; catatan resolve/reopen menjadi pesan publik; gate `tickets.staff` (admin tanpa penugasan 403 halaman, 404 API); notifikasi tidak memuat deskripsi/catatan dan path mengikuti akses saat ini; `x-ticket-thread` berhenti polling saat tab tersembunyi/offline; limiter `ticket-writes`; referensi `CORP-YYYYMMDD-XXXXXXXX` unik.
 
 ### Plan7 tool AI dan workflow
 - ToolRegistryTest: semua schema, unknown tool/key, JSON rusak, enum/range invalid, scope, penolakan side effect.

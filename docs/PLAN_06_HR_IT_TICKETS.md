@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 6 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 5](PLAN_05_CONVERSATION_AND_AI.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -90,4 +90,35 @@ Antrean/detail staf menyusun x-layouts.admin; halaman karyawan memakai office-st
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Catat endpoint/actions, mekanisme anti-duplikasi, delivery pesan, notifikasi, batas status yang diimplementasikan, dan checklist untuk pengguna.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis (termasuk concurrency PostgreSQL) menunggu Plan8.
+
+**Skema** (`2026_10_05_000009_create_ticket_tables`): `ticket_drafts` (originating_turn_id unique + FK ai_turns null-on-delete), `tickets` (reference unique, draft_id unique restrict, conversation null-on-delete, index tim/status/updated), FK sirkular `ticket_drafts.consumed_ticket_id` → tickets null-on-delete ditambahkan setelah kedua tabel ada, `ticket_messages`, `ticket_events`, `operation_receipts` (unique actor+type+key), `notifications` (standar Laravel).
+
+**Modul Support** (`app/Modules/Support`)
+- Enum `TicketStatus` (pemetaan tone open→info, in_progress→warning, resolved→success, closed→neutral), `TicketCategory` (kategori tetap per tim), `MessageVisibility`.
+- `Validation\TicketDraftRules`: dipakai Form Request dan siap untuk tool `prepare_ticket` Plan7.
+- Actions: `PrepareTicketDraft` (revision 1, 15 menit), `UpdateTicketDraft` (expected_revision, revision+1, fingerprint baru, perpanjang 15 menit), `ConfirmTicketDraft` (receipt → lock draft → owner/revision/expiry → draft consumed dengan revisi sama mengembalikan tiket yang sama walau key berbeda → tiket + consumed + receipt + event + notifikasi dalam satu transaksi; 201 pertama, 200 replay), `AssignTicket`, `TransitionTicket` (matriks kontrak, assignee wajib untuk open→in_progress, catatan wajib untuk resolve/reopen yang disimpan sebagai pesan publik), `AppendTicketMessage` (lock tiket, tolak setelah closed, tidak menaikkan version), `ReadTicketHistory` (cursor id, 50/halaman, internal hanya staf).
+- `Actions\Concerns\RunsIdempotently` + `Support\Receipts`: receipt dulu, operasi + receipt dalam satu transaksi, replay saat terjadi race (unique violation); replay tidak membuat event/pesan/notifikasi lagi.
+- `Support\TicketAccess` (pemohon atau staff aktif tim; admin tanpa penugasan tidak mendapat akses), `TicketReference` (`CORP-YYYYMMDD-XXXXXXXX`, maksimal 3 percobaan), `TicketNotifier` + `App\Notifications\TicketActivity` (database, sinkron di transaksi; data hanya ticket public_id, event_code, actor_id; penerima di-dedup dan tidak termasuk aktor).
+- Presenter `TicketPresenter` dan `NotificationPresenter` (path notifikasi dihitung sesuai akses saat ini).
+
+**HTTP**
+- Karyawan: `GET /office/requests`, `GET /office/requests/create?team=`, `GET /office/requests/{ticket}`; API `POST /api/v1/ticket-drafts`, `GET|PATCH /api/v1/ticket-drafts/{draft}`, `POST .../confirm`, `GET /api/v1/tickets`, `GET /api/v1/tickets/{ticket}`, `GET|POST .../messages`, `PATCH .../status` (pemohon hanya `closed`).
+- Staf: `GET /admin/tickets` (filter tim/status/milik saya; gate `tickets.staff` → admin tanpa penugasan 403), `GET /admin/tickets/{ticket}`; API `PATCH /api/v1/staff/tickets/{ticket}/assignment`, `PATCH .../status`, `GET|POST .../messages`.
+- Notifikasi: `GET /api/v1/notifications`, `PATCH /api/v1/notifications/{id}/read` (pemilik saja).
+- Tiket orang lain atau tim lain → 404; parameter UUID; limiter `ticket-writes` 20/menit per user.
+
+**UI**: wizard tiga langkah (`ticketWizard`), daftar dan detail permintaan di scene My Requests, antrean dan detail staf di layout admin (riwayat event), komponen `x-ticket-thread` (polling 5 s hanya saat halaman terlihat/online, cursor `after_id`, dedup id, pause saat hidden/offline), `x-navigation.notification-bell` di header admin dan user, CTA "Permintaan HR/IT baru" di meja HR/IT, menu Tiket admin untuk staf.
+
+**Perintah setup yang dijalankan**: `php artisan migrate`, `php artisan view:cache`, `php artisan route:list`, `npm run build`. Alur tiket belum dijalankan sama sekali (tidak ada tes/eksekusi manual oleh implementer).
+
+**Penyimpangan dan keputusan**
+- Kode error memakai snake_case: `draft_expired`, `draft_consumed`, `revision_conflict`, `version_conflict`, `ticket_closed`, `invalid_transition` (422), `idempotency_conflict` (409).
+- Edit draft memperpanjang masa berlaku 15 menit dari edit terakhir.
+- Catatan resolve/reopen disimpan sebagai pesan publik agar pemohon tahu alasannya.
+- Halaman detail staf memuat ulang setelah assign/transisi (state server menjadi sumber kebenaran).
+- Row lock (`lockForUpdate`) tidak berefek di SQLite lokal; jaminan satu tiket per draft tetap dipegang unique `tickets.draft_id`, tetapi uji race wajib di PostgreSQL (Plan8).
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–7). Akun staf demo: `demo.staff.hr@example.test` dan `demo.staff.it@example.test` (password dari `php artisan corporate:demo-accounts`).

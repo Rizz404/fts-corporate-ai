@@ -13,7 +13,7 @@ Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis b
 | 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Implemented |
 | 4 | [CMS pengetahuan](PLAN_04_KNOWLEDGE_CMS.md) | Artikel/revisi/terjemahan, publikasi, audience, dan retrieval manual | 3 | Implemented |
 | 5 | [Percakapan dan AI](PLAN_05_CONVERSATION_AND_AI.md) | Chat tersimpan, gateway seperti hotel, sumber jawaban, lease, dan recovery | 4 | Implemented |
-| 6 | [Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md) | Draft/konfirmasi, antrean staf, pesan, status, notifikasi, dan idempotensi | 5 | Ready |
+| 6 | [Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md) | Draft/konfirmasi, antrean staf, pesan, status, notifikasi, dan idempotensi | 5 | Implemented |
 | 7 | [Tool AI dan workflow](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md) | Tool calling dan perjalanan SOP sampai tiket/balasan staf | 6 | Ready |
 | 8 | [Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md) | Seluruh pengujian Plan1–7, CI/lint, aset visual final, evaluasi model, retensi, readiness, staging/deployment artifacts, dan pilot | 7 | Ready |
 

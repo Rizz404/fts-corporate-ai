@@ -77,6 +77,8 @@ Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi f
 | `/office`, `/office/{knowledge,hr,it,requests}` | Kantor virtual: Resepsionis, Pusat Pengetahuan, Meja HR, IT Helpdesk, Permintaan Saya |
 | `/office/knowledge`, `/office/knowledge/{slug}` | Pencarian dan baca artikel resmi |
 | `/admin/knowledge` | CMS pengetahuan (admin dan editor) |
+| `/office/requests`, `/office/requests/create` | Permintaan HR/IT karyawan (wizard, status, balasan staf) |
+| `/admin/tickets` | Antrean tiket staf (sesuai penugasan tim) |
 | `/admin/settings` | Nama brand dan teks sambutan (admin) |
 | `/admin` | Panel admin (admin/editor/staff; kelola akun dan departemen khusus admin) |
 | `/up` | Health check framework |
@@ -113,6 +115,9 @@ app/Http/Middleware/      AssignRequestId, SetLocale, EnsureAccountIsActive, Ens
 app/Modules/Identity/     ActorContext, actions akun, aturan validasi, AdminGuard
 app/Modules/Experience/   SceneCode, BuildScene/SceneData, SceneImages, CompanySettings
 app/Modules/Knowledge/    actions artikel/revisi, KnowledgeRetriever, VisibleRevisions, TextNormalizer
+app/Modules/Assistant/    gateway chat completions, PromptComposer, AnswerValidator, ToolRegistry
+app/Modules/Conversation/ percakapan AI: AppendTurn, ExecuteTurn, history, lease, recovery
+app/Modules/Support/      tiket HR/IT: draft, konfirmasi idempoten, assignment, status, pesan, notifikasi
 app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
 app/Support/Ui/           ComponentStyles, FieldState
 config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene

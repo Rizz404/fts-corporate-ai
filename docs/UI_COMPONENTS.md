@@ -59,6 +59,16 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 </x-office-stage>
 ```
 
+### Komponen domain
+
+| Komponen | Source | Props | Catatan |
+|---|---|---|---|
+| `x-office-chat` | `components/office-chat.blade.php` | `scene` | Chat dock asisten (Plan5); `Alpine.data('corporateChat')`, kartu lewat `safe-card-renderer.js`. Dipasang otomatis oleh `x-office-stage`. |
+| `x-ticket-thread` | `components/ticket-thread.blade.php` | `ticket`, `staff` (false), `assigneeOptions` | Percakapan tiket + aksi status (`Alpine.data('ticketThread')`, polling 5 s saat halaman terlihat). Mode staf menambah visibilitas internal, assignment, dan transisi. |
+| `x-navigation.notification-bell` | `components/navigation/notification-bell.blade.php` | `variant` (`light`/`dark`) | Notifikasi in-app dari `/api/v1/notifications`; sudah dipasang di header layout admin dan user. |
+
+Wizard permintaan (`office/requests-create`) memakai `Alpine.data('ticketWizard')`; draft disimpan di server, kunci konfirmasi tetap per revisi draft.
+
 ## Navigasi
 
 | Komponen | Source | Props | Catatan |
