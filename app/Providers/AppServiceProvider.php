@@ -10,6 +10,7 @@ use App\Modules\Experience\Support\CompanySettings;
 use App\Modules\Identity\CurrentActor;
 use App\Modules\Identity\Events\UserSessionsRevoked;
 use App\Modules\Identity\Presenters\AdminNavigation;
+use App\Modules\Support\Support\TicketAccess;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
@@ -56,6 +57,12 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(10)->by('assistant:user:'.$request->user()?->id),
             Limit::perMinute(60)->by('assistant:ip:'.$request->ip()),
         ]);
+
+        // Ticket writes: 20/min per user.
+        RateLimiter::for('ticket-writes', fn (Request $request) => Limit::perMinute(20)->by('tickets:user:'.$request->user()?->id));
+
+        // /admin/tickets: current staff membership of an active team; the admin role alone is not enough.
+        Gate::define('tickets.staff', fn (User $user) => TicketAccess::handledTeamIds(app(CurrentActor::class)->for($user)) !== []);
 
         Event::listen(UserSessionsRevoked::class, CancelTurnsWhenSessionsRevoked::class);
     }
