@@ -43,11 +43,24 @@ Container membuat database `corporate_ai` dan `corporate_ai_test` untuk role `co
 
 Sementara (keputusan Plan 1), pengembangan lokal boleh memakai SQLite: set `DB_CONNECTION=sqlite`, hapus/comment variabel `DB_*` lainnya, lalu `touch database/database.sqlite`. Kode tetap ditulis untuk PostgreSQL.
 
+### Akun admin pertama
+
+```bash
+php artisan db:seed                       # data referensi: departemen, role, support team (idempoten)
+php artisan corporate:create-admin --email=admin@example.com --name="Admin"
+```
+
+Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan wajib diganti saat login pertama. Akun demo sintetis (hanya local/testing): `php artisan corporate:demo-accounts` (password acak ditampilkan sekali; menjalankan ulang mereset password).
+
 ## URL
 
 | URL | Keterangan |
 |---|---|
-| `/` | Halaman setup (diganti login di Plan 2) |
+| `/` | Alihkan ke `/login` atau `/office` |
+| `/login` | Login karyawan |
+| `/password/change` | Ganti password (wajib untuk password sementara) |
+| `/office` | Halaman karyawan sementara (diganti scene kantor di Plan 3) |
+| `/admin` | Panel admin (admin/editor/staff; kelola akun dan departemen khusus admin) |
 | `/up` | Health check framework |
 | `/dev/ui` | Galeri komponen (hanya local/testing) |
 | `/dev/admin`, `/dev/user`, `/dev/guest` | Pratinjau template (hanya local/testing) |
@@ -78,7 +91,8 @@ Aturan dasar:
 ## Struktur penting
 
 ```text
-app/Http/Middleware/      AssignRequestId, SetLocale, EnsureDevPreviewEnabled, …
+app/Http/Middleware/      AssignRequestId, SetLocale, EnsureAccountIsActive, EnsurePasswordChanged, …
+app/Modules/Identity/     ActorContext, actions akun, aturan validasi, AdminGuard
 app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
 app/Support/Ui/           ComponentStyles, FieldState
 config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene

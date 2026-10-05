@@ -18,9 +18,9 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 | Komponen | Source | Props | Slot |
 |---|---|---|---|
 | `x-layouts.base` | `resources/views/components/layouts/base.blade.php` | `title` | default, `head` |
-| `x-layouts.guest` | `…/layouts/guest.blade.php` | `title`, `heading`, `description`, `width` (`md`/`lg`) | default (isi panel), `before` (di atas panel), `head` |
-| `x-layouts.admin` | `…/layouts/admin.blade.php` | `title`, `heading`, `navItems`, `breadcrumbs` | default, `actions`, `topbar`, `account`, `navigation` (mengganti `navItems`), `head` |
-| `x-layouts.user` | `…/layouts/user.blade.php` | `title`, `navItems` | default (konten scene), `backdrop`, `character`, `chat`, `navigation`, `head` |
+| `x-layouts.guest` | `…/layouts/guest.blade.php` | `title`, `heading`, `description`, `width` (`md`/`lg`) | default (isi panel), `before` (di atas panel), `head`. Menampilkan `session('status')` sebagai alert info. |
+| `x-layouts.admin` | `…/layouts/admin.blade.php` | `title`, `heading`, `navItems`, `breadcrumbs` | default, `actions`, `topbar`, `account` (default: account menu saat login), `navigation` (mengganti `navItems`), `head`. Menampilkan `session('status')` sebagai alert sukses. |
+| `x-layouts.user` | `…/layouts/user.blade.php` | `title`, `navItems`, `adminHref` | default (konten scene), `backdrop`, `character`, `chat`, `navigation`, `head`. Account menu tampil saat login. |
 
 ```blade
 <x-layouts.admin
@@ -40,6 +40,7 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 - **Admin:** sidebar 16rem pada ≥1024px; di bawahnya menjadi drawer (`role="dialog"`, `x-trap.inert.noscroll`, Escape/klik luar menutup, fokus kembali ke tombol menu). Nama layout tidak menentukan role; item menu dikirim server.
 - **User:** header secondary dengan menu ruang; di <768px menu menjadi panel collapse. Slot `chat` memunculkan tombol dock; dock layar penuh di mobile, panel 24rem di desktop, Escape menutup.
 - **Guest:** panel tengah dengan brand dan language switch; dipakai login/ganti password.
+- **Halaman admin** menerima `$navItems` otomatis dari view composer (`AppServiceProvider` + `App\Modules\Identity\Presenters\AdminNavigation`) untuk semua view `admin.*`; item disaring berdasarkan kemampuan server.
 
 `navItems` (admin dan user) berbentuk `[['label' => string, 'href' => ?string, 'icon' => ?string, 'active' => bool]]`. Item tanpa `href` tampil nonaktif dengan label "Segera".
 
@@ -52,6 +53,7 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 | `x-navigation.user-menu` | `…/user-menu.blade.php` | `items`, `orientation` (`horizontal`/`vertical`) | Untuk header gelap |
 | `x-navigation.language-switch` | `…/language-switch.blade.php` | `variant` (`light`/`dark`) | Link `?lang=xx` pada URL saat ini; `SetLocale` menyimpan pilihan di session |
 | `x-navigation.breadcrumbs` | `…/breadcrumbs.blade.php` | `items` `[['label', 'href' => ?]]` | Item terakhir `aria-current="page"` |
+| `x-navigation.account-menu` | `…/account-menu.blade.php` | `variant` (`light`/`dark`), `officeHref`, `adminHref` | Dropdown nama/email, link office/admin (dikirim pemanggil, tidak mengecek izin sendiri), ganti password, logout (form POST) |
 
 ## Tombol dan ikon
 
@@ -81,7 +83,7 @@ Kontrak: `x-ui.field` dan control menerima **name dan id yang sama**. ID help/er
 | `x-ui.input` | `name`, `id`, `type` (`text`), `value`, `invalid`, `describedby`, `disabled` | `form-input`. Nilai dari `old()` kecuali `type="password"` (tidak pernah mengisi value) |
 | `x-ui.textarea` | `name`, `id`, `value`, `rows` (4), `invalid`, `describedby`, `disabled` | `form-textarea`, plain text |
 | `x-ui.select` | `name`, `id`, `options`, `value`, `placeholder`, `invalid`, `describedby`, `disabled` | `options`: `[value => label]` atau `[['value' => …, 'label' => …]]` |
-| `x-ui.checkbox` | `name`, `id`, `value` (`'1'`), `checked`, `disabled`, `describedby` | Slot = label. Setelah submit gagal, status mengikuti old input |
+| `x-ui.checkbox` | `name`, `id`, `value` (`'1'`), `checked`, `disabled`, `describedby` | Slot = label. Setelah submit gagal, status mengikuti old input; nama array (`roles[]`) tercentang bila `value` ada di daftar old |
 
 `invalid` dan `describedby` dapat diberikan eksplisit bila control dipakai di luar field.
 
@@ -135,8 +137,8 @@ Semua data provider didaftarkan di `resources/js/ui/register.js` sebelum satu-sa
 |---|---|---|
 | `x-ui.modal` | `name` (unik), `title`, `size` sm/md/lg (`md`) | Slot default dan `footer`. `role="dialog"`, `aria-modal`, `aria-labelledby`; `x-trap.inert.noscroll` mengunci fokus dan mengembalikannya ke pemicu; Escape/klik luar menutup; `x-cloak`. Di dalam slot tersedia `close()`. |
 | `x-ui.confirm-dialog` | `name`, `title`, `confirm-label`, `cancel-label`, `variant` primary/danger | Menyusun modal + dua tombol; tombol konfirmasi memancarkan `ui:confirmed`. Tidak melakukan write bisnis. |
-| `x-ui.dropdown` | `align` left/right, `id` | Slot `trigger` (isi tombol; atribut slot diteruskan ke tombol) dan item. `aria-haspopup="menu"`, `aria-expanded`; klik luar/Escape/Tab menutup; panah atas/bawah, Home/End. |
-| `x-ui.dropdown.item` | `href`, `icon`, `disabled` | Dengan `href` → link native `role="menuitem"`; tanpa `href` → tombol yang menutup menu. |
+| `x-ui.dropdown` | `align` left/right, `trigger-variant` (variant tombol, default `outline`), `id` | Slot `trigger` (isi tombol; atribut slot diteruskan ke tombol) dan item. `aria-haspopup="menu"`, `aria-expanded`; klik luar/Escape/Tab menutup; panah atas/bawah, Home/End. |
+| `x-ui.dropdown.item` | `href`, `icon`, `disabled`, `type` (`button`/`submit`) | Dengan `href` → link native `role="menuitem"`; tanpa `href` → tombol yang menutup menu; `type="submit"` mengirim form pembungkus (mis. logout). |
 | `x-ui.tabs` | `id`, `items` `[['id', 'label']]`, `selected` | `role="tablist"/"tab"`, `aria-selected`, roving tabindex; ArrowLeft/Right melingkar, Home/End. |
 | `x-ui.tab-panel` | `name`, `tabs-id` | `role="tabpanel"`, `aria-labelledby`; panel nonaktif memakai `x-cloak` sampai Alpine aktif. |
 | `x-ui.toast-container` | – | Sudah dipasang di base layout. `aria-live="polite"`, maksimum 5 toast, hilang otomatis 6 detik, tombol tutup. Teks saja. |

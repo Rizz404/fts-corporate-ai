@@ -80,7 +80,10 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 
 ### Plan2 akun dan akses
 - IdentityAccessTest dan AccountProvisioningTest: login/logout, email case, akun nonaktif, password change wajib (halaman dan JSON 403 PASSWORD_CHANGE_REQUIRED), login throttling, admin/non-admin, assignment role/team/editor invalid, perlindungan admin terakhir dengan lock, audit tanpa password, user dengan dua team/beberapa role tanpa izin global.
-- Reset password/deactivation menutup session lama; CSRF dan session setelah logout; UI id/en/ja dan error validasi.
+- Reset password/deactivation menutup session lama (database session dan AuthenticateSession); ganti password menjaga sesi saat ini; CSRF dan session setelah logout; UI id/en/ja dan error validasi.
+- Perlindungan admin terakhir dengan dua koneksi PostgreSQL bersamaan; verifikasi ulang aktor admin di dalam transaksi.
+- `POST /api/v1/preferences` (validasi locale, simpan preferred_locale dan session); `?lang` pengguna login menyimpan preferred_locale; locale session diisi saat login.
+- `corporate:create-admin` (prompt password, validasi bersama, reference seed) dan `corporate:demo-accounts` (menolak production); menu admin per role; checkbox array mempertahankan old input.
 
 ### Plan3 virtual office
 - OfficeSceneTest: guest dialihkan, kelima route, locale valid/default/invalid, label tiga bahasa, user nonaktif, context sesuai scene.

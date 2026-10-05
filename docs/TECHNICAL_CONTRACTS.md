@@ -37,7 +37,7 @@ Respons sukses JSON:
 }
 ```
 
-Untuk daftar, `data` adalah array dan `meta` memuat cursor/pagination. Error memakai `data: null`, serta `error: {code, message, fields}`; fields kosong kecuali validasi. Status: 401 belum login, 403 kemampuan tidak ada, 404 resource milik pengguna/tim lain, 409 konflik/revisi/idempotensi, 419 CSRF, 422 input, 429 limiter, 503 dependensi yang diperlukan tidak tersedia. Pesan diterjemahkan. Error tidak menyertakan provider body atau secret.
+Untuk daftar, `data` adalah array dan `meta` memuat cursor/pagination. Error memakai `data: null`, serta `error: {code, message, fields}`; fields kosong kecuali validasi. `code` selalu snake_case huruf kecil (mis. `validation_failed`, `password_change_required`, `turn_in_progress`); penulisan huruf besar di dokumen plan (mis. PASSWORD_CHANGE_REQUIRED) merujuk kode yang sama. Status: 401 belum login, 403 kemampuan tidak ada, 404 resource milik pengguna/tim lain, 409 konflik/revisi/idempotensi, 419 CSRF, 422 input, 429 limiter, 503 dependensi yang diperlukan tidak tersedia. Pesan diterjemahkan. Error tidak menyertakan provider body atau secret.
 
 Cursor riwayat memakai `after_id` ID bigint pesan, order ID ascending, maksimal 50 pesan per request, dan `meta.next_after_id`. Daftar tiket memakai pagination 20, order updated_at descending lalu ID descending.
 

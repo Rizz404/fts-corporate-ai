@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 2 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 1](PLAN_01_SETUP.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -72,4 +72,49 @@ Login/password memakai x-layouts.guest; halaman pengguna/departemen/admin memaka
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Catat skema yang dibuat, akun sintetis tanpa password di docs, checklist untuk pengguna, dan keterbatasan. Status Implemented setelah implementasi selesai; Done setelah verifikasi Plan8.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Skema** (migration `2026_10_05_00000{1..5}`)
+- `departments` (slug unique, name, is_active); `users` + `department_id` (wajib, restrict on delete), `preferred_locale` (default id), `is_active`, `must_change_password` (default true).
+- `roles` (code unique) dan `role_user` (PK user_id+role_id); `support_teams` dan `support_team_user`; `knowledge_editor_department`. Pivot cascade hanya saat induk benar-benar dihapus; UI tidak menghapus user/departemen.
+- `audit_events` (actor nullable null-on-delete, action, subject_type, subject_id, metadata jsonb, occurred_at timestampTz).
+- Model: Department, Role, SupportTeam, AuditEvent; User diperluas (normalisasi email lowercase lewat mutator). Factory: Department, Role, SupportTeam, User (state `inactive`, `withTemporaryPassword`, `withRoles`).
+- `ReferenceSeeder` idempoten (departemen general/hr/it/engineering, empat role, team hr/it); `DatabaseSeeder` hanya memanggil ReferenceSeeder.
+
+**Modul Identity** (`app/Modules/Identity`)
+- Enum `RoleCode`, `SupportTeamCode`.
+- `ActorContext` (snapshot DB: departemen, role, team aktif hanya dengan role staff, editor scope hanya dengan role editor) dan `CurrentActor` (cache scoped per request).
+- Actions: `ProvisionUser`, `UpdateUserAccess`, `DisableUser`, `ResetTemporaryPassword`, `ChangePassword`, `WriteAuditEvent` (menghapus key sensitif dari metadata).
+- `UserAccessRules`: aturan validasi bersama Form Request, CLI, dan action; staff team/editor department tanpa role terkait → 422.
+- `AdminGuard`: verifikasi ulang aktor admin di dalam transaksi (row lock) dan perlindungan admin terakhir yang mengunci semua baris admin aktif sebelum menghitung.
+- `SessionRevoker`: hapus sesi database, rotasi remember token, dispatch event `UserSessionsRevoked` setelah commit (hook pembatalan lease AI untuk Plan5).
+- `AdminNavigation`: item sidebar berdasarkan kemampuan; modul tahap berikutnya tampil nonaktif hanya untuk role terkait.
+
+**HTTP**
+- Routes: `/` (redirect login/office), `GET|POST /login` (guest), `POST /logout`, `GET|POST /password/change`, `/office` sementara (`office.reception`), `/admin` (gate `admin.access` = admin/editor/staff), `admin/users` dan `admin/departments` (resource tanpa show/destroy), `POST admin/users/{user}/reset-password`, `POST /api/v1/preferences`.
+- Middleware group `account.active` (auth + AuthenticateSession + EnsureAccountIsActive) untuk ganti password/logout dan `account` (+ EnsurePasswordChanged) untuk semua halaman/API bisnis. JSON: 401 `unauthenticated`, 403 `password_change_required`.
+- Login: email dinormalisasi, `Auth::attempt` dengan `is_active=true`, limiter 5/menit per email+IP, regenerasi session, locale session dari `preferred_locale`. Logout invalidasi session + regenerasi CSRF. Ganti password memperbarui hash sesi saat ini sehingga sesi lain keluar.
+- Policy `UserPolicy` dan `DepartmentPolicy` (admin saja, tanpa before() bypass).
+- `SetLocale`: pilihan `?lang` pengguna login juga disimpan ke `preferred_locale`.
+
+**CLI**
+- `corporate:create-admin --email= --name=`: menjalankan ReferenceSeeder, password lewat prompt tersembunyi, departemen general, role employee+admin, wajib ganti password.
+- `corporate:demo-accounts`: hanya local/testing; employee, editor (general+hr), staff HR, staff IT, admin dengan password acak yang ditampilkan sekali (menjalankan ulang mereset password). Tidak ada password di docs.
+
+**UI**
+- Halaman login, ganti password (x-layouts.guest), office sementara (x-layouts.user), dashboard, daftar/form akun dengan filter dan reset password via confirm-dialog, daftar/form departemen (x-layouts.admin).
+- Komponen baru/diperluas: `x-navigation.account-menu`; `x-ui.dropdown` prop `trigger-variant`; `x-ui.dropdown.item` prop `type="submit"`; checkbox mendukung nama array dengan old input; layout admin/guest menampilkan `session('status')`; layout user menerima `adminHref`.
+- Terjemahan id/en/ja di `lang/*/ui.php`; `lang/{id,ja}/validation.php` (aturan yang dipakai) dan `lang/{en,id,ja}/auth.php`.
+
+**Perintah setup yang dijalankan**: `php artisan migrate`, `php artisan db:seed`, `php artisan route:list`, `php artisan view:cache`, `npm run build` (SQLite lokal).
+
+**Penyimpangan dan keputusan**
+- Resource admin tanpa `show` (halaman edit memuat detail) dan tanpa `destroy`.
+- Halaman landing Plan1 dihapus; `/` sekarang redirect.
+- Kode error JSON memakai snake_case huruf kecil (`password_change_required`); konvensi dicatat di TECHNICAL_CONTRACTS.
+- Slug departemen immutable setelah dibuat; hanya nama dan status aktif yang dapat diubah.
+- `lockForUpdate` tidak berefek di SQLite lokal; perlindungan admin terakhir terhadap race baru efektif di PostgreSQL (diuji Plan8).
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–7). Mulai dengan `php artisan migrate`, `php artisan db:seed`, lalu `php artisan corporate:create-admin` atau `php artisan corporate:demo-accounts`.
