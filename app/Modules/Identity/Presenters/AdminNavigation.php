@@ -3,6 +3,7 @@
 namespace App\Modules\Identity\Presenters;
 
 use App\Modules\Identity\ActorContext;
+use App\Modules\Knowledge\Support\KnowledgeAuthorization;
 
 /**
  * Builds the admin sidebar from server-side abilities. Items for modules
@@ -26,8 +27,8 @@ final class AdminNavigation
             $items[] = ['label' => __('ui.nav.departments'), 'href' => route('admin.departments.index'), 'icon' => 'building-office-2', 'active' => $is('admin.departments.*')];
         }
 
-        if ($actor->isAdmin() || $actor->isEditor()) {
-            $items[] = ['label' => __('ui.nav.knowledge'), 'href' => null, 'icon' => 'book-open', 'active' => false];
+        if (KnowledgeAuthorization::canManageCms($actor)) {
+            $items[] = ['label' => __('ui.nav.knowledge'), 'href' => route('admin.knowledge.index'), 'icon' => 'book-open', 'active' => $is('admin.knowledge.*')];
         }
 
         if ($actor->isStaff()) {
