@@ -8,21 +8,26 @@ import { uuid } from './shared/uuid.js';
  * storage. The confirm key is stable per draft revision, so a retry after a
  * lost response returns the same ticket.
  *
- * config: { initialTeam, categories: {team: {code: label}}, labels }
+ * initialDraft (from ?draft=, e.g. prepared by the assistant) opens the
+ * review step; an expired draft opens the details step and is saved again
+ * as a new draft. Editing an existing draft raises its revision.
+ *
+ * config: { initialTeam, initialDraft, categories: {team: {code: label}}, labels }
  */
 export function ticketWizard(config = {}) {
     const labels = config.labels ?? {};
+    const initial = config.initialDraft ?? null;
 
     return {
-        step: config.initialTeam ? 1 : 1,
-        team: config.initialTeam ?? '',
-        category: '',
-        subject: '',
-        description: '',
-        draft: null,
-        confirmKey: null,
+        step: initial ? (initial.expired ? 2 : 3) : 1,
+        team: initial?.team_code ?? config.initialTeam ?? '',
+        category: initial?.category ?? '',
+        subject: initial?.subject ?? '',
+        description: initial?.description ?? '',
+        draft: initial,
+        confirmKey: initial ? uuid() : null,
         errors: {},
-        error: '',
+        error: initial?.expired ? labels.expired : '',
         pending: false,
         canRetry: false,
 
@@ -104,7 +109,7 @@ export function ticketWizard(config = {}) {
         },
 
         async confirm() {
-            if (this.pending || !this.draft) return;
+            if (this.pending || !this.draft || this.draft.expired) return;
             this.pending = true;
             this.error = '';
             this.canRetry = false;

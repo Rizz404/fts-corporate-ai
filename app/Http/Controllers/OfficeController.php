@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Models\TicketDraft;
 use App\Modules\Experience\Enums\SceneCode;
 use App\Modules\Identity\Enums\SupportTeamCode;
 use App\Modules\Support\Enums\TicketCategory;
+use App\Modules\Support\Presenters\TicketPresenter;
 use App\Modules\Experience\Queries\BuildScene;
 use App\Modules\Identity\CurrentActor;
 use App\Modules\Knowledge\Enums\KnowledgeCategory;
 use App\Modules\Knowledge\KnowledgeRetriever;
 use App\Modules\Knowledge\Queries\VisibleRevisions;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 /**
  * Office scenes. Each scene is rendered from SceneData built server-side.
@@ -95,13 +99,34 @@ class OfficeController extends Controller
 
     /**
      * Three-step wizard; drafts are saved server-side through the API.
+     * ?draft=<uuid> opens an own draft (e.g. prepared by the assistant) at
+     * the review step; a confirmed draft redirects to its ticket.
      */
-    public function requestsCreate(Request $request): View
+    public function requestsCreate(Request $request): View|RedirectResponse
     {
         $team = in_array($request->query('team'), SupportTeamCode::values(), true) ? $request->query('team') : null;
+        $initialDraft = null;
+
+        if ($request->filled('draft')) {
+            $draftId = (string) $request->query('draft');
+            abort_unless(Str::isUuid($draftId), 404);
+
+            $draft = TicketDraft::query()
+                ->with(['team:id,code', 'consumedTicket'])
+                ->where('public_id', strtolower($draftId))
+                ->where('requester_id', $request->user()->id)
+                ->firstOrFail();
+
+            if ($draft->consumedTicket !== null) {
+                return redirect()->route('office.requests.show', $draft->consumedTicket);
+            }
+
+            $initialDraft = TicketPresenter::draft($draft);
+        }
 
         return $this->scene(SceneCode::Requests, 'office.requests-create', [
             'initialTeam' => $team,
+            'initialDraft' => $initialDraft,
             'categoryOptions' => TicketCategory::options(),
         ]);
     }
@@ -111,7 +136,8 @@ class OfficeController extends Controller
         abort_unless($ticket->requester_id === $request->user()->id, 404);
         $ticket->load(['team:id,code', 'assignee:id,name']);
 
-        return $this->scene(SceneCode::Requests, 'office.requests-show', ['ticket' => $ticket], ['ticket_public_id' => null]);
+        // The assistant may use this own ticket as context (Plan 7).
+        return $this->scene(SceneCode::Requests, 'office.requests-show', ['ticket' => $ticket], ['ticket_public_id' => $ticket->public_id]);
     }
 
     /**

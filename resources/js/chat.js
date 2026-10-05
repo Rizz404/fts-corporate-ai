@@ -1,5 +1,5 @@
 import { apiRequest } from './shared/api.js';
-import { normalizeActions, normalizeCards } from './safe-card-renderer.js';
+import { normalizeActions, normalizeCard, normalizeCards } from './safe-card-renderer.js';
 import { uuid } from './shared/uuid.js';
 
 const STORAGE_PREFIX = 'fts-chat:';
@@ -47,7 +47,11 @@ export function clearChatStorage() {
  * stored result instead of calling the model again. Text is rendered with
  * x-text; cards and actions go through safe-card-renderer.
  *
- * config: { userId, locale, scene, articleId, clientTimeoutMs, labels }
+ * A ticket draft card is only confirmed by the explicit two-step button
+ * (expected_revision + idempotency key, Plan 6 API); chat text such as "yes"
+ * never confirms anything. The confirmation card comes from the API result.
+ *
+ * config: { userId, locale, scene, articleId, ticketPublicId, clientTimeoutMs, badgeClasses, labels }
  */
 export function corporateChat(config = {}) {
     const labels = config.labels ?? {};
@@ -87,12 +91,22 @@ export function corporateChat(config = {}) {
             window.clearTimeout(this.pollTimer);
         },
 
+        cardOptions() {
+            return { locale: config.locale, versionLabel: labels.version };
+        },
+
+        badge(tone) {
+            const classes = config.badgeClasses ?? {};
+
+            return classes[tone] ?? classes.neutral ?? '';
+        },
+
         toView(message) {
             return {
                 key: message.id ? `m${message.id}` : `local${this.nextKey++}`,
                 role: message.role === 'user' ? 'user' : 'assistant',
                 text: typeof message.text === 'string' ? message.text : '',
-                cards: normalizeCards(message.ui, { locale: config.locale, versionLabel: labels.version }),
+                cards: normalizeCards(message.ui, this.cardOptions()),
                 actions: normalizeActions(message.actions),
                 stale: message.stale === true,
             };
@@ -153,7 +167,7 @@ export function corporateChat(config = {}) {
                 client_turn_id: uuid(),
                 message,
                 locale: config.locale,
-                context: { scene: config.scene, article_id: config.articleId ?? null, ticket_public_id: null },
+                context: { scene: config.scene, article_id: config.articleId ?? null, ticket_public_id: config.ticketPublicId ?? null },
             };
             this.scrollToEnd();
             this.submit();
@@ -273,6 +287,77 @@ export function corporateChat(config = {}) {
         retry() {
             if (this.pendingTurn && !this.pending) {
                 this.submit();
+            }
+        },
+
+        askConfirm(card) {
+            if (card.expired || card.busy) {
+                return;
+            }
+            card.error = '';
+            card.confirming = true;
+        },
+
+        cancelConfirm(card) {
+            if (!card.busy) {
+                card.confirming = false;
+                card.error = '';
+            }
+        },
+
+        replaceCard(message, card, replacement) {
+            const index = message.cards.findIndex((item) => item.key === card.key);
+            if (index !== -1 && replacement) {
+                message.cards.splice(index, 1, replacement);
+            }
+        },
+
+        async confirmDraft(message, card) {
+            if (card.busy || card.expired || !card.confirming) {
+                return;
+            }
+            card.busy = true;
+            card.error = '';
+            // Stable per draft revision so a retry after a lost response returns the same ticket.
+            card.confirmKey ??= uuid();
+
+            try {
+                const envelope = await apiRequest(`/api/v1/ticket-drafts/${card.draftId}/confirm`, {
+                    method: 'POST',
+                    body: { expected_revision: card.revision, idempotency_key: card.confirmKey },
+                });
+                this.replaceCard(message, card, normalizeCard({ type: 'ticket_confirmation', ...envelope.data }, this.cardOptions()));
+                message.actions = message.actions.filter((action) => action.type !== 'review_ticket_draft');
+            } catch (error) {
+                card.busy = false;
+                if (error.code === 'draft_expired') {
+                    card.expired = true;
+                    card.confirming = false;
+                    card.error = labels.draftExpired;
+                } else if (error.code === 'revision_conflict' || error.code === 'draft_consumed') {
+                    await this.reloadDraft(message, card);
+                } else if (error.isNetwork || error.isAbort || error.status >= 500) {
+                    card.error = labels.network;
+                } else if (error.status === 419 || error.status === 401) {
+                    card.error = labels.session;
+                } else if (error.status === 429) {
+                    card.error = labels.rateLimited;
+                } else {
+                    card.error = labels.generic;
+                }
+            }
+        },
+
+        async reloadDraft(message, card) {
+            try {
+                const envelope = await apiRequest(`/api/v1/ticket-drafts/${card.draftId}`);
+                const fresh = normalizeCard({ type: 'ticket_draft', ...envelope.data, path: card.path }, this.cardOptions());
+                if (fresh) {
+                    fresh.error = labels.draftChanged;
+                    this.replaceCard(message, card, fresh);
+                }
+            } catch {
+                card.error = labels.generic;
             }
         },
 

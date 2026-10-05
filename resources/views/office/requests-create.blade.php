@@ -1,6 +1,7 @@
 @php
     $wizardConfig = [
         'initialTeam' => $initialTeam,
+        'initialDraft' => $initialDraft ?? null,
         'categories' => $categoryOptions,
         'labels' => [
             'required' => __('ui.tickets.errors.required'),
@@ -96,7 +97,7 @@
             <x-ui.button variant="ghost" x-show="step > 1" x-cloak x-on:click="back()" x-bind:disabled="pending">{{ __('ui.tickets.wizard.back') }}</x-ui.button>
             <x-ui.link-button :href="route('office.requests')" variant="ghost" x-show="step === 1">{{ __('ui.cancel') }}</x-ui.link-button>
             <x-ui.button x-show="step < 3" x-on:click="next()" x-bind:disabled="pending">{{ __('ui.tickets.wizard.next') }}</x-ui.button>
-            <x-ui.button x-show="step === 3" x-cloak x-on:click="confirm()" x-bind:disabled="pending">
+            <x-ui.button x-show="step === 3" x-cloak x-on:click="confirm()" x-bind:disabled="pending || ! draft || draft.expired">
                 <x-ui.icon name="check-circle" size="sm" />
                 {{ __('ui.tickets.wizard.confirm') }}
             </x-ui.button>
