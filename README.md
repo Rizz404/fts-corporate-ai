@@ -52,6 +52,21 @@ php artisan corporate:create-admin --email=admin@example.com --name="Admin"
 
 Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan wajib diganti saat login pertama. Akun demo sintetis (hanya local/testing): `php artisan corporate:demo-accounts` (password acak ditampilkan sekali; menjalankan ulang mereset password). Artikel contoh: `php artisan db:seed --class=KnowledgeDemoSeeder` (butuh admin).
 
+### Asisten AI
+
+Isi di `.env` (jangan commit nilainya):
+
+```dotenv
+ASSISTANT_ENABLED=true
+LOCAL_LLM_BASE_URL=https://host-provider      # tanpa /v1; endpoint /v1/chat/completions ditambahkan aplikasi
+LOCAL_LLM_API_KEY=...
+LOCAL_LLM_MODEL=...
+ASSISTANT_REASONING_EFFORT=none               # untuk thinking model (mis. Qwen3 di LM Studio); kosongkan bila tidak didukung
+LOCAL_LLM_CA_BUNDLE=                           # opsional: path file CA bila PHP tidak punya CA bundle (cURL error 60)
+```
+
+Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi fallback berisi artikel terkait.
+
 ## URL
 
 | URL | Keterangan |

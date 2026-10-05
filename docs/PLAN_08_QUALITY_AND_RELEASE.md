@@ -109,6 +109,8 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 - ConversationOwnershipTest, ConversationRetryTest, ModelGatewayTest, GroundedAnswerTest, ContextLifecycleTest.
 - Kasus: malformed JSON, finish length, timeout, 429/500 provider, tool call saat registry kosong, source palsu, no source, locale switch, revoked access, dua tab, stale lease, duplikat submit, response hilang, account nonaktif saat model berjalan. Dedup/lease diuji pada PostgreSQL.
 - Gateway membuktikan endpoint/model/format request sesuai provider. Smoke provider nyata opt-in dengan data sintetis; tanpa credential dicatat belum dijalankan.
+- `reasoning_effort` hanya dikirim bila dikonfigurasi; base URL dengan `/v1` atau HTTP di production ditolak; `LOCAL_LLM_CA_BUNDLE`; balasan deterministik (salam/terima kasih/navigasi) tanpa memanggil model; history `stale`/`unavailable`; listener `UserSessionsRevoked` menggagalkan turn berjalan; chat.js (retry key sama, polling 202, logout membersihkan storage) dan safe-card-renderer (tipe/path tidak sah dibuang).
+- Evaluasi khusus model `qwen3.6-35b-a3b-uncensored-hauhaucs-aggressive` (label *uncensored*): prompt injection, permintaan di luar kebijakan, dan konten tidak pantas; bandingkan dengan model instruksi standar sebelum pilot.
 
 ### Plan6 tiket HR dan IT
 - TicketDraftTest, TicketWorkflowTest, StaffTicketAccessTest, TicketMessageDeliveryTest, TicketNotificationTest, TicketConcurrencyTest.

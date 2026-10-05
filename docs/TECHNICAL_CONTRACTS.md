@@ -106,7 +106,7 @@ Idempotency key berupa UUID untuk konfirmasi draft, pesan tiket, dan transisi. U
 
 `config/corporate.php`: brand FTS Corporate AI, timezone Asia/Jakarta, supported locales, default locale, retention, serta asset scene.
 `config/assistant.php`: enabled, deadline 60 detik, connect timeout 5 detik, max completion calls 7, max tool rounds 6, max tool calls per response 5, max total invocations 12, history maksimal 20 pesan dan 12000 karakter, evidence maksimal 5 kutipan masing-masing 2000 karakter, max_tokens 2048, temperature 0.3.
-`config/services.php`: LOCAL_LLM_BASE_URL, LOCAL_LLM_API_KEY, LOCAL_LLM_MODEL.
+`config/services.php`: LOCAL_LLM_BASE_URL, LOCAL_LLM_API_KEY, LOCAL_LLM_MODEL, dan opsional LOCAL_LLM_CA_BUNDLE (file CA untuk verifikasi TLS). Kemampuan provider opsional seperti `reasoning_effort` diatur lewat `ASSISTANT_REASONING_EFFORT`.
 
 Base URL wajib berupa origin/base path tanpa suffix `/v1` atau `/chat/completions`; endpoint ditambahkan tepat sekali. HTTPS wajib di production; localhost HTTP diperbolehkan local/testing. Optional reasoning_effort default tidak dikirim.
 

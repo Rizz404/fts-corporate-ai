@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 5 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 4](PLAN_04_KNOWLEDGE_CMS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -73,4 +73,38 @@ Checklist untuk pengguna:
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Catat kontrak gateway/response yang dibuat, recovery yang diimplementasikan, checklist untuk pengguna, dan apakah model nyata sudah atau belum dicoba.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Provider (input pengguna)**: LM Studio terhosting `https://local.fts-tech.co.id` (OpenAI-compatible), model `qwen3.6-35b-a3b-uncensored-hauhaucs-aggressive`. Nilai dan API key hanya di `.env` lokal (tidak dilacak). Model ini adalah *thinking model*: tanpa `reasoning_effort=none` seluruh `max_tokens` habis untuk penalaran dan `content` kosong (`finish_reason=length`), sehingga `ASSISTANT_REASONING_EFFORT=none` diaktifkan sebagai konfigurasi kemampuan provider (default tetap tidak dikirim).
+
+**Persistence** (`2026_10_05_000008_create_conversation_tables`): `conversations`, `ai_turns` (unique conversation+client_turn_id, fingerprint, deadline, error_code, provider/model, prompt_version, usage), `conversation_messages` (index conversation+id, `ui` berisi descriptor server), `turn_evidence` (hash excerpt saja), `tool_invocations` (kosong sampai Plan7).
+
+**Modul Assistant** (`app/Modules/Assistant`)
+- `Gateway\ModelGateway`, `ChatCompletionRequest`, `ChatCompletionResult`, `TurnDeadline`, `GatewayException` (kode `ai_unavailable`, `ai_timeout`, `ai_rate_limited`, `ai_bad_request`, `ai_bad_response`).
+- `CompatibleChatCompletionsGateway`: POST `{base}/v1/chat/completions` (base tanpa `/v1`, HTTPS wajib di luar local/testing), bearer header, connect timeout 5 s, timeout = sisa deadline, tanpa retry, `tools` hanya bila registry berisi, `reasoning_effort` hanya bila dikonfigurasi, opsi `LOCAL_LLM_CA_BUNDLE` untuk verifikasi TLS.
+- `FakeModelGateway` (antrian hasil/exception, mencatat request) untuk Plan8/pengembangan.
+- `Prompt\PromptComposer` (`corporate-v1`: aturan grounding, anti-injection, bahasa aktif, sumber dalam tag `<source revision_id>`, riwayat ≤20 pesan/12000 karakter tanpa memotong pesan) dan `Prompt\AnswerValidator` (JSON ketat `{"text","source_revision_ids"}`; menolak tool call, finish_reason ≠ stop, code fence/teks tambahan, key lain, id di luar evidence, tanpa sumber).
+- `Tools\ToolRegistry` kosong.
+
+**Modul Conversation** (`app/Modules/Conversation`)
+- Actions `StartConversation`, `AppendTurn` (dedup client_turn_id + fingerprint SHA-256 kanonik, 409 `idempotency_conflict`, validasi article context via retriever, lease user+percakapan 75 s → 409 `turn_in_progress`, transaksi pendek turn+pesan user+context/locale terbaru), `ExecuteTurn`, `ReadHistory` (cursor `after_id`, 50/halaman, placeholder untuk sumber yang tidak bisa diakses, flag `stale`), `RecoverStaleTurn` (`turn_interrupted`).
+- `ExecuteTurn`: balasan deterministik (salam/terima kasih/navigasi) → retrieval ≤5 (artikel context lebih dulu, kategori scene HR/IT lalu tanpa kategori) → tanpa evidence: fallback tanpa model → provider mati: `ai_unavailable` + kartu artikel terkait → gateway → validator → sebelum simpan: akun aktif, lease masih dimiliki, sumber masih bisa dibaca. Kartu sumber dibangun server. Semua kegagalan menyimpan turn failed + fallback; pesan user tidak dihapus; lease selalu dilepas; log `assistant.turn` tanpa isi prompt.
+- `TurnRecorder` (finish sekali dengan row lock), `TurnLease`, `TurnCards`, `QuickReplies`, `EvidenceAvailability`, `TurnPresenter`.
+- Listener `CancelTurnsWhenSessionsRevoked` untuk event Plan2 `UserSessionsRevoked`: force release lease dan gagalkan turn (`account_revoked`).
+
+**HTTP**: `POST /api/v1/conversations` (201), `POST /api/v1/conversations/{id}/messages` (200 terminal / 202 processing, throttle `assistant` 10/menit per user + 60/menit per IP), `GET .../messages?after_id=`, `GET .../turns/{turn}`; parameter UUID, percakapan milik orang lain 404; `context.ticket_public_id` harus null.
+
+**Frontend**: `resources/js/chat.js` (`Alpine.data('corporateChat')`: satu submit aktif, retry dengan client_turn_id sama, polling turn tiap 2 s sampai 70 s, penanganan 401/419/429/409/404, batas 2000 karakter, Enter kirim/Shift+Enter baris baru, resume percakapan per user di localStorage, dibersihkan saat logout), `safe-card-renderer.js` (whitelist tipe kartu/aksi, path relatif same-origin), komponen `x-office-chat` di chat dock semua ruang; topik saran di scene menjadi tombol yang bertanya ke chat.
+
+**Perintah setup yang dijalankan**: `php artisan migrate`, `php artisan view:cache`, `php artisan route:list`, `npm run build`; satu panggilan `/v1/models` dan dua request sintetis langsung ke provider untuk menentukan model dan kebutuhan `reasoning_effort`; satu turn integrasi sekali jalan (pertanyaan cuti, user demo) → `completed`, sumber "[DEMO] Cara mengajukan cuti", ±400 token, ±2–3 detik. Ini pemeriksaan konfigurasi, bukan tes otomatis atau evaluasi model.
+
+**Penyimpangan dan keputusan**
+- Turn dijalankan sinkron di request POST (seperti hotel); 202 hanya untuk retry saat turn masih berjalan.
+- Pertanyaan tanpa evidence selalu mendapat fallback tanpa memanggil model; jawaban model tanpa sumber juga diganti fallback.
+- Blok `<think>…</think>` di awal content dibuang sebelum parsing.
+- PHP lokal (scoop, tanpa php.ini) tidak punya CA bundle sehingga HTTPS gagal (`cURL error 60`); diatasi dengan `LOCAL_LLM_CA_BUNDLE` (bundle Git) di `.env`, tanpa mengubah instalasi PHP.
+- Risiko yang perlu diputuskan pengguna: model yang dipakai berlabel *uncensored/aggressive*. Grounding dan validator membatasi jawaban pada sumber, tetapi untuk pilot sebaiknya dipertimbangkan model instruksi standar (evaluasi di Plan8).
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–7).
