@@ -52,6 +52,24 @@ php artisan corporate:create-admin --email=admin@example.com --name="Admin"
 
 Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan wajib diganti saat login pertama. Akun demo sintetis (hanya local/testing): `php artisan corporate:demo-accounts` (password acak ditampilkan sekali; menjalankan ulang mereset password). Artikel contoh: `php artisan db:seed --class=KnowledgeDemoSeeder` (butuh admin).
 
+### Data pratinjau lokal (login cepat)
+
+```bash
+php artisan db:seed --class=LocalDemoSeeder   # hanya local/testing
+```
+
+Membuat akun demo dengan password tetap `LocalDemo#2026` (tanpa wajib ganti password), artikel `[DEMO]`, dan dua tiket contoh. Menjalankan ulang mengembalikan password akun demo.
+
+| Email | Peran |
+|---|---|
+| `demo.admin@example.test` | Admin (akun, departemen, CMS, pengaturan) |
+| `demo.editor@example.test` | Editor (departemen General dan HR) |
+| `demo.staff.hr@example.test` | Staf HR (antrean tiket HR) |
+| `demo.staff.it@example.test` | Staf IT (antrean tiket IT) |
+| `demo.employee@example.test` | Karyawan (Engineering) |
+
+Password tetap ini hanya untuk pratinjau lokal; seeder menolak berjalan di environment lain.
+
 ### Asisten AI
 
 Isi di `.env` (jangan commit nilainya):
