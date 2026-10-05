@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\KnowledgeController;
 use App\Http\Controllers\Api\PreferenceController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('account')->group(function () {
     Route::post('preferences', [PreferenceController::class, 'update'])->name('preferences.update');
+
+    Route::get('knowledge', [KnowledgeController::class, 'index'])->name('knowledge.index');
+    Route::get('knowledge/{article}', [KnowledgeController::class, 'show'])->whereNumber('article')->name('knowledge.show');
 });

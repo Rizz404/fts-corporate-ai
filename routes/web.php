@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CompanySettingsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
+use App\Http\Controllers\Admin\KnowledgeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -29,6 +30,9 @@ Route::middleware('account')->group(function () {
     Route::prefix('office')->name('office.')->group(function () {
         Route::get('/', [OfficeController::class, 'reception'])->name('reception');
         Route::get('knowledge', [OfficeController::class, 'knowledge'])->name('knowledge');
+        Route::get('knowledge/{articleSlug}', [OfficeController::class, 'knowledgeShow'])
+            ->where('articleSlug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+            ->name('knowledge.show');
         Route::get('hr', [OfficeController::class, 'hr'])->name('hr');
         Route::get('it', [OfficeController::class, 'it'])->name('it');
         Route::get('requests', [OfficeController::class, 'requests'])->name('requests');
@@ -39,6 +43,16 @@ Route::middleware('account')->group(function () {
         Route::resource('users', UserController::class)->except(['show', 'destroy']);
         Route::post('users/{user}/reset-password', [UserPasswordController::class, 'store'])->name('users.reset-password');
         Route::resource('departments', DepartmentController::class)->except(['show', 'destroy']);
+        Route::get('knowledge', [KnowledgeController::class, 'index'])->name('knowledge.index');
+        Route::get('knowledge/create', [KnowledgeController::class, 'create'])->name('knowledge.create');
+        Route::post('knowledge', [KnowledgeController::class, 'store'])->name('knowledge.store');
+        Route::get('knowledge/{article}/edit', [KnowledgeController::class, 'edit'])->name('knowledge.edit');
+        Route::patch('knowledge/{article}/draft', [KnowledgeController::class, 'update'])->name('knowledge.draft.update');
+        Route::post('knowledge/{article}/publication', [KnowledgeController::class, 'publish'])->name('knowledge.publication.store');
+        Route::delete('knowledge/{article}/publication', [KnowledgeController::class, 'archive'])->name('knowledge.publication.destroy');
+        Route::get('knowledge/{article}/revisions', [KnowledgeController::class, 'revisions'])->name('knowledge.revisions.index');
+        Route::post('knowledge/{article}/revisions', [KnowledgeController::class, 'createDraft'])->name('knowledge.revisions.store');
+
         Route::get('settings', [CompanySettingsController::class, 'edit'])->name('settings.edit');
         Route::patch('settings', [CompanySettingsController::class, 'update'])->name('settings.update');
     });

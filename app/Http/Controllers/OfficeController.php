@@ -4,7 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Modules\Experience\Enums\SceneCode;
 use App\Modules\Experience\Queries\BuildScene;
+use App\Modules\Identity\CurrentActor;
+use App\Modules\Knowledge\Enums\KnowledgeCategory;
+use App\Modules\Knowledge\KnowledgeRetriever;
+use App\Modules\Knowledge\Queries\VisibleRevisions;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -19,9 +24,48 @@ class OfficeController extends Controller
         return $this->scene(SceneCode::Reception, 'office.reception');
     }
 
-    public function knowledge(): View
+    /**
+     * Manual knowledge search (no AI). Invalid input is ignored on pages.
+     */
+    public function knowledge(Request $request, KnowledgeRetriever $retriever, CurrentActor $actors): View
     {
-        return $this->scene(SceneCode::Knowledge, 'office.knowledge');
+        $query = trim(mb_substr((string) $request->query('q', ''), 0, KnowledgeRetriever::MAX_QUERY_LENGTH));
+        $category = in_array($request->query('category'), KnowledgeCategory::values(), true) ? $request->query('category') : null;
+        $locale = app()->getLocale();
+
+        $results = null;
+        $latest = null;
+
+        if ($query !== '') {
+            $results = $retriever->search($request->user(), $query, $locale, $category);
+        } else {
+            $latest = VisibleRevisions::for($actors->for($request->user()))
+                ->when($category, fn ($builder) => $builder->where('knowledge_revisions.category', $category))
+                ->with(['article', 'translations'])
+                ->orderByDesc('knowledge_revisions.published_at')
+                ->orderBy('knowledge_revisions.article_id')
+                ->paginate(10)
+                ->withQueryString();
+        }
+
+        return $this->scene(SceneCode::Knowledge, 'office.knowledge', [
+            'query' => $query,
+            'category' => $category,
+            'results' => $results,
+            'latest' => $latest,
+            'categoryOptions' => KnowledgeCategory::options(),
+        ]);
+    }
+
+    public function knowledgeShow(Request $request, string $articleSlug, KnowledgeRetriever $retriever): View
+    {
+        $revision = $retriever->find($request->user(), $articleSlug);
+        abort_if($revision === null, 404);
+
+        return $this->scene(SceneCode::Knowledge, 'office.knowledge-show', [
+            'revision' => $revision,
+            'translation' => $revision->translation(app()->getLocale()),
+        ], ['article_id' => $revision->article_id]);
     }
 
     public function hr(): View
