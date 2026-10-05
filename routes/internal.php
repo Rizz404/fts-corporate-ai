@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\KnowledgeController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PreferenceController;
+use App\Http\Controllers\Api\StaffTicketController;
+use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\TicketDraftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,4 +33,27 @@ Route::middleware('account')->group(function () {
         ->name('conversations.messages.store');
     Route::get('conversations/{conversation}/messages', [ConversationController::class, 'history'])->whereUuid('conversation')->name('conversations.messages.index');
     Route::get('conversations/{conversation}/turns/{turn}', [ConversationController::class, 'turn'])->whereUuid(['conversation', 'turn'])->name('conversations.turns.show');
+
+    Route::middleware('throttle:ticket-writes')->group(function () {
+        Route::post('ticket-drafts', [TicketDraftController::class, 'store'])->name('ticket-drafts.store');
+        Route::patch('ticket-drafts/{draft}', [TicketDraftController::class, 'update'])->whereUuid('draft')->name('ticket-drafts.update');
+        Route::post('ticket-drafts/{draft}/confirm', [TicketDraftController::class, 'confirm'])->whereUuid('draft')->name('ticket-drafts.confirm');
+        Route::post('tickets/{ticket}/messages', [TicketController::class, 'storeMessage'])->whereUuid('ticket')->name('tickets.messages.store');
+        Route::patch('tickets/{ticket}/status', [TicketController::class, 'updateStatus'])->whereUuid('ticket')->name('tickets.status.update');
+
+        Route::prefix('staff')->name('staff.')->group(function () {
+            Route::patch('tickets/{ticket}/assignment', [StaffTicketController::class, 'assign'])->whereUuid('ticket')->name('tickets.assignment.update');
+            Route::patch('tickets/{ticket}/status', [StaffTicketController::class, 'updateStatus'])->whereUuid('ticket')->name('tickets.status.update');
+            Route::post('tickets/{ticket}/messages', [StaffTicketController::class, 'storeMessage'])->whereUuid('ticket')->name('tickets.messages.store');
+        });
+    });
+
+    Route::get('ticket-drafts/{draft}', [TicketDraftController::class, 'show'])->whereUuid('draft')->name('ticket-drafts.show');
+    Route::get('tickets', [TicketController::class, 'index'])->name('tickets.index');
+    Route::get('tickets/{ticket}', [TicketController::class, 'show'])->whereUuid('ticket')->name('tickets.show');
+    Route::get('tickets/{ticket}/messages', [TicketController::class, 'messages'])->whereUuid('ticket')->name('tickets.messages.index');
+    Route::get('staff/tickets/{ticket}/messages', [StaffTicketController::class, 'messages'])->whereUuid('ticket')->name('staff.tickets.messages.index');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::patch('notifications/{notification}/read', [NotificationController::class, 'markRead'])->whereUuid('notification')->name('notifications.read');
 });
