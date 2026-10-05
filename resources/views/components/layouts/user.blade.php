@@ -30,6 +30,7 @@
 
                 <x-navigation.language-switch variant="dark" class="ml-auto md:ml-0" />
 
+                <x-navigation.notification-bell variant="dark" />
                 @auth
                     <x-navigation.account-menu variant="dark" :admin-href="$adminHref" />
                 @endauth

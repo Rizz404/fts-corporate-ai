@@ -12,9 +12,13 @@
             <x-ui.icon name="book-open" size="sm" />
             {{ __('ui.office.desk.browse_knowledge') }}
         </x-ui.link-button>
-        <x-ui.link-button :href="route('office.requests')">
+        <x-ui.link-button :href="route('office.requests')" variant="outline">
             <x-ui.icon name="clipboard-document-list" size="sm" />
             {{ __('ui.office.desk.my_requests') }}
+        </x-ui.link-button>
+        <x-ui.link-button :href="route('office.requests.create', ['team' => $team])">
+            <x-ui.icon name="plus" size="sm" />
+            {{ __('ui.tickets.new_for_team', ['team' => __('ui.teams.'.$team)]) }}
         </x-ui.link-button>
     </x-slot:footer>
 </x-ui.card>

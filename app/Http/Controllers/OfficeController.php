@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Modules\Experience\Enums\SceneCode;
+use App\Modules\Identity\Enums\SupportTeamCode;
+use App\Modules\Support\Enums\TicketCategory;
 use App\Modules\Experience\Queries\BuildScene;
 use App\Modules\Identity\CurrentActor;
 use App\Modules\Knowledge\Enums\KnowledgeCategory;
@@ -78,9 +81,37 @@ class OfficeController extends Controller
         return $this->scene(SceneCode::It, 'office.it');
     }
 
-    public function requests(): View
+    public function requests(Request $request): View
     {
-        return $this->scene(SceneCode::Requests, 'office.requests');
+        $tickets = Ticket::query()
+            ->with('team:id,code')
+            ->where('requester_id', $request->user()->id)
+            ->orderByDesc('updated_at')
+            ->orderByDesc('id')
+            ->paginate(20);
+
+        return $this->scene(SceneCode::Requests, 'office.requests', ['tickets' => $tickets]);
+    }
+
+    /**
+     * Three-step wizard; drafts are saved server-side through the API.
+     */
+    public function requestsCreate(Request $request): View
+    {
+        $team = in_array($request->query('team'), SupportTeamCode::values(), true) ? $request->query('team') : null;
+
+        return $this->scene(SceneCode::Requests, 'office.requests-create', [
+            'initialTeam' => $team,
+            'categoryOptions' => TicketCategory::options(),
+        ]);
+    }
+
+    public function requestsShow(Request $request, Ticket $ticket): View
+    {
+        abort_unless($ticket->requester_id === $request->user()->id, 404);
+        $ticket->load(['team:id,code', 'assignee:id,name']);
+
+        return $this->scene(SceneCode::Requests, 'office.requests-show', ['ticket' => $ticket], ['ticket_public_id' => null]);
     }
 
     /**

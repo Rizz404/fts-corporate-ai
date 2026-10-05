@@ -91,6 +91,7 @@
                 <div class="min-w-0 flex-1">{{ $topbar ?? '' }}</div>
 
                 <x-navigation.language-switch />
+                <x-navigation.notification-bell />
                 @isset($account)
                     {{ $account }}
                 @else

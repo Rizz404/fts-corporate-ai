@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CompanySettingsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\KnowledgeController;
+use App\Http\Controllers\Admin\TicketController as StaffTicketPageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -36,6 +37,8 @@ Route::middleware('account')->group(function () {
         Route::get('hr', [OfficeController::class, 'hr'])->name('hr');
         Route::get('it', [OfficeController::class, 'it'])->name('it');
         Route::get('requests', [OfficeController::class, 'requests'])->name('requests');
+        Route::get('requests/create', [OfficeController::class, 'requestsCreate'])->name('requests.create');
+        Route::get('requests/{ticket}', [OfficeController::class, 'requestsShow'])->whereUuid('ticket')->name('requests.show');
     });
 
     Route::prefix('admin')->name('admin.')->middleware('can:admin.access')->group(function () {
@@ -52,6 +55,9 @@ Route::middleware('account')->group(function () {
         Route::delete('knowledge/{article}/publication', [KnowledgeController::class, 'archive'])->name('knowledge.publication.destroy');
         Route::get('knowledge/{article}/revisions', [KnowledgeController::class, 'revisions'])->name('knowledge.revisions.index');
         Route::post('knowledge/{article}/revisions', [KnowledgeController::class, 'createDraft'])->name('knowledge.revisions.store');
+
+        Route::get('tickets', [StaffTicketPageController::class, 'index'])->name('tickets.index');
+        Route::get('tickets/{ticket}', [StaffTicketPageController::class, 'show'])->whereUuid('ticket')->name('tickets.show');
 
         Route::get('settings', [CompanySettingsController::class, 'edit'])->name('settings.edit');
         Route::patch('settings', [CompanySettingsController::class, 'update'])->name('settings.update');
