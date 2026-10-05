@@ -5,6 +5,7 @@ import { dropdown } from './dropdown.js';
 import { tabs } from './tabs.js';
 import { createToastStore, listenForToasts } from './toasts.js';
 import { officeStage, sceneImage } from '../office-stage.js';
+import { corporateChat, clearChatStorage } from '../chat.js';
 
 /**
  * Registers shared Alpine data providers and the `ui` store.
@@ -13,6 +14,7 @@ import { officeStage, sceneImage } from '../office-stage.js';
 export function registerUi(Alpine) {
     Alpine.store('ui', {
         toasts: createToastStore(),
+        clearChatStorage,
     });
 
     Alpine.data('adminShell', adminShell);
@@ -22,6 +24,7 @@ export function registerUi(Alpine) {
     Alpine.data('tabs', tabs);
     Alpine.data('officeStage', officeStage);
     Alpine.data('sceneImage', sceneImage);
+    Alpine.data('corporateChat', corporateChat);
 
     listenForToasts(() => Alpine.store('ui').toasts);
 }

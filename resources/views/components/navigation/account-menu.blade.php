@@ -34,7 +34,7 @@
             @endif
             <x-ui.dropdown.item :href="route('password.change')" icon="pencil-square">{{ __('ui.account.change_password') }}</x-ui.dropdown.item>
         </div>
-        <form method="POST" action="{{ route('logout') }}" class="border-t border-border pt-1">
+        <form method="POST" action="{{ route('logout') }}" class="border-t border-border pt-1" x-on:submit="$store.ui.clearChatStorage()">
             @csrf
             <x-ui.dropdown.item type="submit" icon="arrow-left-start-on-rectangle">{{ __('ui.account.logout') }}</x-ui.dropdown.item>
         </form>

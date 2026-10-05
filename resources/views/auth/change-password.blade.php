@@ -29,7 +29,7 @@
         </x-ui.button>
     </form>
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-4 text-center">
+    <form method="POST" action="{{ route('logout') }}" class="mt-4 text-center" x-data x-on:submit="$store.ui.clearChatStorage()">
         @csrf
         <x-ui.button type="submit" variant="ghost" size="sm">{{ __('ui.account.logout') }}</x-ui.button>
     </form>

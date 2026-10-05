@@ -89,7 +89,11 @@
                     <h2 class="text-caption font-semibold tracking-wide text-muted uppercase">{{ __('ui.office.suggested_topics') }}</h2>
                     <ul class="mt-2 flex flex-wrap gap-2">
                         @foreach ($scene->suggestedTopics as $topic)
-                            <li><x-ui.badge tone="info">{{ $topic }}</x-ui.badge></li>
+                            <li>
+                                <x-ui.button variant="outline" size="sm" x-on:click="$dispatch('chat:ask', { message: {{ \Illuminate\Support\Js::from($topic) }} })">
+                                    {{ $topic }}
+                                </x-ui.button>
+                            </li>
                         @endforeach
                     </ul>
                 </div>
@@ -103,9 +107,7 @@
         @isset($chat)
             {{ $chat }}
         @else
-            <div class="p-4">
-                <x-ui.empty-state icon="chat-bubble-left-right" :title="__('ui.chat.title')" :description="__('ui.office.chat_coming')" class="border-0" />
-            </div>
+            <x-office-chat :scene="$scene" />
         @endisset
     </x-slot:chat>
 
