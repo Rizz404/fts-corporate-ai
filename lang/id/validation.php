@@ -28,6 +28,7 @@ return [
         'numeric' => ':attribute minimal :min.',
         'string' => ':attribute minimal :min karakter.',
     ],
+    'prohibited' => ':attribute tidak boleh diisi.',
     'regex' => 'Format :attribute tidak valid.',
     'required' => ':attribute wajib diisi.',
     'string' => ':attribute harus berupa teks.',

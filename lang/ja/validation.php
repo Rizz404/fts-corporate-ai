@@ -28,6 +28,7 @@ return [
         'numeric' => ':attribute は :min 以上にしてください。',
         'string' => ':attribute は :min 文字以上で入力してください。',
     ],
+    'prohibited' => ':attribute は指定できません。',
     'regex' => ':attribute の形式が正しくありません。',
     'required' => ':attribute は必須です。',
     'string' => ':attribute は文字列で入力してください。',
