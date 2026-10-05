@@ -65,11 +65,11 @@ class DemoAccountsCommand extends Command
         $base = ['preferred_locale' => 'id', 'support_teams' => [], 'editor_departments' => []];
 
         return [
-            $base + ['name' => 'Demo Employee', 'email' => 'demo.employee@example.test', 'department_id' => $departments['engineering'], 'roles' => [RoleCode::Employee->value]],
-            $base + ['name' => 'Demo Editor', 'email' => 'demo.editor@example.test', 'department_id' => $departments['general'], 'roles' => [RoleCode::Employee->value, RoleCode::Editor->value], 'editor_departments' => [$departments['general'], $departments['hr']]],
-            $base + ['name' => 'Demo Staff HR', 'email' => 'demo.staff.hr@example.test', 'department_id' => $departments['hr'], 'roles' => [RoleCode::Employee->value, RoleCode::Staff->value], 'support_teams' => [SupportTeamCode::Hr->value]],
-            $base + ['name' => 'Demo Staff IT', 'email' => 'demo.staff.it@example.test', 'department_id' => $departments['it'], 'roles' => [RoleCode::Employee->value, RoleCode::Staff->value], 'support_teams' => [SupportTeamCode::It->value]],
-            $base + ['name' => 'Demo Admin', 'email' => 'demo.admin@example.test', 'department_id' => $departments['general'], 'roles' => [RoleCode::Employee->value, RoleCode::Admin->value]],
+            ['name' => 'Demo Employee', 'email' => 'demo.employee@example.test', 'department_id' => $departments['engineering'], 'roles' => [RoleCode::Employee->value]] + $base,
+            ['name' => 'Demo Editor', 'email' => 'demo.editor@example.test', 'department_id' => $departments['general'], 'roles' => [RoleCode::Employee->value, RoleCode::Editor->value], 'editor_departments' => [$departments['general'], $departments['hr']]] + $base,
+            ['name' => 'Demo Staff HR', 'email' => 'demo.staff.hr@example.test', 'department_id' => $departments['hr'], 'roles' => [RoleCode::Employee->value, RoleCode::Staff->value], 'support_teams' => [SupportTeamCode::Hr->value]] + $base,
+            ['name' => 'Demo Staff IT', 'email' => 'demo.staff.it@example.test', 'department_id' => $departments['it'], 'roles' => [RoleCode::Employee->value, RoleCode::Staff->value], 'support_teams' => [SupportTeamCode::It->value]] + $base,
+            ['name' => 'Demo Admin', 'email' => 'demo.admin@example.test', 'department_id' => $departments['general'], 'roles' => [RoleCode::Employee->value, RoleCode::Admin->value]] + $base,
         ];
     }
 }
