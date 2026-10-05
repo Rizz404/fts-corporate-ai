@@ -82,6 +82,9 @@ class ExecuteTurn
             $lease->release();
         }
 
+        // Outcome for operations metrics (e.g. retrieval no-match); never message text.
+        AiTurn::query()->whereKey($turn->id)->update(['outcome' => mb_substr($outcome, 0, 64)]);
+
         Log::info('assistant.turn', [
             'turn_id' => $turn->id,
             'user_id' => $user->id,

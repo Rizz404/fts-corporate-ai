@@ -1,8 +1,23 @@
 <?php
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+/*
+|--------------------------------------------------------------------------
+| Schedule (PLAN_08)
+|--------------------------------------------------------------------------
+|
+| Run `php artisan schedule:run` every minute from cron (see
+| docs/OPERATIONS.md). Retention runs at 02:00 company time.
+|
+*/
+
+Schedule::command('corporate:recover-turns')
+    ->everyMinute()
+    ->withoutOverlapping(5);
+
+Schedule::command('corporate:purge-data')
+    ->dailyAt('02:00')
+    ->timezone(config('corporate.timezone'))
+    ->withoutOverlapping(120)
+    ->onOneServer();

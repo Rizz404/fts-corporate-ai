@@ -10,11 +10,13 @@ use App\Modules\Experience\Support\CompanySettings;
 use App\Modules\Identity\CurrentActor;
 use App\Modules\Identity\Events\UserSessionsRevoked;
 use App\Modules\Identity\Presenters\AdminNavigation;
+use App\Modules\Operations\Support\Heartbeat;
 use App\Modules\Support\Support\TicketAccess;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -65,5 +67,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('tickets.staff', fn (User $user) => TicketAccess::handledTeamIds(app(CurrentActor::class)->for($user)) !== []);
 
         Event::listen(UserSessionsRevoked::class, CancelTurnsWhenSessionsRevoked::class);
+
+        // /admin/operations and readiness: admin role only (counts, no ticket content).
+        Gate::define('operations.view', fn (User $user) => app(CurrentActor::class)->for($user)->isAdmin());
+
+        // Worker heartbeat for readiness when queue workers are in use.
+        Queue::looping(fn () => Heartbeat::beat(Heartbeat::WORKER));
     }
 }

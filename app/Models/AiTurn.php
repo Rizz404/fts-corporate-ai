@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'public_id', 'conversation_id', 'client_turn_id', 'request_fingerprint', 'status', 'locale',
     'context_snapshot', 'started_at', 'finished_at', 'deadline_at', 'error_code', 'provider',
-    'model', 'prompt_version', 'usage',
+    'model', 'prompt_version', 'usage', 'outcome',
 ])]
 class AiTurn extends Model
 {

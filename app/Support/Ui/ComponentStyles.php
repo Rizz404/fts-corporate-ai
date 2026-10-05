@@ -104,6 +104,7 @@ final class ComponentStyles
         'bell',
         'book-open',
         'building-office-2',
+        'chart-bar',
         'chat-bubble-left-right',
         'check',
         'check-circle',

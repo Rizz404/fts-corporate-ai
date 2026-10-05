@@ -37,6 +37,7 @@ final class AdminNavigation
         }
 
         if ($actor->isAdmin()) {
+            $items[] = ['label' => __('ui.nav.operations'), 'href' => route('admin.operations'), 'icon' => 'chart-bar', 'active' => $is('admin.operations')];
             $items[] = ['label' => __('ui.nav.settings'), 'href' => route('admin.settings.edit'), 'icon' => 'cog-6-tooth', 'active' => $is('admin.settings.*')];
         }
 

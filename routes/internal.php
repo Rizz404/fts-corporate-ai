@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\ConversationController;
 use App\Http\Controllers\Api\KnowledgeController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\PreferenceController;
+use App\Http\Controllers\Api\ReadinessController;
 use App\Http\Controllers\Api\StaffTicketController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\TicketDraftController;
@@ -53,6 +54,8 @@ Route::middleware('account')->group(function () {
     Route::get('tickets/{ticket}', [TicketController::class, 'show'])->whereUuid('ticket')->name('tickets.show');
     Route::get('tickets/{ticket}/messages', [TicketController::class, 'messages'])->whereUuid('ticket')->name('tickets.messages.index');
     Route::get('staff/tickets/{ticket}/messages', [StaffTicketController::class, 'messages'])->whereUuid('ticket')->name('staff.tickets.messages.index');
+
+    Route::get('admin/readiness', ReadinessController::class)->middleware('can:operations.view')->name('admin.readiness');
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::patch('notifications/{notification}/read', [NotificationController::class, 'markRead'])->whereUuid('notification')->name('notifications.read');

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CompanySettingsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\KnowledgeController;
+use App\Http\Controllers\Admin\OperationsController;
 use App\Http\Controllers\Admin\TicketController as StaffTicketPageController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\UserPasswordController;
@@ -58,6 +59,8 @@ Route::middleware('account')->group(function () {
 
         Route::get('tickets', [StaffTicketPageController::class, 'index'])->name('tickets.index');
         Route::get('tickets/{ticket}', [StaffTicketPageController::class, 'show'])->whereUuid('ticket')->name('tickets.show');
+
+        Route::get('operations', OperationsController::class)->middleware('can:operations.view')->name('operations');
 
         Route::get('settings', [CompanySettingsController::class, 'edit'])->name('settings.edit');
         Route::patch('settings', [CompanySettingsController::class, 'update'])->name('settings.update');
