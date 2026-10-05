@@ -1,6 +1,6 @@
 # Plan teknis FTS Corporate AI
 
-Folder ini berisi delapan plan teknis yang dapat dikerjakan AI satu per satu. Setiap plan menentukan dependensi, paket atau skema, endpoint, urutan pekerjaan, pengujian, dan syarat selesai. Semua plan saat ini berstatus **Ready sebagai dokumen; implementasi belum dimulai**.
+Folder ini berisi delapan plan teknis yang dapat dikerjakan AI satu per satu. Setiap plan menentukan dependensi, paket atau skema, endpoint, urutan pekerjaan, pengujian, dan syarat selesai. Status implementasi tiap plan tercantum pada tabel di bawah.
 
 Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis bersama](TECHNICAL_CONTRACTS.md) untuk interface yang dipakai antar tahap. [Fondasi UI](UI_FOUNDATION.md) menetapkan tema, template, dan komponen reusable yang dibangun Plan1. Referensi sumber adalah [analisis FTS Hotel AI](../../ANALISIS_FTS_HOTEL_AI.md) dan kode di `../fts-hotel-ai` relatif terhadap root proyek.
 
@@ -8,7 +8,7 @@ Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis b
 
 | Plan | Dokumen | Hasil | Dependensi | Status |
 |---|---|---|---|---|
-| 1 | [Setup](PLAN_01_SETUP.md) | Laravel/PostgreSQL, Tailwind/Alpine, template guest/admin/user, tema, dan komponen | Master + kontrak | Ready |
+| 1 | [Setup](PLAN_01_SETUP.md) | Laravel/PostgreSQL, Tailwind/Alpine, template guest/admin/user, tema, dan komponen | Master + kontrak | Implemented |
 | 2 | [Akun dan akses](PLAN_02_IDENTITY_AND_ACCESS.md) | Login, provisioning, departemen, role, staff/editor assignment, dan audit | 1 | Ready |
 | 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Ready |
 | 4 | [CMS pengetahuan](PLAN_04_KNOWLEDGE_CMS.md) | Artikel/revisi/terjemahan, publikasi, audience, dan retrieval manual | 3 | Ready |

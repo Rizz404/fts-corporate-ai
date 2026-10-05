@@ -3,10 +3,10 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 1 |
-| Status | Ready |
+| Status | Implemented |
 | Diperbarui | 5 Oktober 2026 |
 | Dependensi | [Master](000_MASTER_PLAN.md), [kontrak teknis](TECHNICAL_CONTRACTS.md), [fondasi UI](UI_FOUNDATION.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Bagian 11](#11-referensi-dan-catatan-implementasi) |
 
 ## 1. Hasil akhir tahap
 
@@ -226,4 +226,32 @@ FTS Hotel AI menjadi acuan Laravel/Blade/Vite/Tailwind dan gateway; Alpine/compo
 
 [Instalasi Laravel](https://laravel.com/framework/docs/13.x/installation), [Tailwind theme](https://tailwindcss.com/docs/theme), [Alpine module setup](https://alpinejs.dev/essentials/installation), [Forms plugin](https://github.com/tailwindlabs/tailwindcss-forms), [Heroicons](https://github.com/driesvints/blade-heroicons), [Blade components](https://laravel.com/framework/docs/13.x/blade#components).
 
-Belum dikerjakan. Isi hasil perubahan, versi resolved, perintah setup yang dijalankan, checklist untuk pengguna, dan kendala setelah implementasi. Ready menunjukkan dokumen siap, bukan setup telah dilaksanakan.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Perubahan yang dibuat**
+- Skeleton laravel/laravel v13.10.1 dibuat di folder sementara, disalin tanpa menimpa docs (AGENTS.md/CLAUDE.md Boost tidak disalin), lalu folder sementara dihapus.
+- composer.json: nama `fts/corporate-ai`, php ^8.4, `config.platform.php=8.4.0` agar lock kompatibel CI PHP8.4; Pail/PAO dihapus; script `setup` (key hanya bila kosong, migrate non-destruktif, npm ci) dan `dev` (concurrently --kill-others).
+- Config: `config/corporate.php` (brand, timezone tampilan, locales + nama native, retensi, aset scene), `config/assistant.php` (budget kontrak), `services.local_llm`, default `app.locale=id`.
+- HTTP: `AssignRequestId` (global, terima X-Request-Id UUID), `SetLocale` (web; query → session → default; 422 pada JSON), `ApiResponse`, `ApiException`, `ApiExceptionRenderer` (envelope untuk 400/401/403/404/405/409/419/422/429/503/500 tanpa detail internal). routes/internal.php dimuat di `/api/v1` dalam grup web. lang/{id,en,ja}/ui.php.
+- UI: theme.css (token UI_FOUNDATION, `--color-*: initial`), base.css, app.css (forms plugin strategy class, `@source not docs`), Alpine bootstrap tunggal + register.js, modul admin-shell/user-shell/modal/dropdown/tabs/toasts, shared/api.js dan shared/dom.js. Layout base/guest/admin/user, navigation brand/admin-sidebar/user-menu/language-switch/breadcrumbs, 24 komponen `x-ui.*`, pagination corporate, `ComponentStyles`, `FieldState`.
+- Halaman: landing `/` (tautan preview hanya local/testing), `/dev/ui`, `/dev/admin`, `/dev/user`, `/dev/guest` dengan data sintetis; `EnsureDevPreviewEnabled` memberi 404 di luar local/testing selain pembatasan pemuatan route.
+- compose.yaml PostgreSQL17 + init `corporate_ai_test`; .env.example PostgreSQL; README root; [UI_COMPONENTS.md](UI_COMPONENTS.md).
+
+**Versi resolved**
+laravel/framework 13.34.0, laravel/tinker 3.0.2, blade-ui-kit/blade-heroicons 2.7.0 (blade-icons 1.10.1), laravel/pint 1.32.1, phpunit/phpunit 12.5.37, nunomaduro/collision 8.9.5, mockery 1.6.15, fakerphp/faker 1.24.1. alpinejs, @alpinejs/focus, @alpinejs/collapse 3.17.4 (sama), tailwindcss dan @tailwindcss/vite 4.3.3, @tailwindcss/forms 0.5.11, vite 8.3.2, laravel-vite-plugin 3.2.0, concurrently 10.0.5.
+
+**Perintah setup yang dijalankan**
+`composer update`, `npm install`, `php artisan key:generate`, `php artisan migrate` (SQLite lokal), `npm run build`. Runtime lokal: PHP 8.5.8, Node 24.18.0, Composer 2.10.2.
+
+**Penyimpangan dan keputusan**
+- Timestamp disimpan UTC (`app.timezone=UTC`); `APP_TIMEZONE=Asia/Jakarta` dibaca sebagai `corporate.timezone` untuk tampilan, sesuai kontrak teknis.
+- DB lokal memakai SQLite sementara atas keputusan pengguna; PostgreSQL lokal belum disiapkan.
+- Font memakai system stack; bunny fonts skeleton dihapus agar tidak mengunduh dari jaringan.
+- Komponen tambahan yang bernama jelas: `x-navigation.brand`, `x-ui.dropdown.item`, `x-ui.table.row/cell`.
+- Sebelum kebijakan pengujian berlaku, draf tes sempat dibuat (tests/Feature, tests/Unit, tests/js, guard database, phpunit.xml, .env.testing lokal, npm script `lint:ui`/`test:ui`). Atas keputusan pengguna, draf ini disimpan untuk Plan8; `scripts/check-ui-conventions.mjs` belum dibuat sehingga `npm run lint:ui` belum dapat dijalankan.
+
+**Checklist untuk pengguna** — lihat bagian 10 (langkah 1–6).
+
+**Sisa/prasyarat**: role PostgreSQL lokal, CI, lint UI, dan seluruh pengujian di Plan8.
