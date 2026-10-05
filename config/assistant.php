@@ -14,8 +14,14 @@ return [
 
     'enabled' => (bool) env('ASSISTANT_ENABLED', false),
 
+    'prompt_version' => 'corporate-v1',
+
     'deadline_seconds' => 60,
     'connect_timeout_seconds' => 5,
+    // Conversation/user lease; longer than the deadline so a slow turn can finish.
+    'lease_seconds' => 75,
+    // Browser gives up waiting after this many seconds and polls the turn.
+    'client_timeout_seconds' => 70,
 
     'max_completion_calls' => 7,
     'max_tool_rounds' => 6,
@@ -35,7 +41,11 @@ return [
     'max_tokens' => 2048,
     'temperature' => 0.3,
 
-    // Not sent unless explicitly configured for a provider that supports it.
-    'reasoning_effort' => null,
+    // Provider capability: only sent when configured. Thinking models such as
+    // Qwen3 on LM Studio need "none" so the answer is not spent on reasoning.
+    'reasoning_effort' => env('ASSISTANT_REASONING_EFFORT') ?: null,
+
+    // Longest assistant text accepted from the model.
+    'max_answer_characters' => 4000,
 
 ];

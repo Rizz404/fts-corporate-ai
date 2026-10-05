@@ -39,6 +39,8 @@ return [
         'base_url' => env('LOCAL_LLM_BASE_URL'),
         'api_key' => env('LOCAL_LLM_API_KEY'),
         'model' => env('LOCAL_LLM_MODEL'),
+        // Optional CA bundle path for TLS verification (verification stays on).
+        'ca_bundle' => env('LOCAL_LLM_CA_BUNDLE'),
     ],
 
 ];
