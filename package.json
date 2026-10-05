@@ -9,7 +9,7 @@
         "dev": "vite",
         "build": "vite build",
         "lint:ui": "node scripts/check-ui-conventions.mjs",
-        "test:ui": "node --test tests/js/api-client.test.js"
+        "test:ui": "node --test \"tests/js/*.test.js\""
     },
     "dependencies": {
         "@alpinejs/collapse": "^3.17.4",

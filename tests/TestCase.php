@@ -18,6 +18,14 @@ abstract class TestCase extends BaseTestCase
         DatabaseTruncation::class,
     ];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Tests never depend on a running Vite dev server or a build.
+        $this->withoutVite();
+    }
+
     /**
      * Checks the database before any reset trait runs.
      *
