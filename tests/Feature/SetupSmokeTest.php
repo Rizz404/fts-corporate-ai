@@ -12,13 +12,16 @@ class SetupSmokeTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_landing_page_renders_brand(): void
+    public function test_home_sends_guests_to_sign_in_and_login_renders_brand(): void
     {
-        $this->get('/')
+        $this->get('/')->assertRedirect(route('login'));
+
+        $this->get('/login')
             ->assertOk()
             ->assertSee(config('corporate.brand.name'))
             ->assertSee('<html lang="id">', false)
-            ->assertSee('name="csrf-token"', false);
+            ->assertSee('name="csrf-token"', false)
+            ->assertSee('favicon.svg', false);
     }
 
     public function test_health_endpoint_is_up(): void
@@ -50,23 +53,23 @@ class SetupSmokeTest extends TestCase
 
     public function test_valid_lang_query_sets_locale_and_persists_in_session(): void
     {
-        $this->get('/?lang=ja')
+        $this->get('/login?lang=ja')
             ->assertOk()
             ->assertSee('<html lang="ja">', false)
             ->assertSessionHas('locale', 'ja');
 
-        $this->get('/')->assertSee('<html lang="ja">', false);
+        $this->get('/login')->assertSee('<html lang="ja">', false);
     }
 
     public function test_invalid_lang_on_page_falls_back_to_session_or_default(): void
     {
-        $this->get('/?lang=fr')
+        $this->get('/login?lang=fr')
             ->assertOk()
             ->assertSee('<html lang="id">', false)
             ->assertSessionMissing('locale');
 
         $this->withSession(['locale' => 'en'])
-            ->get('/?lang=xx')
+            ->get('/login?lang=xx')
             ->assertOk()
             ->assertSee('<html lang="en">', false);
     }
@@ -76,10 +79,5 @@ class SetupSmokeTest extends TestCase
         $response = $this->get('/');
 
         $this->assertMatchesRegularExpression('/^[0-9a-f-]{36}$/', $response->headers->get('X-Request-Id'));
-    }
-
-    public function test_dev_preview_links_show_on_landing_outside_production(): void
-    {
-        $this->get('/')->assertSee(route('dev.ui'));
     }
 }
