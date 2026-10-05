@@ -1,58 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FTS Corporate AI
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Kantor virtual internal untuk satu perusahaan: karyawan menjelajahi ruang, bertanya ke asisten AI berbasis SOP resmi, dan meneruskan kebutuhan ke staf HR/IT melalui tiket. Rencana produk dan tahapan ada di [docs/](docs/README.md).
 
-## About Laravel
+Stack: Laravel 13 (PHP 8.4), PostgreSQL 17, Blade, Tailwind CSS 4, Alpine.js 3, Vite 8.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Kebutuhan
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP 8.4+ dengan ekstensi mbstring, intl, openssl, pdo_pgsql (atau pdo_sqlite untuk lokal sementara), fileinfo, xml/dom, ctype, curl, tokenizer
+- Composer 2
+- Node 22.12+ dan npm
+- PostgreSQL 17 (Docker via `compose.yaml` atau instalasi native)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Setup lokal
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer setup        # install, .env, APP_KEY, migrate, npm ci, build
+composer dev          # artisan serve + queue:listen + vite
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Atau langkah manual:
 
-## Contributing
+```bash
+composer install
+cp .env.example .env          # lalu isi DB_PASSWORD
+php artisan key:generate
+php artisan migrate
+npm ci
+npm run build                 # atau npm run dev
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Database
 
-## Code of Conduct
+Target dan CI memakai PostgreSQL 17. Dengan Docker:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+# isi DB_PASSWORD di .env terlebih dahulu
+docker compose up -d
+```
 
-## Security Vulnerabilities
+Container membuat database `corporate_ai` dan `corporate_ai_test` untuk role `corporate_ai`. Tanpa Docker, buat role dan kedua database yang sama pada PostgreSQL 17 native.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Sementara (keputusan Plan 1), pengembangan lokal boleh memakai SQLite: set `DB_CONNECTION=sqlite`, hapus/comment variabel `DB_*` lainnya, lalu `touch database/database.sqlite`. Kode tetap ditulis untuk PostgreSQL.
 
-## License
+## URL
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| URL | Keterangan |
+|---|---|
+| `/` | Halaman setup (diganti login di Plan 2) |
+| `/up` | Health check framework |
+| `/dev/ui` | Galeri komponen (hanya local/testing) |
+| `/dev/admin`, `/dev/user`, `/dev/guest` | Pratinjau template (hanya local/testing) |
+
+## Scripts
+
+| Perintah | Fungsi |
+|---|---|
+| `composer setup` | Setup awal non-destruktif |
+| `composer dev` | Server, queue listener, dan Vite bersamaan |
+| `npm run dev` / `npm run build` | Vite dev server / build produksi |
+
+Skrip pengujian (`composer test`, `npm run test:ui`, `npm run lint:ui`) dan CI diselesaikan di Plan 8 sesuai [kebijakan pengujian](docs/README.md#kebijakan-pengujian).
+
+## UI: layout, komponen, dan tema
+
+- Layout: `x-layouts.guest`, `x-layouts.admin`, `x-layouts.user` (semuanya menyusun `x-layouts.base`).
+- Komponen: `x-ui.*` dan `x-navigation.*`. Panduan lengkap dan contoh: [docs/UI_COMPONENTS.md](docs/UI_COMPONENTS.md).
+- Tema: satu-satunya sumber warna/radius/shadow adalah `resources/css/theme.css` (spesifikasi di [docs/UI_FOUNDATION.md](docs/UI_FOUNDATION.md)).
+
+Aturan dasar:
+
+1. Pakai komponen yang ada sebelum membuat komponen baru.
+2. Tambahkan token hanya di `theme.css`; jangan memakai palette Tailwind default, warna hex, atau inline style warna di view/JS.
+3. Variant komponen didaftarkan di `App\Support\Ui\ComponentStyles` sebagai class literal penuh.
+4. Daftarkan modul Alpine di `resources/js/ui/register.js`; `Alpine.start()` hanya ada di `resources/js/app.js`.
+
+## Struktur penting
+
+```text
+app/Http/Middleware/      AssignRequestId, SetLocale, EnsureDevPreviewEnabled, …
+app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
+app/Support/Ui/           ComponentStyles, FieldState
+config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene
+config/assistant.php      budget AI turn
+routes/web.php            halaman; memuat routes/internal.php (/api/v1) dan routes/dev.php
+lang/{id,en,ja}/ui.php    teks antarmuka
+resources/css/            app.css, theme.css, base.css
+resources/js/             app.js, ui/*, shared/api.js, shared/dom.js
+docs/                     master plan, kontrak teknis, plan 1–8
+```
