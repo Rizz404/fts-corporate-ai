@@ -102,12 +102,16 @@ export function corporateChat(config = {}) {
         },
 
         toView(message) {
+            const cards = normalizeCards(message.ui, this.cardOptions());
+            // A draft card already has its own review button.
+            const draftPaths = cards.filter((card) => card.type === 'ticket_draft').map((card) => card.path);
+
             return {
                 key: message.id ? `m${message.id}` : `local${this.nextKey++}`,
                 role: message.role === 'user' ? 'user' : 'assistant',
                 text: typeof message.text === 'string' ? message.text : '',
-                cards: normalizeCards(message.ui, this.cardOptions()),
-                actions: normalizeActions(message.actions),
+                cards,
+                actions: normalizeActions(message.actions).filter((action) => !(action.type === 'review_ticket_draft' && draftPaths.includes(action.path))),
                 stale: message.stale === true,
             };
         },
