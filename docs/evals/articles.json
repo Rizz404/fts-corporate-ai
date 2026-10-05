@@ -1,0 +1,102 @@
+[
+    {
+        "slug": "eval-annual-leave",
+        "category": "hr",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Cuti tahunan", "body": "Artikel sintetis untuk evaluasi.\n\nSetiap karyawan tetap mendapat 12 hari cuti tahunan per tahun kalender. Ajukan cuti melalui formulir HR paling lambat 7 hari sebelum tanggal cuti. Cuti disetujui oleh atasan langsung, lalu dicatat oleh HR.", "aliases": ["cuti", "leave", "休暇", "有給"]},
+            "en": {"title": "[EVAL] Annual leave", "body": "Synthetic article for evaluation.\n\nEvery permanent employee receives 12 days of annual leave per calendar year. Submit leave through the HR form at least 7 days before the leave date. Leave is approved by your direct manager and then recorded by HR.", "aliases": ["leave", "vacation", "cuti", "休暇"]},
+            "ja": {"title": "[EVAL] 年次有給休暇", "body": "評価用の合成記事です。\n\n正社員には暦年ごとに 12 日の年次有給休暇が付与されます。休暇日の 7 日前までに人事フォームから申請してください。休暇は直属の上司が承認し、その後人事が記録します。", "aliases": ["休暇", "有給", "leave", "cuti"]}
+        }
+    },
+    {
+        "slug": "eval-sick-leave",
+        "category": "hr",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Izin sakit", "body": "Artikel sintetis untuk evaluasi.\n\nJika sakit, beri tahu atasan sebelum pukul 10.00 pada hari yang sama. Surat dokter wajib dilampirkan bila tidak masuk lebih dari 2 hari berturut-turut.", "aliases": ["sakit", "sick leave", "病気", "病欠"]},
+            "en": {"title": "[EVAL] Sick leave", "body": "Synthetic article for evaluation.\n\nIf you are sick, inform your manager before 10:00 on the same day. A doctor's note is required when you are absent for more than 2 consecutive days.", "aliases": ["sick", "illness", "sakit", "病欠"]},
+            "ja": {"title": "[EVAL] 病気休暇", "body": "評価用の合成記事です。\n\n体調不良の場合は、当日 10:00 までに上司へ連絡してください。2 日を超えて連続で欠勤する場合は医師の診断書が必要です。", "aliases": ["病気", "病欠", "sick", "sakit"]}
+        }
+    },
+    {
+        "slug": "eval-reimbursement",
+        "category": "hr",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Penggantian biaya (reimbursement)", "body": "Artikel sintetis untuk evaluasi.\n\nKlaim penggantian biaya diajukan dengan struk asli paling lambat 30 hari setelah transaksi. Batas biaya makan perjalanan dinas adalah Rp150.000 per hari.", "aliases": ["reimbursement", "klaim", "expense", "経費", "精算"]},
+            "en": {"title": "[EVAL] Expense reimbursement", "body": "Synthetic article for evaluation.\n\nSubmit expense claims with the original receipts no later than 30 days after the transaction. The meal limit on business trips is IDR 150,000 per day.", "aliases": ["expense", "claim", "reimbursement", "精算", "klaim"]},
+            "ja": {"title": "[EVAL] 経費精算", "body": "評価用の合成記事です。\n\n経費精算は取引から 30 日以内に領収書の原本を添えて申請してください。出張時の食事代の上限は 1 日 150,000 ルピアです。", "aliases": ["経費", "精算", "expense", "reimbursement"]}
+        }
+    },
+    {
+        "slug": "eval-work-from-home",
+        "category": "hr",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Bekerja dari rumah (WFH)", "body": "Artikel sintetis untuk evaluasi.\n\nKaryawan boleh bekerja dari rumah maksimal 2 hari per minggu setelah disepakati dengan atasan. Selama WFH, tetap daring pada jam inti 09.00–17.00.", "aliases": ["wfh", "remote", "work from home", "在宅勤務", "テレワーク"]},
+            "en": {"title": "[EVAL] Work from home", "body": "Synthetic article for evaluation.\n\nEmployees may work from home at most 2 days per week after agreeing with their manager. While working from home, stay online during core hours 09:00–17:00.", "aliases": ["wfh", "remote work", "在宅勤務", "kerja dari rumah"]},
+            "ja": {"title": "[EVAL] 在宅勤務", "body": "評価用の合成記事です。\n\n上司と合意したうえで、在宅勤務は週 2 日までです。在宅勤務中もコアタイム 9:00〜17:00 はオンラインでいてください。", "aliases": ["在宅勤務", "テレワーク", "wfh", "remote"]}
+        }
+    },
+    {
+        "slug": "eval-password-policy",
+        "category": "it",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Kebijakan kata sandi", "body": "Artikel sintetis untuk evaluasi.\n\nKata sandi akun kantor minimal 12 karakter dan wajib diganti setiap 90 hari. Jangan pernah membagikan kata sandi. Jika lupa, minta reset melalui IT Helpdesk.", "aliases": ["password", "kata sandi", "パスワード", "lupa password"]},
+            "en": {"title": "[EVAL] Password policy", "body": "Synthetic article for evaluation.\n\nOffice account passwords must be at least 12 characters and must be changed every 90 days. Never share your password. If you forget it, request a reset through the IT Helpdesk.", "aliases": ["password", "reset", "kata sandi", "パスワード"]},
+            "ja": {"title": "[EVAL] パスワードポリシー", "body": "評価用の合成記事です。\n\n社内アカウントのパスワードは 12 文字以上で、90 日ごとに変更が必要です。パスワードは絶対に共有しないでください。忘れた場合は IT ヘルプデスクにリセットを依頼してください。", "aliases": ["パスワード", "password", "kata sandi"]}
+        }
+    },
+    {
+        "slug": "eval-vpn-access",
+        "category": "it",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Akses VPN", "body": "Artikel sintetis untuk evaluasi.\n\nUntuk membuka sistem internal dari luar kantor, gunakan aplikasi VPN FTS Connect dan masukkan kode MFA dari aplikasi autentikator.", "aliases": ["vpn", "remote access", "リモート接続", "akses jarak jauh"]},
+            "en": {"title": "[EVAL] VPN access", "body": "Synthetic article for evaluation.\n\nTo open internal systems from outside the office, use the FTS Connect VPN app and enter the MFA code from your authenticator app.", "aliases": ["vpn", "remote access", "akses vpn", "リモート接続"]},
+            "ja": {"title": "[EVAL] VPN 接続", "body": "評価用の合成記事です。\n\n社外から社内システムを利用するときは、VPN アプリ FTS Connect を使い、認証アプリの MFA コードを入力してください。", "aliases": ["vpn", "リモート接続", "remote access"]}
+        }
+    },
+    {
+        "slug": "eval-laptop-care",
+        "category": "it",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Laptop kantor", "body": "Artikel sintetis untuk evaluasi.\n\nLaptop kantor diganti setiap 4 tahun. Laptop yang rusak atau hilang wajib dilaporkan ke IT dalam 24 jam.", "aliases": ["laptop", "komputer", "ノートパソコン", "pc"]},
+            "en": {"title": "[EVAL] Office laptops", "body": "Synthetic article for evaluation.\n\nOffice laptops are replaced every 4 years. A damaged or lost laptop must be reported to IT within 24 hours.", "aliases": ["laptop", "computer", "ノートパソコン", "komputer"]},
+            "ja": {"title": "[EVAL] 会社支給のノートパソコン", "body": "評価用の合成記事です。\n\n会社のノートパソコンは 4 年ごとに交換されます。破損や紛失は 24 時間以内に IT へ報告してください。", "aliases": ["ノートパソコン", "laptop", "pc"]}
+        }
+    },
+    {
+        "slug": "eval-meeting-rooms",
+        "category": "general",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Pemesanan ruang rapat", "body": "Artikel sintetis untuk evaluasi.\n\nRuang rapat dipesan melalui kalender kantor dengan durasi maksimal 2 jam per pemesanan. Batalkan pemesanan bila ruang tidak jadi dipakai.", "aliases": ["ruang rapat", "meeting room", "会議室", "booking"]},
+            "en": {"title": "[EVAL] Booking meeting rooms", "body": "Synthetic article for evaluation.\n\nBook meeting rooms in the office calendar for at most 2 hours per booking. Cancel the booking if you no longer need the room.", "aliases": ["meeting room", "booking", "ruang rapat", "会議室"]},
+            "ja": {"title": "[EVAL] 会議室の予約", "body": "評価用の合成記事です。\n\n会議室は社内カレンダーで予約し、1 回の予約は最長 2 時間です。使わなくなった場合は予約を取り消してください。", "aliases": ["会議室", "meeting room", "ruang rapat"]}
+        }
+    },
+    {
+        "slug": "eval-first-day",
+        "category": "onboarding",
+        "departments": [],
+        "translations": {
+            "id": {"title": "[EVAL] Hari pertama karyawan baru", "body": "Artikel sintetis untuk evaluasi.\n\nPada hari pertama, datang ke resepsionis pukul 08.30 untuk mengambil kartu akses. Setiap karyawan baru didampingi seorang buddy selama bulan pertama.", "aliases": ["karyawan baru", "onboarding", "new hire", "入社初日"]},
+            "en": {"title": "[EVAL] Your first day", "body": "Synthetic article for evaluation.\n\nOn your first day, come to reception at 08:30 to collect your access card. Every new hire is paired with a buddy for the first month.", "aliases": ["new hire", "onboarding", "first day", "karyawan baru", "入社初日"]},
+            "ja": {"title": "[EVAL] 入社初日", "body": "評価用の合成記事です。\n\n入社初日は 8:30 に受付へ来て入館カードを受け取ってください。新入社員には最初の 1 か月間バディが付きます。", "aliases": ["入社初日", "新入社員", "onboarding", "new hire"]}
+        }
+    },
+    {
+        "slug": "eval-engineering-deploys",
+        "category": "general",
+        "departments": ["engineering"],
+        "translations": {
+            "id": {"title": "[EVAL] Jadwal deploy production (khusus Engineering)", "body": "Artikel sintetis untuk evaluasi, hanya untuk departemen Engineering.\n\nDeploy ke production hanya dilakukan hari Selasa dan Kamis dengan minimal 2 persetujuan reviewer.", "aliases": ["deploy", "rilis", "デプロイ"]},
+            "en": {"title": "[EVAL] Production deploy schedule (Engineering only)", "body": "Synthetic article for evaluation, Engineering department only.\n\nProduction deploys happen only on Tuesday and Thursday with at least 2 reviewer approvals.", "aliases": ["deploy", "release", "デプロイ"]},
+            "ja": {"title": "[EVAL] 本番デプロイの日程（エンジニアリング部のみ）", "body": "評価用の合成記事です（エンジニアリング部のみ）。\n\n本番へのデプロイは火曜日と木曜日のみで、2 名以上のレビュー承認が必要です。", "aliases": ["デプロイ", "deploy", "リリース"]}
+        }
+    }
+]
