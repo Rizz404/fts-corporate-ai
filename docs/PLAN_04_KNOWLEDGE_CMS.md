@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 4 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 3](PLAN_03_VIRTUAL_OFFICE.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -81,4 +81,36 @@ CMS menyusun x-layouts.admin dan x-ui.tabs/tab-panel untuk tiga bahasa; gunakan 
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Dokumentasikan action/retriever publik, migration/indexes, contoh hasil ranking, serta checklist untuk pengguna.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Skema** (`2026_10_05_000007_create_knowledge_tables`)
+- `knowledge_articles` (slug unique, owner_department_id, created_by), `knowledge_revisions` (version, status, audience, category, effective_from/until timestampTz, created_by, published_by/at; unique article+version; partial unique index satu `published` dan satu `draft` per artikel), `knowledge_translations` (title, body, tags/aliases jsonb, kolom turunan search_title/search_body/search_keywords; unique revision+locale), `knowledge_revision_department`.
+- Partial index ditulis dengan SQL yang berjalan di PostgreSQL maupun SQLite.
+
+**Modul Knowledge** (`app/Modules/Knowledge`)
+- Enum `RevisionStatus` (termasuk pemetaan tone badge), `Audience`, `KnowledgeCategory`.
+- `Support\TextNormalizer`: NFKC + lowercase, token Latin per kata, bigram untuk Han/Hiragana/Katakana, maksimal 12 token; parsing daftar tag/alias (koma, baris baru, `、`). Model `KnowledgeTranslation` mengisi kolom search_* setiap save.
+- Actions: `CreateArticle` (artikel + draft v1), `SaveDraft`, `CloneRevision` (draft berikutnya dari published/terakhir; mengembalikan draft yang ada), `PublishRevision` (lock artikel, cek `PublicationRules`, arsipkan published lama lalu publish, effective_from default sekarang), `ArchiveRevision`. Semua dalam transaksi singkat dengan audit `knowledge.*`.
+- `Validation\ArticleRules` (draft boleh belum lengkap; slug terkunci setelah terbit; tag/alias ≤50 × 1–80 karakter; tanggal diinput dalam timezone tampilan lalu disimpan UTC) dan `Validation\PublicationRules` (judul/isi tiga bahasa, departemen aktif untuk audience departments, tanpa penjadwalan masa depan, effective_until > mulai dan > sekarang).
+- `Support\KnowledgeAuthorization` + `KnowledgeArticlePolicy`: admin kelola semua, editor hanya departemen penulisannya, publish/archive hanya admin; dicek ulang dengan ActorContext segar di dalam transaksi.
+- `Queries\VisibleRevisions`: satu scope baca (published, dalam masa berlaku, audience common atau departemen pengguna; tanpa bypass admin) untuk halaman, API, dan retriever.
+- `KnowledgeRetriever::search(User, query, locale, category?, limit=5)` → `Data\KnowledgeEvidence` (article_id, revision_id, version, locale, slug, category, title, excerpt ≤2000, effective_from/until, source_path). Filter dan skor di SQL atas kolom ternormalisasi (`LIKE ... ESCAPE '!'`, binding), skor maksimum antar terjemahan, urut skor desc lalu article_id asc. `find(User, id|slug)` untuk detail.
+
+**HTTP dan UI**
+- CMS: `GET/POST /admin/knowledge`, `GET /admin/knowledge/create`, `GET /admin/knowledge/{article}/edit`, `PATCH .../draft`, `POST|DELETE .../publication`, `GET|POST .../revisions`. Form teks biasa dengan tabs id/en/ja, indikator kelengkapan, audience departemen (Alpine), konfirmasi publish/archive via confirm-dialog. Menu Pengetahuan admin aktif bagi admin dan editor yang punya departemen penulisan.
+- Karyawan: `GET /office/knowledge?q=&category=` (pencarian manual atau daftar terbaru berpaginasi) dan `GET /office/knowledge/{articleSlug}` (404 bila tidak berlaku/tidak diizinkan; body escaped dengan `whitespace-pre-line`; context scene membawa `article_id`).
+- API: `GET /api/v1/knowledge?q=&category=&locale=` (excerpt 300) dan `GET /api/v1/knowledge/{article}` (detail + body).
+- `KnowledgeDemoSeeder` (local/testing, butuh admin): 5 artikel `[DEMO]` tiga bahasa (umum, HR, IT, onboarding, dan satu khusus Engineering).
+
+**Contoh ranking** (lokal, user demo departemen Engineering, locale id): `cuti` → demo-leave-request (66); `password` → demo-password-reset (66); `休暇` → demo-leave-request (55); `code review` → demo-engineering-code-review (61).
+
+**Perintah setup yang dijalankan**: `php artisan migrate`, `php artisan corporate:demo-accounts` (output tidak dicatat), `php artisan db:seed --class=KnowledgeDemoSeeder`, `php artisan view:cache`, `php artisan route:list`, `npm run build`, serta satu pemanggilan retriever via tinker untuk mengisi contoh ranking di atas (bukan tes otomatis).
+
+**Penyimpangan dan keputusan**
+- Scoring memakai SQL portabel (kolom search_* dinormalisasi di PHP), bukan fungsi khusus PostgreSQL, sehingga juga jalan di SQLite lokal. Row lock publikasi baru efektif di PostgreSQL.
+- Excerpt diambil dari awal isi (bukan di sekitar kecocokan).
+- Kode error konflik (tidak ada draft/published) memakai HTTP 409 standar.
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–6). Jalankan `php artisan corporate:demo-accounts` untuk mendapat password akun demo dan `php artisan db:seed --class=KnowledgeDemoSeeder` untuk artikel contoh.

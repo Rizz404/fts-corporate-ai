@@ -103,6 +103,7 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 - KnowledgePublicationTest: draft incomplete, publikasi lengkap, dua publish bersamaan (transaksi PostgreSQL), clone immutable, archive, expiry, versi unik, izin editor/admin.
 - KnowledgeAccessTest: audience common, department match/mismatch, kategori, resource langsung 404, payload XSS.
 - KnowledgeRetrievalTest: query id/en/ja, alias silang bahasa, normalisasi Unicode NFKC, bigram CJK, ranking dan tie-break, no match, wildcard LIKE di-escape, tidak ada evidence nonaktif.
+- Partial unique index (satu published dan satu draft per artikel) di PostgreSQL; slug terkunci setelah terbit; tanggal timezone tampilan → UTC; API `/api/v1/knowledge` (422 locale/q invalid, 404 artikel tidak diizinkan); `KnowledgeDemoSeeder` menolak production; menu CMS hanya untuk admin/editor berdepartemen.
 
 ### Plan5 percakapan dan AI
 - ConversationOwnershipTest, ConversationRetryTest, ModelGatewayTest, GroundedAnswerTest, ContextLifecycleTest.

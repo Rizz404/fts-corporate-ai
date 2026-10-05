@@ -50,7 +50,7 @@ php artisan db:seed                       # data referensi: departemen, role, su
 php artisan corporate:create-admin --email=admin@example.com --name="Admin"
 ```
 
-Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan wajib diganti saat login pertama. Akun demo sintetis (hanya local/testing): `php artisan corporate:demo-accounts` (password acak ditampilkan sekali; menjalankan ulang mereset password).
+Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan wajib diganti saat login pertama. Akun demo sintetis (hanya local/testing): `php artisan corporate:demo-accounts` (password acak ditampilkan sekali; menjalankan ulang mereset password). Artikel contoh: `php artisan db:seed --class=KnowledgeDemoSeeder` (butuh admin).
 
 ## URL
 
@@ -60,6 +60,8 @@ Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan
 | `/login` | Login karyawan |
 | `/password/change` | Ganti password (wajib untuk password sementara) |
 | `/office`, `/office/{knowledge,hr,it,requests}` | Kantor virtual: Resepsionis, Pusat Pengetahuan, Meja HR, IT Helpdesk, Permintaan Saya |
+| `/office/knowledge`, `/office/knowledge/{slug}` | Pencarian dan baca artikel resmi |
+| `/admin/knowledge` | CMS pengetahuan (admin dan editor) |
 | `/admin/settings` | Nama brand dan teks sambutan (admin) |
 | `/admin` | Panel admin (admin/editor/staff; kelola akun dan departemen khusus admin) |
 | `/up` | Health check framework |
@@ -95,6 +97,7 @@ Aturan dasar:
 app/Http/Middleware/      AssignRequestId, SetLocale, EnsureAccountIsActive, EnsurePasswordChanged, …
 app/Modules/Identity/     ActorContext, actions akun, aturan validasi, AdminGuard
 app/Modules/Experience/   SceneCode, BuildScene/SceneData, SceneImages, CompanySettings
+app/Modules/Knowledge/    actions artikel/revisi, KnowledgeRetriever, VisibleRevisions, TextNormalizer
 app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
 app/Support/Ui/           ComponentStyles, FieldState
 config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene
