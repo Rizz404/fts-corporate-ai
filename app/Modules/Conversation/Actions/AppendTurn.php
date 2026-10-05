@@ -5,6 +5,7 @@ namespace App\Modules\Conversation\Actions;
 use App\Models\AiTurn;
 use App\Models\Conversation;
 use App\Models\ConversationMessage;
+use App\Models\Ticket;
 use App\Models\User;
 use App\Modules\Conversation\Enums\TurnStatus;
 use App\Modules\Conversation\Support\Fingerprint;
@@ -55,6 +56,12 @@ class AppendTurn
                 throw new ApiException('invalid_context', 422, ['context.article_id' => [__('ui.errors.invalid_context')]]);
             }
             $articleTitle = $revision->translation($input['locale'])?->title;
+        }
+
+        // Plan 7: a ticket context is only accepted for the requester's own ticket.
+        if ($input['context']['ticket_public_id'] !== null
+            && ! Ticket::query()->where('public_id', $input['context']['ticket_public_id'])->where('requester_id', $user->id)->exists()) {
+            throw new ApiException('invalid_context', 422, ['context.ticket_public_id' => [__('ui.errors.invalid_context')]]);
         }
 
         $lease = TurnLease::acquire($user->id, $conversation->id);

@@ -8,8 +8,8 @@ use Illuminate\Validation\Rule;
 
 /**
  * Turn input (TECHNICAL_CONTRACTS). Context is limited to scene, article_id,
- * and ticket_public_id; identity never comes from the request.
- * ticket_public_id must be null until tickets exist (Plan 6/7).
+ * and ticket_public_id; identity never comes from the request. Ownership of
+ * the context article/ticket is checked by AppendTurn (422 invalid_context).
  */
 class SendMessageRequest extends FormRequest
 {
@@ -30,7 +30,7 @@ class SendMessageRequest extends FormRequest
             'context' => ['required', 'array:scene,article_id,ticket_public_id'],
             'context.scene' => ['required', Rule::in(SceneCode::values())],
             'context.article_id' => ['present', 'nullable', 'integer', 'min:1'],
-            'context.ticket_public_id' => ['present', 'prohibited'],
+            'context.ticket_public_id' => ['present', 'nullable', 'string', 'uuid'],
         ];
     }
 
@@ -55,7 +55,7 @@ class SendMessageRequest extends FormRequest
             'context' => [
                 'scene' => $context['scene'],
                 'article_id' => isset($context['article_id']) ? (int) $context['article_id'] : null,
-                'ticket_public_id' => null,
+                'ticket_public_id' => isset($context['ticket_public_id']) ? strtolower($context['ticket_public_id']) : null,
             ],
         ];
     }

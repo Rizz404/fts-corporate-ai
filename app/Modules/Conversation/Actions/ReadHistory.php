@@ -41,6 +41,7 @@ class ReadHistory
         return [
             'messages' => $messages->map(fn (ConversationMessage $message) => TurnPresenter::message(
                 $message,
+                $user->id,
                 $message->role === 'assistant' ? ($availability[$message->turn_id] ?? 'ok') : 'ok',
             ))->all(),
             'next_after_id' => $messages->count() === self::PAGE_SIZE ? $messages->last()->id : null,
