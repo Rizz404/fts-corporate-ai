@@ -38,7 +38,7 @@ Versi pertama tidak mencakup pengajuan cuti, payroll, absensi, booking ruang, up
 | IT Helpdesk | Panduan IT dan pengajuan tiket bantuan IT |
 | My Requests | Daftar tiket, status, dan percakapan dengan staf |
 
-Gunakan ilustrasi kantor dua dimensi, karakter AI, transisi halaman, serta chat dock yang bertahan saat navigasi. Implementasi memakai Blade dan JavaScript; tidak memerlukan mesin 3D.
+Gunakan ilustrasi kantor dua dimensi, karakter AI, transisi halaman, serta chat dock yang bertahan saat navigasi. Implementasi memakai Blade dan JavaScript; tidak memerlukan mesin 3D. Selama pengembangan, scene dan karakter memakai gambar placeholder acak; ilustrasi, karakter, dan logo final dibuat di akhir (Plan 8).
 
 Pada perangkat kecil, navigasi ruang menjadi menu sederhana dan chat dapat dibuka penuh. Semua fungsi harus dapat digunakan melalui keyboard. Animasi mengikuti preferensi reduced motion; narasi memakai browser speech synthesis bila tersedia dan hanya berjalan setelah diaktifkan pengguna.
 
@@ -130,7 +130,7 @@ Tahapan produk dipecah menjadi delapan plan teknis yang dapat dikerjakan AI satu
 5. **[Plan 5 Percakapan dan AI](PLAN_05_CONVERSATION_AND_AI.md):** history, gateway model, jawaban bersumber, lease, serta recovery.
 6. **[Plan 6 Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md):** draft/konfirmasi, antrean staf, assignment, pesan, status, notifikasi, dan idempotensi.
 7. **[Plan 7 Tool AI dan workflow](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md):** tool calling dan alur SOP menuju tiket sampai balasan staf.
-8. **[Plan 8 Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md):** seluruh pengujian dan CI, evaluasi, retensi, monitoring, staging/deployment artifacts, dan pilot.
+8. **[Plan 8 Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md):** seluruh pengujian dan CI, aset visual final (ilustrasi/karakter/logo), evaluasi, retensi, monitoring, staging/deployment artifacts, dan pilot.
 
 Status Ready pada dokumen berarti spesifikasi siap dikerjakan, bukan aplikasi telah dibuat. Plan teknis tidak mengubah batas produk versi pertama.
 

@@ -15,7 +15,7 @@ Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis b
 | 5 | [Percakapan dan AI](PLAN_05_CONVERSATION_AND_AI.md) | Chat tersimpan, gateway seperti hotel, sumber jawaban, lease, dan recovery | 4 | Ready |
 | 6 | [Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md) | Draft/konfirmasi, antrean staf, pesan, status, notifikasi, dan idempotensi | 5 | Ready |
 | 7 | [Tool AI dan workflow](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md) | Tool calling dan perjalanan SOP sampai tiket/balasan staf | 6 | Ready |
-| 8 | [Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md) | Seluruh pengujian Plan1–7, CI/lint, evaluasi model, retensi, readiness, staging/deployment artifacts, dan pilot | 7 | Ready |
+| 8 | [Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md) | Seluruh pengujian Plan1–7, CI/lint, aset visual final, evaluasi model, retensi, readiness, staging/deployment artifacts, dan pilot | 7 | Ready |
 
 Master plan bernomor000 merupakan acuan produk, bukan Plan1. Penyebutan "Plan1", "Plan2", dan seterusnya mengacu ke tabel di atas. Urutan lama010/020/... diganti oleh dokumen aktual PLAN_01/...; file010/020 tersebut sebelumnya hanya nama yang direncanakan dan tidak pernah dibuat.
 

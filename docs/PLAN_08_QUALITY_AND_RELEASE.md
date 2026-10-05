@@ -56,6 +56,14 @@ Expected result setiap skenario memuat sumber/actor yang sah, jawaban atau fallb
 
 Jalankan evaluasi model nyata terpisah dari CI. Catat provider/model alias, prompt version, tanggal, usage bila tersedia, hasil, serta failure contoh tanpa secret. Jangan mempromosikan hasil fake menjadi akurasi model. Jika credential/provider belum tersedia, tandai evaluasi nyata belum dijalankan dan jangan menyatakan pilot lulus.
 
+## Aset visual final
+
+Sesuai keputusan pengguna, Plan3–7 memakai gambar placeholder acak dan brand mark teks. Tahap ini menyelesaikan aset visual sebelum rilis:
+- Ilustrasi scene reception, knowledge, hr, it, requests dan karakter assistant di `public/assets/corporate/` (SVG atau gambar teroptimasi), konsisten dengan palet [UI_FOUNDATION](UI_FOUNDATION.md). Tidak memakai aset hotel bermerek; sumber/lisensi setiap aset dicatat.
+- Logo/brand mark untuk `x-navigation.brand`, favicon, dan ikon aplikasi.
+- Gaya ilustrasi, karakter, dan logo dikonfirmasi pengguna lebih dulu (ditanyakan di checklist), lalu aset ditempatkan dan `SCENE_IMAGE_SOURCE=local` diaktifkan; view/JS tidak perlu diubah karena memakai resolver Plan3.
+- Gate rilis: staging/production tidak memakai mode placeholder atau URL gambar remote; fallback gambar tetap berfungsi; teks di atas gambar memenuhi kontras ≥4.5:1.
+
 ## Infrastruktur pengujian dan CI
 
 Kerjakan sebelum menjalankan katalog:
@@ -87,6 +95,7 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 
 ### Plan3 virtual office
 - OfficeSceneTest: guest dialihkan, kelima route, locale valid/default/invalid, label tiga bahasa, user nonaktif, context sesuai scene.
+- Resolver gambar: mode placeholder menghasilkan URL dengan seed tetap per scene dan tanpa data pengguna; mode local menunjuk `public/assets/corporate`; production menolak/men-warning mode placeholder.
 - BrandingSettingsTest: hanya admin, validasi panjang/locale, escaping nama/welcome, audit.
 - Review manual 375x812, 768x1024, 1440x900: navigasi, keyboard focus, contrast, image fallback, reduced motion, tombol suara/narrator tanpa autoplay, overflow.
 
@@ -116,7 +125,7 @@ Skenario berikut dipindahkan dari masing-masing plan. Setiap plan baru Done bila
 1. Bangun infrastruktur di atas, tulis tes dari katalog, lalu jalankan seluruh PHPUnit suite terhadap PostgreSQL testing, termasuk concurrency integration terpisah, composer validate, Pint check, npm run lint:ui, npm run test:ui, frontend build, composer audit, dan audit npm runtime dependencies. Temuan audit ditriase berdasarkan paket/jalur aktual, bukan diabaikan dengan alasan dev.
 2. Jalankan fresh install pada database staging kosong menggunakan migrate + reference seed, bukan migrate:fresh pada database berisi data. Buat admin melalui command secret prompt.
 3. Verifikasi restore backup ke staging dan ulangi journey SOP→tiket→balasan→closed tiga bahasa, termasuk role/team isolation dan source revoked.
-4. Verifikasi /dev/*404 production dan theme/component reuse; periksa mobile/desktop, keyboard, reduced motion, dialog focus, CSRF/session expiry, XSS cards/staff text, offline/poll recovery, dan no-provider fallback.
+4. Verifikasi /dev/*404 production, aset visual final aktif tanpa placeholder remote, dan theme/component reuse; periksa mobile/desktop, keyboard, reduced motion, dialog focus, CSRF/session expiry, XSS cards/staff text, offline/poll recovery, dan no-provider fallback.
 5. Build/config/route cache pada staging, restart worker jika ada, dan uji scheduler/retensi dry-run sebelum purge dijadwalkan.
 6. Jalankan pilot dengan akun perwakilan employee/editor/admin/staff HR/staff IT dan data sintetis dulu. Catat masalah dan perbaikannya.
 

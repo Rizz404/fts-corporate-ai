@@ -17,7 +17,7 @@ Template dibuat internal dengan Blade, Tailwind, Alpine, dan Heroicons. Tidak me
 
 Semua layout selain base menyusun x-layouts.base. Masing-masing halaman memasang satu layout teratas, sehingga head/Vite/Alpine tidak terduplikasi. Admin dipakai juga editor/staff sesuai menu yang diotorisasi server; nama layout tidak menentukan role.
 
-Plan 1 membangun frame template dan preview sintetis. Plan 2 memasang login serta pembatasan akses. Plan 3 menyusun office-stage di dalam layout user, lalu menambahkan ilustrasi, narrator, dan scene transition. Layout user tidak diganti menjadi dashboard administratif.
+Plan 1 membangun frame template dan preview sintetis. Plan 2 memasang login serta pembatasan akses. Plan 3 menyusun office-stage di dalam layout user, lalu menambahkan gambar scene (placeholder acak sampai Plan 8 menyediakan ilustrasi final), narrator, dan scene transition. Layout user tidak diganti menjadi dashboard administratif.
 
 Desktop admin: sidebar 16rem, topbar 4rem, konten utama berjarak konsisten. Pada lebar <1024 sidebar menjadi drawer; tombol pembuka mempunyai aria-expanded, drawer dapat ditutup dengan Escape/outside click dan focus kembali ke pemicu. User mengikuti mobile-first dengan slot stage yang dapat dikembangkan Plan 3. Breakpoint Tailwind bawaan dipertahankan.
 
@@ -85,7 +85,7 @@ Token tambahan:
 
 base.css hanya memuat base/layout rules lintas halaman: x-cloak, focus/skip link, reduced motion, default body, dan kelas dasar kontrol bila perlu. Warna di base.css merujuk token, bukan literal baru. Style scene khusus tetap dapat dibuat dengan selector terlingkup dan variable tema.
 
-Ilustrasi SVG di public/assets/corporate dapat memakai literal fill karena stylesheet luar tidak diwarisi oleh gambar img. Warna visual utamanya mengikuti palette ini; ilustrasi tidak menjadi sumber warna UI baru. Asset library/vendor dan binary tidak masuk pemeriksaan source color.
+Ilustrasi final (dibuat Plan 8) di public/assets/corporate dapat memakai literal fill karena stylesheet luar tidak diwarisi oleh gambar img. Warna visual utamanya mengikuti palette ini; ilustrasi tidak menjadi sumber warna UI baru. Asset library/vendor dan binary tidak masuk pemeriksaan source color.
 
 ## 3. Kontrak komponen reusable
 
