@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 7 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 6](PLAN_06_HR_IT_TICKETS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -77,4 +77,32 @@ Kartu domain menyusun x-ui.card/button/link-button/badge/modal yang telah tersed
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Catat tool registry/schema, mekanisme idempotensi, UI cards, dan checklist perjalanan end-to-end untuk pengguna.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Tool registry dan schema** (`app/Modules/Assistant/Tools`)
+- `Tool` (name, definition JSON schema, validate, execute, loggableInput), `ToolContext` (turn, conversation, locale), `ToolResult` (code ok/validation_failed/not_authorized/not_found/conflict/unknown_tool, data untuk model, evidence, ui, actions, operation, reference, terminal, text), `ToolArguments` (objek JSON saja, key tak dikenal ditolak, aturan Laravel dengan `integer:strict`), `ToolArgumentException`.
+- `ToolRegistry`: whitelist eksplisit `HANDLERS` (lima kelas), nama model hanya dicari di map ini. Kosong bila `ASSISTANT_TOOLS_ENABLED=false` → turn kembali ke perilaku Plan5 dan prompt `corporate-v1`.
+- `ToolExecutor`: lookup → decode → validasi → handler; setiap panggilan dicatat di `tool_invocations` (input terbatas, result reference) dan log `assistant.tool`; ApiException dipetakan ke kode tool; exception lain dilog lalu turn fallback.
+- Handler: `search_knowledge` (retriever Plan4, ≤5, locale turn), `get_article` (published + audience), `list_my_tickets` (pemohon saja, 20/halaman, status/page), `get_ticket` (pemohon saja; tiket lain `not_found`), `prepare_ticket` (`TicketDraftRules` yang sama dengan form + `PrepareTicketDraft`; log hanya team/category/panjang/fingerprint, bukan deskripsi). Tidak ada tool create/close/approve/internal note/HTTP.
+
+**Tool loop** (`ExecuteTurn`): retrieval awal tetap dipakai; tools dikirim dengan `tool_choice=auto`; maksimal 7 completion, 6 ronde, 5 call per respons, 12 invocation, deadline 60 s. Assistant `tool_calls` + pesan `tool` dengan `tool_call_id` ditambahkan sesuai protokol; call tanpa id diberi id server. Call di atas limit tidak dijalankan → `tool_limit_exceeded`. Hasil tiket/daftar/draft bersifat terminal: kalimat dan kartu dibangun server dari data canonical dalam locale aktif tanpa completion tambahan. Jawaban knowledge tetap divalidasi `AnswerValidator` dengan sumber dari pool turn (awal + tool), dibatasi 5. HTTP 400 pada request pertama yang membawa tools → `tool_capability_unavailable` dengan fallback form/My Requests. Counter `completion_calls/tool_rounds/tool_invocations` disimpan di `usage` turn dan log.
+
+**Idempotensi draft**: unique `originating_turn_id`; panggilan ulang dengan fingerprint sama mengembalikan draft pertama, payload berbeda → `conflict` `draft_already_prepared` + referensi draft. Fallback setelah draft tersimpan (limit, provider error, validator, crash) tetap mengembalikan kartu draft dan `operation`; `prepare_ticket` tidak dipanggil ulang. `TurnPresenter` mengisi `operation` dari baris draft turn sehingga referensi tetap ada setelah gagal. Konfirmasi hanya lewat tombol (API Plan6 `expected_revision` + `idempotency_key`).
+
+**Prompt** `corporate-v2` (`PromptComposer`): langkah keputusan dulu (tiket sendiri → wajib tool, bantuan HR/IT → `prepare_ticket`, knowledge → sumber/search), lalu aturan grounding, larangan mengubah status/konfirmasi via teks, anti-injection, dan format JSON final. Context tiket (reference + public_id) hanya bila tiket milik pengguna.
+
+**Context**: `context.ticket_public_id` kini diterima (UUID) dan diverifikasi milik pemohon di `AppendTurn` (422 `invalid_context`); halaman detail permintaan mengirimnya, halaman lain mengirim null eksplisit.
+
+**UI**: `safe-card-renderer.js` menormalkan `source_card`, `ticket_list`, `ticket_detail`, `ticket_draft`, `ticket_confirmation` dan aksi `open_article`, `open_ticket`, `open_scene`, `review_ticket_draft` (UUID/status/tone/path di-whitelist). Markup kartu ada di template Blade `x-office-chat` (dipilih per tipe, semua nilai via `x-text`; kelas badge dari `ComponentStyles`). Kartu draft: tombol "Periksa dan ubah" (wizard `?draft=`) dan konfirmasi dua langkah di chat; hasil API diganti menjadi kartu `ticket_confirmation`. Riwayat membaca ulang draft (`TicketCards::refresh`): draft yang sudah dikonfirmasi tampil sebagai kartu tiket. Wizard menerima `initialDraft` (review langsung; draft kedaluwarsa kembali ke langkah detail dan disimpan sebagai draft baru); tombol konfirmasi nonaktif saat expired/berjalan.
+
+**Perintah yang dijalankan**: `php artisan view:cache`, `npm run build`; satu probe tool calling sintetis ke provider (mendukung, `finish_reason=tool_calls`); beberapa turn integrasi sekali jalan dengan akun demo (draft IT, status tiket id/en/ja, SOP cuti, injection "tutup tiket saya", tiket orang lain, "ya, konfirmasi" via teks). Hasil: draft tersimpan sekali dengan kartu, `list_my_tickets` dipanggil di tiga bahasa, tiket lain `not_found`, jumlah tiket/status tidak berubah oleh injection maupun teks "ya". Ini pemeriksaan konfigurasi, bukan evaluasi model (Plan8).
+
+**Penyimpangan dan keputusan**
+- `get_ticket`/`list_my_tickets` terminal (balasan tiket selalu ditulis server); kartu detail menampilkan 3 pesan publik terbaru dari maksimal 10 yang dibaca tool.
+- Renderer memakai template Alpine (`x-for`/`x-if` + `x-text`) di Blade, bukan `cloneNode` manual; prinsipnya sama: markup dari Blade, isi via textContent.
+- Jawaban model tanpa sumber tetap diganti fallback no-source (aturan Plan5), termasuk penolakan sopan atas injection; ini aman tetapi pesannya generik.
+- Iterasi prompt pertama membuat model menjawab "Here are your requests" tanpa memanggil tool; prompt v2 diubah menjadi langkah keputusan eksplisit. Kepatuhan model tetap harus dievaluasi di Plan8.
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–6). Provider pilot (LM Studio, model Qwen) mendukung tool calling.
