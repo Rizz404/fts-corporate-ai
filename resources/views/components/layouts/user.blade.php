@@ -2,10 +2,12 @@
     Employee office frame. Plan 3 fills the stage slots (backdrop, character,
     scene content); Plan 5 fills the chat slot.
     Slots: default (scene content), backdrop, character, chat, navigation (overrides navItems).
+    adminHref: link to /admin in the account menu, passed only when the server allows it.
 --}}
 @props([
     'title' => null,
     'navItems' => [],
+    'adminHref' => null,
 ])
 
 <x-layouts.base :title="$title">
@@ -27,6 +29,10 @@
                 </div>
 
                 <x-navigation.language-switch variant="dark" class="ml-auto md:ml-0" />
+
+                @auth
+                    <x-navigation.account-menu variant="dark" :admin-href="$adminHref" />
+                @endauth
 
                 <button
                     type="button"

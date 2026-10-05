@@ -1,7 +1,8 @@
 {{--
     Admin/editor/staff frame. Menu items come from the server (navItems);
     the layout name does not decide roles.
-    Slots: default, actions, topbar, account, navigation (overrides navItems).
+    Slots: default, actions, topbar, account (defaults to the account menu when signed in),
+    navigation (overrides navItems). Shows session('status') as a success alert.
 --}}
 @props([
     'title' => null,
@@ -90,11 +91,21 @@
                 <div class="min-w-0 flex-1">{{ $topbar ?? '' }}</div>
 
                 <x-navigation.language-switch />
-                {{ $account ?? '' }}
+                @isset($account)
+                    {{ $account }}
+                @else
+                    @auth
+                        <x-navigation.account-menu :office-href="route('office.reception')" />
+                    @endauth
+                @endisset
             </header>
 
             <main id="main-content" tabindex="-1" class="flex-1 px-4 py-6 focus:outline-none md:px-6">
                 <x-navigation.breadcrumbs :items="$breadcrumbs" class="mb-2" />
+
+                @if (session('status'))
+                    <x-ui.alert tone="success" dismissible class="mb-4">{{ session('status') }}</x-ui.alert>
+                @endif
 
                 @if ($heading !== null || isset($actions))
                     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

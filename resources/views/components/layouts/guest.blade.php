@@ -23,6 +23,10 @@
 
         <main id="main-content" tabindex="-1" class="flex flex-1 items-center justify-center px-4 py-8 focus:outline-none">
             <div class="w-full {{ $widthClass }} space-y-4">
+                @if (session('status'))
+                    <x-ui.alert tone="info">{{ session('status') }}</x-ui.alert>
+                @endif
+
                 {{ $before ?? '' }}
 
                 <div class="rounded-card border border-border bg-surface p-6 shadow-card md:p-8">

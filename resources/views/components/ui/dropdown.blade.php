@@ -1,6 +1,7 @@
-{{-- Slots: trigger (button content) and items (x-ui.dropdown.item). --}}
+{{-- Slots: trigger (button content) and items (x-ui.dropdown.item). trigger-variant uses the button variants. --}}
 @props([
     'align' => 'left',
+    'triggerVariant' => 'outline',
     'id' => null,
 ])
 
@@ -25,7 +26,7 @@
         aria-controls="{{ $id }}"
         aria-expanded="false"
         x-bind:aria-expanded="open"
-        {{ $trigger->attributes->class(\App\Support\Ui\ComponentStyles::button('outline', 'md')) }}
+        {{ $trigger->attributes->class(\App\Support\Ui\ComponentStyles::button($triggerVariant, 'md')) }}
     >
         {{ $trigger }}
     </button>
