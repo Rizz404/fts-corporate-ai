@@ -33,6 +33,7 @@ return [
         'knowledge' => 'Pengetahuan',
         'tickets' => 'Tiket',
         'settings' => 'Pengaturan',
+        'departments' => 'Departemen',
         'rooms' => [
             'reception' => 'Resepsionis',
             'knowledge' => 'Pusat Pengetahuan',
@@ -178,6 +179,115 @@ return [
         'synthetic_note' => 'Catatan sintetis',
     ],
 
+    'all' => 'Semua',
+    'choose' => 'Pilih…',
+    'filter' => 'Saring',
+    'edit' => 'Ubah',
+    'add' => 'Tambah',
+    'delete' => 'Hapus',
+
+    'roles' => [
+        'employee' => 'Karyawan',
+        'admin' => 'Admin',
+        'editor' => 'Editor',
+        'staff' => 'Staf',
+    ],
+
+    'teams' => [
+        'hr' => 'HR',
+        'it' => 'IT',
+    ],
+
+    'auth' => [
+        'login_title' => 'Masuk',
+        'login_intro' => 'Gunakan akun yang diberikan administrator.',
+        'login' => 'Masuk',
+        'remember' => 'Tetap masuk di perangkat ini',
+        'forgot_hint' => 'Lupa kata sandi? Minta administrator untuk meresetnya.',
+        'logged_out' => 'Anda telah keluar.',
+        'account_inactive' => 'Akun Anda tidak aktif. Hubungi administrator.',
+        'change_password_title' => 'Ganti kata sandi',
+        'change_password_intro' => 'Masukkan kata sandi saat ini lalu pilih kata sandi baru.',
+        'must_change_intro' => 'Anda memakai kata sandi sementara. Buat kata sandi sendiri untuk melanjutkan.',
+        'current_password' => 'Kata sandi saat ini',
+        'new_password' => 'Kata sandi baru',
+        'confirm_password' => 'Konfirmasi kata sandi',
+        'password_rule' => 'Minimal :min karakter.',
+        'save_password' => 'Simpan kata sandi',
+        'password_changed' => 'Kata sandi Anda telah diganti.',
+    ],
+
+    'account' => [
+        'menu' => 'Menu akun',
+        'office' => 'Kantor',
+        'admin' => 'Panel admin',
+        'change_password' => 'Ganti kata sandi',
+        'logout' => 'Keluar',
+    ],
+
+    'office' => [
+        'welcome' => 'Selamat datang, :name',
+        'placeholder' => 'Kantor virtual dibuka di sini pada tahap berikutnya. Anda sudah masuk dan akun Anda siap.',
+    ],
+
+    'admin' => [
+        'dashboard_title' => 'Panel admin',
+        'dashboard_intro' => 'Kelola akun karyawan dan departemen.',
+        'coming_title' => 'Alat lain segera hadir',
+        'coming_description' => 'Alat pengetahuan dan tiket untuk peran Anda hadir pada tahap berikutnya.',
+        'stats' => [
+            'active_users' => 'Akun aktif',
+            'inactive_users' => 'Akun nonaktif',
+            'departments' => 'Departemen aktif',
+        ],
+    ],
+
+    'users' => [
+        'create' => 'Akun baru',
+        'created' => 'Akun dibuat. Sampaikan kata sandi sementara kepada karyawan secara aman.',
+        'updated' => 'Akun diperbarui.',
+        'password_reset' => 'Kata sandi sementara diatur dan semua sesi lama diakhiri.',
+        'account_section' => 'Akun dan akses',
+        'search_placeholder' => 'Nama atau email',
+        'empty_title' => 'Akun tidak ditemukan',
+        'empty_description' => 'Ubah filter atau buat akun baru.',
+        'active' => 'Aktif',
+        'inactive' => 'Nonaktif',
+        'temporary' => 'Kata sandi sementara',
+        'preferred_locale' => 'Bahasa',
+        'roles' => 'Peran',
+        'roles_help' => 'Admin mengelola akun dan publikasi; editor menulis pengetahuan; staf menangani tiket HR/IT.',
+        'support_teams' => 'Tim layanan',
+        'support_teams_help' => 'Memerlukan peran staf.',
+        'editor_departments' => 'Departemen penulisan',
+        'editor_departments_help' => 'Memerlukan peran editor.',
+        'is_active' => 'Akun aktif',
+        'is_active_help' => 'Akun nonaktif langsung dikeluarkan dan tidak dapat masuk.',
+        'temporary_password' => 'Kata sandi sementara',
+        'temporary_password_help' => 'Minimal :min karakter. Karyawan wajib menggantinya saat pertama masuk.',
+        'reset_password' => 'Reset kata sandi',
+        'reset_password_intro' => 'Atur kata sandi sementara baru. Semua sesi akun ini akan diakhiri.',
+        'reset_password_confirm_title' => 'Reset kata sandi ini?',
+        'reset_password_confirm_body' => ':name akan dikeluarkan dari semua perangkat dan wajib membuat kata sandi baru.',
+        'errors' => [
+            'teams_require_staff' => 'Tim layanan hanya dapat diberikan kepada akun dengan peran staf.',
+            'departments_require_editor' => 'Departemen penulisan hanya dapat diberikan kepada akun dengan peran editor.',
+            'last_admin' => 'Ini satu-satunya admin aktif. Tetapkan admin lain terlebih dahulu.',
+        ],
+    ],
+
+    'departments' => [
+        'create' => 'Departemen baru',
+        'created' => 'Departemen dibuat.',
+        'updated' => 'Departemen diperbarui.',
+        'slug' => 'Kode',
+        'slug_help' => 'Huruf kecil, angka, dan tanda hubung. Tidak dapat diubah kemudian.',
+        'slug_locked' => 'Kode tidak dapat diubah.',
+        'members' => 'Anggota',
+        'is_active' => 'Departemen aktif',
+        'is_active_help' => 'Departemen nonaktif tidak dapat dipilih untuk akun baru. Anggota lama tetap terdaftar.',
+    ],
+
     'errors' => [
         'bad_request' => 'Permintaan tidak dapat diproses.',
         'unauthenticated' => 'Silakan masuk untuk melanjutkan.',
@@ -191,5 +301,6 @@ return [
         'service_unavailable' => 'Layanan sedang tidak tersedia. Silakan coba lagi nanti.',
         'server_error' => 'Terjadi kesalahan. Silakan coba lagi nanti.',
         'invalid_locale' => 'Bahasa yang dipilih tidak didukung.',
+        'password_change_required' => 'Anda harus mengganti kata sandi sementara terlebih dahulu.',
     ],
 ];

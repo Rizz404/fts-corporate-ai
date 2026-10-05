@@ -33,6 +33,7 @@ return [
         'knowledge' => 'ナレッジ',
         'tickets' => 'チケット',
         'settings' => '設定',
+        'departments' => '部署',
         'rooms' => [
             'reception' => '受付',
             'knowledge' => 'ナレッジセンター',
@@ -178,6 +179,115 @@ return [
         'synthetic_note' => '合成メモ',
     ],
 
+    'all' => 'すべて',
+    'choose' => '選択してください…',
+    'filter' => '絞り込み',
+    'edit' => '編集',
+    'add' => '追加',
+    'delete' => '削除',
+
+    'roles' => [
+        'employee' => '従業員',
+        'admin' => '管理者',
+        'editor' => '編集者',
+        'staff' => 'スタッフ',
+    ],
+
+    'teams' => [
+        'hr' => '人事',
+        'it' => 'IT',
+    ],
+
+    'auth' => [
+        'login_title' => 'ログイン',
+        'login_intro' => '管理者から提供されたアカウントを使用してください。',
+        'login' => 'ログイン',
+        'remember' => 'このデバイスでログインしたままにする',
+        'forgot_hint' => 'パスワードを忘れた場合は、管理者にリセットを依頼してください。',
+        'logged_out' => 'ログアウトしました。',
+        'account_inactive' => 'アカウントは無効です。管理者に連絡してください。',
+        'change_password_title' => 'パスワード変更',
+        'change_password_intro' => '現在のパスワードを入力し、新しいパスワードを設定してください。',
+        'must_change_intro' => '仮パスワードを使用しています。続行するには自分のパスワードを設定してください。',
+        'current_password' => '現在のパスワード',
+        'new_password' => '新しいパスワード',
+        'confirm_password' => 'パスワード（確認）',
+        'password_rule' => ':min 文字以上。',
+        'save_password' => 'パスワードを保存',
+        'password_changed' => 'パスワードを変更しました。',
+    ],
+
+    'account' => [
+        'menu' => 'アカウントメニュー',
+        'office' => 'オフィス',
+        'admin' => '管理画面',
+        'change_password' => 'パスワード変更',
+        'logout' => 'ログアウト',
+    ],
+
+    'office' => [
+        'welcome' => 'ようこそ、:name さん',
+        'placeholder' => 'バーチャルオフィスは次の段階でここに表示されます。ログイン済みで、アカウントの準備ができています。',
+    ],
+
+    'admin' => [
+        'dashboard_title' => '管理画面',
+        'dashboard_intro' => '従業員アカウントと部署を管理します。',
+        'coming_title' => 'ほかのツールも準備中です',
+        'coming_description' => 'あなたの役割向けのナレッジ・チケットツールは今後の段階で追加されます。',
+        'stats' => [
+            'active_users' => '有効なアカウント',
+            'inactive_users' => '無効なアカウント',
+            'departments' => '有効な部署',
+        ],
+    ],
+
+    'users' => [
+        'create' => '新しいアカウント',
+        'created' => 'アカウントを作成しました。仮パスワードは安全な方法で従業員に伝えてください。',
+        'updated' => 'アカウントを更新しました。',
+        'password_reset' => '仮パスワードを設定し、既存のセッションを終了しました。',
+        'account_section' => 'アカウントと権限',
+        'search_placeholder' => '氏名またはメールアドレス',
+        'empty_title' => 'アカウントが見つかりません',
+        'empty_description' => '条件を変更するか、新しいアカウントを作成してください。',
+        'active' => '有効',
+        'inactive' => '無効',
+        'temporary' => '仮パスワード',
+        'preferred_locale' => '言語',
+        'roles' => '役割',
+        'roles_help' => '管理者はアカウントと公開を管理し、編集者はナレッジを作成し、スタッフは人事・IT チケットを担当します。',
+        'support_teams' => 'サポートチーム',
+        'support_teams_help' => 'スタッフの役割が必要です。',
+        'editor_departments' => '担当部署（編集）',
+        'editor_departments_help' => '編集者の役割が必要です。',
+        'is_active' => 'アカウントを有効にする',
+        'is_active_help' => '無効なアカウントは直ちにログアウトされ、ログインできません。',
+        'temporary_password' => '仮パスワード',
+        'temporary_password_help' => ':min 文字以上。従業員は初回ログイン時に変更する必要があります。',
+        'reset_password' => 'パスワードをリセット',
+        'reset_password_intro' => '新しい仮パスワードを設定します。このアカウントの既存セッションはすべて終了します。',
+        'reset_password_confirm_title' => 'このパスワードをリセットしますか？',
+        'reset_password_confirm_body' => ':name さんはすべての端末からログアウトされ、新しいパスワードの設定が必要になります。',
+        'errors' => [
+            'teams_require_staff' => 'サポートチームはスタッフの役割を持つアカウントにのみ割り当てできます。',
+            'departments_require_editor' => '担当部署は編集者の役割を持つアカウントにのみ割り当てできます。',
+            'last_admin' => '唯一の有効な管理者です。先に別の管理者を設定してください。',
+        ],
+    ],
+
+    'departments' => [
+        'create' => '新しい部署',
+        'created' => '部署を作成しました。',
+        'updated' => '部署を更新しました。',
+        'slug' => 'コード',
+        'slug_help' => '英小文字・数字・ハイフンのみ。後から変更できません。',
+        'slug_locked' => 'コードは変更できません。',
+        'members' => '所属人数',
+        'is_active' => '部署を有効にする',
+        'is_active_help' => '無効な部署は新しいアカウントに選択できません。既存の所属は維持されます。',
+    ],
+
     'errors' => [
         'bad_request' => 'リクエストを処理できませんでした。',
         'unauthenticated' => '続行するにはログインしてください。',
@@ -191,5 +301,6 @@ return [
         'service_unavailable' => 'サービスは一時的に利用できません。しばらくしてからもう一度お試しください。',
         'server_error' => '問題が発生しました。しばらくしてからもう一度お試しください。',
         'invalid_locale' => '選択された言語はサポートされていません。',
+        'password_change_required' => '先に仮パスワードを変更してください。',
     ],
 ];

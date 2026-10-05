@@ -33,6 +33,7 @@ return [
         'knowledge' => 'Knowledge',
         'tickets' => 'Tickets',
         'settings' => 'Settings',
+        'departments' => 'Departments',
         'rooms' => [
             'reception' => 'Reception',
             'knowledge' => 'Knowledge Center',
@@ -178,6 +179,115 @@ return [
         'synthetic_note' => 'Synthetic note',
     ],
 
+    'all' => 'All',
+    'choose' => 'Choose…',
+    'filter' => 'Filter',
+    'edit' => 'Edit',
+    'add' => 'Add',
+    'delete' => 'Delete',
+
+    'roles' => [
+        'employee' => 'Employee',
+        'admin' => 'Admin',
+        'editor' => 'Editor',
+        'staff' => 'Staff',
+    ],
+
+    'teams' => [
+        'hr' => 'HR',
+        'it' => 'IT',
+    ],
+
+    'auth' => [
+        'login_title' => 'Sign in',
+        'login_intro' => 'Use the account provided by your administrator.',
+        'login' => 'Sign in',
+        'remember' => 'Keep me signed in on this device',
+        'forgot_hint' => 'Forgot your password? Ask an administrator to reset it.',
+        'logged_out' => 'You have signed out.',
+        'account_inactive' => 'Your account is inactive. Contact an administrator.',
+        'change_password_title' => 'Change password',
+        'change_password_intro' => 'Enter your current password and choose a new one.',
+        'must_change_intro' => 'You are using a temporary password. Choose your own password to continue.',
+        'current_password' => 'Current password',
+        'new_password' => 'New password',
+        'confirm_password' => 'Confirm password',
+        'password_rule' => 'At least :min characters.',
+        'save_password' => 'Save password',
+        'password_changed' => 'Your password has been changed.',
+    ],
+
+    'account' => [
+        'menu' => 'Account menu',
+        'office' => 'Office',
+        'admin' => 'Admin panel',
+        'change_password' => 'Change password',
+        'logout' => 'Sign out',
+    ],
+
+    'office' => [
+        'welcome' => 'Welcome, :name',
+        'placeholder' => 'The virtual office opens here in the next stage. You are signed in and your account is ready.',
+    ],
+
+    'admin' => [
+        'dashboard_title' => 'Admin panel',
+        'dashboard_intro' => 'Manage employee accounts and departments.',
+        'coming_title' => 'More tools are on the way',
+        'coming_description' => 'Knowledge and ticket tools for your role arrive in later stages.',
+        'stats' => [
+            'active_users' => 'Active accounts',
+            'inactive_users' => 'Inactive accounts',
+            'departments' => 'Active departments',
+        ],
+    ],
+
+    'users' => [
+        'create' => 'New account',
+        'created' => 'The account was created. Share the temporary password with the employee securely.',
+        'updated' => 'The account was updated.',
+        'password_reset' => 'The temporary password was set and existing sessions were ended.',
+        'account_section' => 'Account and access',
+        'search_placeholder' => 'Name or email',
+        'empty_title' => 'No accounts found',
+        'empty_description' => 'Change the filters or create a new account.',
+        'active' => 'Active',
+        'inactive' => 'Inactive',
+        'temporary' => 'Temporary password',
+        'preferred_locale' => 'Language',
+        'roles' => 'Roles',
+        'roles_help' => 'Admin manages accounts and publishing; editor writes knowledge; staff handles HR/IT tickets.',
+        'support_teams' => 'Support teams',
+        'support_teams_help' => 'Requires the staff role.',
+        'editor_departments' => 'Authoring departments',
+        'editor_departments_help' => 'Requires the editor role.',
+        'is_active' => 'Account is active',
+        'is_active_help' => 'Inactive accounts are signed out immediately and cannot sign in.',
+        'temporary_password' => 'Temporary password',
+        'temporary_password_help' => 'At least :min characters. The employee must change it at first sign-in.',
+        'reset_password' => 'Reset password',
+        'reset_password_intro' => 'Set a new temporary password. All existing sessions of this account are ended.',
+        'reset_password_confirm_title' => 'Reset this password?',
+        'reset_password_confirm_body' => ':name will be signed out everywhere and must choose a new password.',
+        'errors' => [
+            'teams_require_staff' => 'Support teams can only be assigned to accounts with the staff role.',
+            'departments_require_editor' => 'Authoring departments can only be assigned to accounts with the editor role.',
+            'last_admin' => 'This is the only active admin. Assign another admin first.',
+        ],
+    ],
+
+    'departments' => [
+        'create' => 'New department',
+        'created' => 'The department was created.',
+        'updated' => 'The department was updated.',
+        'slug' => 'Code',
+        'slug_help' => 'Lowercase letters, numbers, and hyphens. Cannot be changed later.',
+        'slug_locked' => 'The code cannot be changed.',
+        'members' => 'Members',
+        'is_active' => 'Department is active',
+        'is_active_help' => 'Inactive departments cannot be chosen for new accounts. Existing members keep it.',
+    ],
+
     'errors' => [
         'bad_request' => 'The request could not be processed.',
         'unauthenticated' => 'Please sign in to continue.',
@@ -191,5 +301,6 @@ return [
         'service_unavailable' => 'The service is temporarily unavailable. Please try again later.',
         'server_error' => 'Something went wrong. Please try again later.',
         'invalid_locale' => 'The selected language is not supported.',
+        'password_change_required' => 'You must change your temporary password first.',
     ],
 ];
