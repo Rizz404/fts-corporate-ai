@@ -1,0 +1,57 @@
+/*
+ * FTS Corporate AI theme: the single source of visual values.
+ * Spec: docs/UI_FOUNDATION.md section 2. Add new tokens here (and in the
+ * spec); never introduce colors in views, scripts, or other stylesheets.
+ */
+
+@theme static {
+    /* Drop Tailwind's default palette; only semantic colors below exist. */
+    --color-*: initial;
+
+    --color-primary: #0F766E;
+    --color-primary-hover: #115E59;
+    --color-secondary: #142337;
+    --color-secondary-hover: #203551;
+    --color-accent: #2563EB;
+    --color-canvas: #F4F7FB;
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #EDF2F7;
+    --color-text: #172A3A;
+    --color-muted: #526579;
+    --color-border: #D7E0EA;
+    --color-success: #15803D;
+    --color-success-soft: #F0FDF4;
+    --color-warning: #B45309;
+    --color-warning-soft: #FFFBEB;
+    --color-danger: #B91C1C;
+    --color-danger-hover: #991B1B;
+    --color-danger-soft: #FEF2F2;
+    --color-info: #1D4ED8;
+    --color-info-soft: #EFF6FF;
+    --color-transparent: transparent;
+    --color-current: currentColor;
+    --color-overlay: rgb(20 35 55 / 0.6);
+
+    --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+
+    --radius-control: 0.5rem;
+    --radius-card: 1rem;
+    --radius-dialog: 1rem;
+
+    --shadow-card: 0 1px 3px rgb(20 35 55 / 0.08);
+    --shadow-overlay: 0 20px 40px rgb(20 35 55 / 0.16);
+
+    --text-page-title: 1.5rem;
+    --text-page-title--line-height: 2rem;
+    --text-section-title: 1.125rem;
+    --text-section-title--line-height: 1.75rem;
+    --text-body: 0.875rem;
+    --text-body--line-height: 1.5rem;
+    --text-caption: 0.75rem;
+    --text-caption--line-height: 1rem;
+}
+
+@theme inline {
+    --color-on-primary: var(--color-surface);
+    --color-focus: var(--color-primary);
+}

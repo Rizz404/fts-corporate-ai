@@ -1,0 +1,57 @@
+/*
+ * Cross-page base rules only. Colors must reference theme tokens.
+ */
+
+[x-cloak] {
+    display: none !important;
+}
+
+@layer base {
+    html {
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        min-height: 100dvh;
+        background-color: var(--color-canvas);
+        color: var(--color-text);
+        font-family: var(--font-sans);
+        font-size: var(--text-body);
+        line-height: var(--text-body--line-height);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-focus);
+        outline-offset: 2px;
+    }
+}
+
+@layer components {
+    .skip-link {
+        position: absolute;
+        inset-inline-start: 1rem;
+        top: -10rem;
+        z-index: 100;
+        border-radius: var(--radius-control);
+        background-color: var(--color-primary);
+        color: var(--color-on-primary);
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+    }
+
+    .skip-link:focus {
+        top: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
