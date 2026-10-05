@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Modules\Identity\Enums\SupportTeamCode;
+use Database\Factories\SupportTeamFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 #[Fillable(['code', 'name', 'is_active'])]
 class SupportTeam extends Model
 {
-    /** @use HasFactory<\Database\Factories\SupportTeamFactory> */
+    /** @use HasFactory<SupportTeamFactory> */
     use HasFactory;
 
     protected function casts(): array

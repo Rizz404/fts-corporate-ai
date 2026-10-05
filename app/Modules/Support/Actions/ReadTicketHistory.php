@@ -5,6 +5,7 @@ namespace App\Modules\Support\Actions;
 use App\Models\Ticket;
 use App\Models\TicketMessage;
 use App\Modules\Support\Enums\MessageVisibility;
+use Illuminate\Support\Collection;
 
 /**
  * Messages after a cursor (id ascending, max 50). Requester views get
@@ -15,7 +16,7 @@ class ReadTicketHistory
     public const PAGE_SIZE = 50;
 
     /**
-     * @return array{messages: \Illuminate\Support\Collection<int, TicketMessage>, next_after_id: ?int}
+     * @return array{messages: Collection<int, TicketMessage>, next_after_id: ?int}
      */
     public function handle(Ticket $ticket, int $afterId, bool $includeInternal): array
     {

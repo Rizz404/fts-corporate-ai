@@ -2,6 +2,7 @@
 
 namespace App\Modules\Support\Support;
 
+use App\Models\SupportTeam;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Modules\Identity\ActorContext;
@@ -38,7 +39,7 @@ final class TicketAccess
             return [];
         }
 
-        return \App\Models\SupportTeam::query()
+        return SupportTeam::query()
             ->active()
             ->whereIn('code', $actor->teamCodes)
             ->pluck('id')
