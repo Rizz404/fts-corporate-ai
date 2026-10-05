@@ -58,6 +58,7 @@ final class TicketPresenter
             'description' => $ticket->description,
             'status' => $ticket->status->value,
             'status_label' => $ticket->status->label(),
+            'status_tone' => $ticket->status->tone(),
             'version' => $ticket->version,
             'assignee_name' => $ticket->assignee?->name,
             'created_at' => $ticket->created_at?->toIso8601String(),

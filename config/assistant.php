@@ -14,7 +14,14 @@ return [
 
     'enabled' => (bool) env('ASSISTANT_ENABLED', false),
 
-    'prompt_version' => 'corporate-v1',
+    // corporate-v2 adds the tool rules; corporate-v1 is used when tools are off.
+    'prompt_version' => env('ASSISTANT_TOOLS_ENABLED', true) ? 'corporate-v2' : 'corporate-v1',
+
+    // Tool calling (Plan 7). Turn off for providers without function calling;
+    // chat then answers from retrieval only and tickets use the manual form.
+    'tools' => [
+        'enabled' => (bool) env('ASSISTANT_TOOLS_ENABLED', true),
+    ],
 
     'deadline_seconds' => 60,
     'connect_timeout_seconds' => 5,
