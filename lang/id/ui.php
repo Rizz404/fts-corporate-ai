@@ -227,7 +227,67 @@ return [
 
     'office' => [
         'welcome' => 'Selamat datang, :name',
-        'placeholder' => 'Kantor virtual dibuka di sini pada tahap berikutnya. Anda sudah masuk dan akun Anda siap.',
+        'assistant_name' => 'Asisten kantor',
+        'narrator_play' => 'Bacakan',
+        'narrator_stop' => 'Berhenti membaca',
+        'sound_on' => 'Suara aktif',
+        'sound_off' => 'Suara mati',
+        'suggested_topics' => 'Anda bisa bertanya tentang',
+        'chat_coming' => 'Asisten AI segera tersedia. Sementara itu, gunakan ruang-ruang untuk mencari informasi.',
+        'desk' => [
+            'services_title' => 'Layanan meja ini',
+            'official_note' => 'Aturan dan prosedur resmi diterbitkan di Pusat Pengetahuan.',
+            'browse_knowledge' => 'Buka Pusat Pengetahuan',
+            'my_requests' => 'Permintaan Saya',
+        ],
+        'knowledge' => [
+            'empty_title' => 'Belum ada artikel',
+            'empty_description' => 'Artikel resmi akan tampil di sini setelah diterbitkan.',
+        ],
+        'requests' => [
+            'empty_title' => 'Belum ada permintaan',
+            'empty_description' => 'Permintaan yang Anda kirim ke HR atau IT akan tampil di sini.',
+            'new' => 'Permintaan baru',
+        ],
+        'scenes' => [
+            'reception' => [
+                'intro' => 'Selamat datang di kantor virtual. Pilih ruang untuk mencari informasi resmi atau meminta bantuan HR dan IT.',
+                'summary' => 'Mulai di sini dan temukan ruang yang tepat.',
+                'topics' => ['Di mana aturan perusahaan?', 'Bagaimana meminta bantuan HR atau IT?'],
+            ],
+            'knowledge' => [
+                'intro' => 'Cari SOP, kebijakan, FAQ, dan panduan resmi yang diterbitkan untuk Anda.',
+                'summary' => 'SOP, kebijakan, FAQ, dan panduan.',
+                'topics' => ['Panduan onboarding', 'Kebijakan cuti', 'Aturan kata sandi'],
+            ],
+            'hr' => [
+                'intro' => 'Meja HR menjawab pertanyaan seputar kepegawaian dan meneruskan permintaan ke tim HR.',
+                'summary' => 'Pertanyaan dan permintaan untuk HR.',
+                'topics' => ['Perubahan data karyawan', 'Pertanyaan kebijakan HR'],
+                'services' => ['Pertanyaan tentang kebijakan dan prosedur HR', 'Pembaruan data karyawan', 'Dukungan kepegawaian lainnya'],
+            ],
+            'it' => [
+                'intro' => 'IT Helpdesk membantu masalah akun, perangkat, perangkat lunak, dan jaringan.',
+                'summary' => 'Akun, perangkat, perangkat lunak, dan jaringan.',
+                'topics' => ['Reset akun', 'Masalah laptop', 'Koneksi Wi-Fi'],
+                'services' => ['Akses akun dan kata sandi', 'Perangkat keras dan periferal', 'Instalasi dan error perangkat lunak', 'Jaringan dan konektivitas'],
+            ],
+            'requests' => [
+                'intro' => 'Pantau status permintaan HR dan IT Anda dan baca balasan staf.',
+                'summary' => 'Status permintaan HR dan IT Anda.',
+                'topics' => ['Status permintaan saya'],
+            ],
+        ],
+    ],
+
+    'settings' => [
+        'title' => 'Pengaturan perusahaan',
+        'branding' => 'Branding',
+        'intro' => 'Hanya teks biasa. Logo, warna, dan gambar dikelola terpisah.',
+        'brand_name' => 'Nama brand',
+        'welcome_text' => 'Teks sambutan',
+        'welcome_help' => 'Tampil di Resepsionis. Maksimal 1000 karakter, tanpa tautan atau HTML. Kosongkan untuk memakai teks bawaan.',
+        'updated' => 'Pengaturan perusahaan disimpan.',
     ],
 
     'admin' => [

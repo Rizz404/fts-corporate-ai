@@ -227,7 +227,67 @@ return [
 
     'office' => [
         'welcome' => 'Welcome, :name',
-        'placeholder' => 'The virtual office opens here in the next stage. You are signed in and your account is ready.',
+        'assistant_name' => 'Office assistant',
+        'narrator_play' => 'Read aloud',
+        'narrator_stop' => 'Stop reading',
+        'sound_on' => 'Sound on',
+        'sound_off' => 'Sound off',
+        'suggested_topics' => 'You can ask about',
+        'chat_coming' => 'The AI assistant will be available soon. Meanwhile, use the rooms to find information.',
+        'desk' => [
+            'services_title' => 'How this desk can help',
+            'official_note' => 'Official rules and procedures are published in the Knowledge Center.',
+            'browse_knowledge' => 'Open Knowledge Center',
+            'my_requests' => 'My Requests',
+        ],
+        'knowledge' => [
+            'empty_title' => 'No articles yet',
+            'empty_description' => 'Official articles will appear here once they are published.',
+        ],
+        'requests' => [
+            'empty_title' => 'No requests yet',
+            'empty_description' => 'Requests you send to HR or IT will appear here.',
+            'new' => 'New request',
+        ],
+        'scenes' => [
+            'reception' => [
+                'intro' => 'Welcome to the virtual office. Choose a room to find official information or ask HR and IT for help.',
+                'summary' => 'Start here and find the right room.',
+                'topics' => ['Where can I find company rules?', 'How do I ask HR or IT for help?'],
+            ],
+            'knowledge' => [
+                'intro' => 'Search official SOPs, policies, FAQs, and guides published for you.',
+                'summary' => 'SOPs, policies, FAQs, and guides.',
+                'topics' => ['Onboarding guide', 'Leave policy', 'Password rules'],
+            ],
+            'hr' => [
+                'intro' => 'The HR desk answers questions about people matters and passes requests to the HR team.',
+                'summary' => 'Questions and requests for HR.',
+                'topics' => ['Employee data changes', 'HR policy questions'],
+                'services' => ['Questions about HR policies and procedures', 'Updates to employee information', 'Other people-related support'],
+            ],
+            'it' => [
+                'intro' => 'The IT helpdesk helps with accounts, devices, software, and network problems.',
+                'summary' => 'Accounts, devices, software, and network.',
+                'topics' => ['Reset an account', 'Laptop problem', 'Wi-Fi connection'],
+                'services' => ['Account access and passwords', 'Hardware and peripherals', 'Software installation and errors', 'Network and connectivity'],
+            ],
+            'requests' => [
+                'intro' => 'Follow the status of your HR and IT requests and read replies from staff.',
+                'summary' => 'Status of your HR and IT requests.',
+                'topics' => ['Status of my request'],
+            ],
+        ],
+    ],
+
+    'settings' => [
+        'title' => 'Company settings',
+        'branding' => 'Branding',
+        'intro' => 'Plain text only. Logo, colors, and images are managed separately.',
+        'brand_name' => 'Brand name',
+        'welcome_text' => 'Welcome text',
+        'welcome_help' => 'Shown in Reception. Up to 1000 characters, no links or HTML. Leave empty to use the default text.',
+        'updated' => 'Company settings were saved.',
     ],
 
     'admin' => [
