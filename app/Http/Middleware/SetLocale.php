@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Resolves the active locale: valid ?lang= → session → default.
  *
  * Invalid ?lang= is a 422 on JSON endpoints and silently ignored on pages.
+ * A valid choice by a signed-in user is also saved as preferred_locale,
+ * which seeds the session locale at the next login.
  */
 class SetLocale
 {
@@ -37,6 +39,11 @@ class SetLocale
         if ($requested !== null) {
             $session?->put(self::SESSION_KEY, $requested);
             $locale = $requested;
+
+            $user = $request->user();
+            if ($user !== null && $user->preferred_locale !== $requested) {
+                $user->forceFill(['preferred_locale' => $requested])->saveQuietly();
+            }
         } else {
             $locale = $this->fallback($session?->get(self::SESSION_KEY), $supported);
         }

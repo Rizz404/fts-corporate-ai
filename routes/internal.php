@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\PreferenceController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Internal JSON API (/api/v1)
@@ -10,3 +13,7 @@
 | Business endpoints are added by the plan that owns them.
 |
 */
+
+Route::middleware('account')->group(function () {
+    Route::post('preferences', [PreferenceController::class, 'update'])->name('preferences.update');
+});
