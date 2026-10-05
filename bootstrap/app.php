@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ApplyCompanySettings;
 use App\Http\Middleware\AssignRequestId;
 use App\Http\Middleware\EnsureAccountIsActive;
 use App\Http\Middleware\EnsurePasswordChanged;
@@ -19,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(AssignRequestId::class);
-        $middleware->web(append: [SetLocale::class]);
+        $middleware->web(append: [SetLocale::class, ApplyCompanySettings::class]);
 
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(fn () => route('office.reception'));

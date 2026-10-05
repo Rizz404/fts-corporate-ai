@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Modules\Experience\Support\CompanySettings;
 use App\Modules\Identity\CurrentActor;
 use App\Modules\Identity\Presenters\AdminNavigation;
 use Illuminate\Support\Facades\Gate;
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->scoped(CurrentActor::class);
+        $this->app->scoped(CompanySettings::class);
     }
 
     /**

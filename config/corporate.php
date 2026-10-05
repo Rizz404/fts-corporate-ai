@@ -60,16 +60,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Scene assets
+    | Scene images
     |--------------------------------------------------------------------------
     |
-    | Public path of office illustrations. Plan 3 adds the actual files.
+    | "placeholder": random images with a fixed seed per scene (development and
+    | internal pilot only). "local": files in public/{asset_path}/{name}.{ext}
+    | once the final illustrations exist (Plan 8). URLs are always built by
+    | App\Modules\Experience\Support\SceneImages and never contain user data.
     |
     */
 
     'scenes' => [
+        'image_source' => env('SCENE_IMAGE_SOURCE', 'placeholder'),
+        'placeholder_base_url' => env('SCENE_PLACEHOLDER_BASE_URL', 'https://picsum.photos'),
         'asset_path' => 'assets/corporate',
-        'names' => ['reception', 'knowledge', 'hr', 'it', 'requests'],
+        'local_extension' => env('SCENE_IMAGE_EXTENSION', 'svg'),
     ],
 
 ];
