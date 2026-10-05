@@ -4,6 +4,7 @@ namespace App\Modules\Identity\Presenters;
 
 use App\Modules\Identity\ActorContext;
 use App\Modules\Knowledge\Support\KnowledgeAuthorization;
+use App\Modules\Support\Support\TicketAccess;
 
 /**
  * Builds the admin sidebar from server-side abilities. Items for modules
@@ -31,8 +32,8 @@ final class AdminNavigation
             $items[] = ['label' => __('ui.nav.knowledge'), 'href' => route('admin.knowledge.index'), 'icon' => 'book-open', 'active' => $is('admin.knowledge.*')];
         }
 
-        if ($actor->isStaff()) {
-            $items[] = ['label' => __('ui.nav.tickets'), 'href' => null, 'icon' => 'ticket', 'active' => false];
+        if (TicketAccess::handledTeamIds($actor) !== []) {
+            $items[] = ['label' => __('ui.nav.tickets'), 'href' => route('admin.tickets.index'), 'icon' => 'ticket', 'active' => $is('admin.tickets.*')];
         }
 
         if ($actor->isAdmin()) {
