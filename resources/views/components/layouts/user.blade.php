@@ -65,7 +65,7 @@
             </div>
         </header>
 
-        <main id="main-content" tabindex="-1" class="relative isolate flex-1 focus:outline-none">
+        <main id="main-content" tabindex="-1" class="relative isolate flex-1 transition duration-200 ease-out focus:outline-none motion-reduce:transition-none">
             @isset($backdrop)
                 <div class="absolute inset-0 -z-10 overflow-hidden" aria-hidden="true">{{ $backdrop }}</div>
             @endisset

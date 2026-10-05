@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CompanySettingsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DepartmentController;
 use App\Http\Controllers\Admin\UserController;
@@ -25,14 +26,21 @@ Route::middleware('account.active')->group(function () {
 });
 
 Route::middleware('account')->group(function () {
-    // Temporary until Plan 3 adds the office scenes.
-    Route::get('office', [OfficeController::class, 'reception'])->name('office.reception');
+    Route::prefix('office')->name('office.')->group(function () {
+        Route::get('/', [OfficeController::class, 'reception'])->name('reception');
+        Route::get('knowledge', [OfficeController::class, 'knowledge'])->name('knowledge');
+        Route::get('hr', [OfficeController::class, 'hr'])->name('hr');
+        Route::get('it', [OfficeController::class, 'it'])->name('it');
+        Route::get('requests', [OfficeController::class, 'requests'])->name('requests');
+    });
 
     Route::prefix('admin')->name('admin.')->middleware('can:admin.access')->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
         Route::resource('users', UserController::class)->except(['show', 'destroy']);
         Route::post('users/{user}/reset-password', [UserPasswordController::class, 'store'])->name('users.reset-password');
         Route::resource('departments', DepartmentController::class)->except(['show', 'destroy']);
+        Route::get('settings', [CompanySettingsController::class, 'edit'])->name('settings.edit');
+        Route::patch('settings', [CompanySettingsController::class, 'update'])->name('settings.update');
     });
 });
 
