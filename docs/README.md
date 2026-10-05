@@ -10,7 +10,7 @@ Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis b
 |---|---|---|---|---|
 | 1 | [Setup](PLAN_01_SETUP.md) | Laravel/PostgreSQL, Tailwind/Alpine, template guest/admin/user, tema, dan komponen | Master + kontrak | Implemented |
 | 2 | [Akun dan akses](PLAN_02_IDENTITY_AND_ACCESS.md) | Login, provisioning, departemen, role, staff/editor assignment, dan audit | 1 | Implemented |
-| 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Ready |
+| 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Implemented |
 | 4 | [CMS pengetahuan](PLAN_04_KNOWLEDGE_CMS.md) | Artikel/revisi/terjemahan, publikasi, audience, dan retrieval manual | 3 | Ready |
 | 5 | [Percakapan dan AI](PLAN_05_CONVERSATION_AND_AI.md) | Chat tersimpan, gateway seperti hotel, sumber jawaban, lease, dan recovery | 4 | Ready |
 | 6 | [Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md) | Draft/konfirmasi, antrean staf, pesan, status, notifikasi, dan idempotensi | 5 | Ready |

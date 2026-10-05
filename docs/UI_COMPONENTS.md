@@ -44,6 +44,21 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 
 `navItems` (admin dan user) berbentuk `[['label' => string, 'href' => ?string, 'icon' => ?string, 'active' => bool]]`. Item tanpa `href` tampil nonaktif dengan label "Segera".
 
+### Scene kantor
+
+`x-office-stage` (`resources/views/components/office-stage.blade.php`) adalah satu-satunya cara menyusun halaman `/office/*`. Props: `scene` (`App\Modules\Experience\Data\SceneData` dari `BuildScene`), `adminHref`. Slot default = panel konten ruang; slot `chat` opsional (Plan5).
+
+- Gambar backdrop/karakter berasal dari `SceneImages` (placeholder acak ber-seed atau file lokal) dengan fallback bila gagal dimuat (`Alpine.data('sceneImage')`). Gambar bersifat dekoratif (`alt=""`).
+- Menu ruang memakai `x-navigation.user-menu` lewat `navItems` dari `SceneData::$menu`.
+- Narrator (Web Speech) dan suara (Web Audio) hanya aktif atas aksi pengguna; transisi keluar 200ms untuk link `/office*` (`Alpine.data('officeStage')`).
+- Context scene tersedia di `<script type="application/json" id="office-context">`. Context ini bukan identitas; server tetap memverifikasi.
+
+```blade
+<x-office-stage :scene="$scene" :admin-href="$adminHref">
+    <x-ui.card :title="…">…</x-ui.card>
+</x-office-stage>
+```
+
 ## Navigasi
 
 | Komponen | Source | Props | Catatan |

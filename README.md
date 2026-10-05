@@ -59,7 +59,8 @@ Password sementara dimasukkan lewat prompt tersembunyi (minimal 12 karakter) dan
 | `/` | Alihkan ke `/login` atau `/office` |
 | `/login` | Login karyawan |
 | `/password/change` | Ganti password (wajib untuk password sementara) |
-| `/office` | Halaman karyawan sementara (diganti scene kantor di Plan 3) |
+| `/office`, `/office/{knowledge,hr,it,requests}` | Kantor virtual: Resepsionis, Pusat Pengetahuan, Meja HR, IT Helpdesk, Permintaan Saya |
+| `/admin/settings` | Nama brand dan teks sambutan (admin) |
 | `/admin` | Panel admin (admin/editor/staff; kelola akun dan departemen khusus admin) |
 | `/up` | Health check framework |
 | `/dev/ui` | Galeri komponen (hanya local/testing) |
@@ -93,6 +94,7 @@ Aturan dasar:
 ```text
 app/Http/Middleware/      AssignRequestId, SetLocale, EnsureAccountIsActive, EnsurePasswordChanged, …
 app/Modules/Identity/     ActorContext, actions akun, aturan validasi, AdminGuard
+app/Modules/Experience/   SceneCode, BuildScene/SceneData, SceneImages, CompanySettings
 app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
 app/Support/Ui/           ComponentStyles, FieldState
 config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene

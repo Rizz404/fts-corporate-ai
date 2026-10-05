@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 3 |
-| Status | Ready |
+| Status | Implemented |
 | Dependensi | [Plan 2](PLAN_02_IDENTITY_AND_ACCESS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -78,4 +78,31 @@ Checklist untuk pengguna:
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Simpan daftar route, konfigurasi sumber gambar (placeholder/local), dan checklist untuk pengguna; screenshot bila tersedia untuk memudahkan review scene.
+### Hasil implementasi (5 Oktober 2026)
+
+**Status: Implemented.** Verifikasi otomatis menunggu Plan8.
+
+**Route**: `GET /office` (`office.reception`), `/office/knowledge`, `/office/hr`, `/office/it`, `/office/requests` dalam middleware `account`; `GET|PATCH /admin/settings` (admin, via `CompanySettingPolicy`).
+
+**Experience module** (`app/Modules/Experience`)
+- `Enums\SceneCode` (route name, ikon, label), `Data\SceneData`, `Queries\BuildScene` (read-only; menu lima ruang, intro terjemahan, intro reception dari welcome text perusahaan bila diisi, topik saran, context `{scene, article_id, ticket_public_id}`).
+- `Support\SceneImages`: resolver gambar. `SCENE_IMAGE_SOURCE=placeholder` → `{SCENE_PLACEHOLDER_BASE_URL}/seed/corporate-{scene}/1600/900` dan `.../corporate-assistant/600/800` (default picsum.photos, seed tetap); `local` → `public/assets/corporate/{name}.{SCENE_IMAGE_EXTENSION}`.
+- `Support\CompanySettings` (scoped, satu query per request, default bila tabel belum ada) dan middleware `ApplyCompanySettings` yang menerapkan brand name ke `config('corporate.brand.name')` sehingga semua layout memakai nama dari admin tanpa query di komponen.
+
+**Data**: `company_settings` (brand_name, welcome_text jsonb id/en/ja, updated_by, timestamps), baris id=1 di-seed `ReferenceSeeder`. Form settings hanya teks (menolak `<`, `>`, `javascript:`, URL), maksimal 160/1000 karakter, perubahan diaudit `company_settings.updated`.
+
+**UI**
+- `x-office-stage` (`resources/views/components/office-stage.blade.php`) menyusun `x-layouts.user`: backdrop gambar + overlay, kartu karakter dengan fallback ikon, panel judul/intro/topik, tombol narrator dan suara, slot konten, slot chat (pemberitahuan "segera tersedia"), context JSON `#office-context` lewat `@json`.
+- View `office/{reception,knowledge,hr,it,requests}`: reception berisi kartu ruang; HR/IT memakai `_service-desk` (layanan umum + catatan bahwa aturan resmi ada di Pusat Pengetahuan); knowledge dan requests berisi empty state, CTA permintaan nonaktif.
+- JS: `resources/js/office-stage.js` (`officeStage`: narrator, suara, transisi keluar 200ms untuk link `/office*` same-origin, menghormati modifier/target/download/reduced motion, reset saat bfcache; `sceneImage`: fallback walau error terjadi sebelum Alpine aktif), `narrator.js` (speechSynthesis, pilih voice sesuai id-ID/en-US/ja-JP, tidak autoplay), `sound.js` (Web Audio setelah toggle), `shared/navigation.js`. Didaftarkan di `ui/register.js`; preferensi suara di localStorage `fts-office:{userId}:sound`.
+- Menu Pengaturan admin aktif; halaman `admin/settings/edit` memakai tabs per bahasa (tab yang berisi error terbuka otomatis).
+- Halaman office sementara Plan2 dihapus.
+
+**Perintah setup yang dijalankan**: `php artisan migrate`, `php artisan db:seed`, `php artisan view:cache`, `php artisan route:list`, `npm run build`.
+
+**Penyimpangan dan keputusan**
+- Gambar memakai placeholder acak (keputusan pengguna); ilustrasi/logo final di Plan8.
+- Topik saran ditampilkan sebagai label saja; menjadi pertanyaan ke chat di Plan5.
+- Hanya preferensi suara yang disimpan; narrator tidak pernah berjalan otomatis sehingga tidak perlu disimpan.
+
+**Checklist untuk pengguna** — lihat bagian "Kriteria implementasi dan verifikasi pengguna" (langkah 1–8).
