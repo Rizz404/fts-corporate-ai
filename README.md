@@ -83,7 +83,7 @@ ASSISTANT_REASONING_EFFORT=none               # untuk thinking model (mis. Qwen3
 LOCAL_LLM_CA_BUNDLE=                           # opsional: path file CA bila PHP tidak punya CA bundle (cURL error 60)
 ```
 
-Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi fallback berisi artikel terkait.
+Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi fallback berisi artikel terkait. Tool calling (cari artikel, cek tiket sendiri, siapkan draft tiket) aktif secara default; set `ASSISTANT_TOOLS_ENABLED=false` untuk provider yang tidak mendukung function calling. Asisten hanya menyiapkan draft; tiket dibuat saat karyawan menekan tombol konfirmasi.
 
 ## URL
 
@@ -98,6 +98,8 @@ Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi f
 | `/office/requests`, `/office/requests/create` | Permintaan HR/IT karyawan (wizard, status, balasan staf) |
 | `/admin/tickets` | Antrean tiket staf (sesuai penugasan tim) |
 | `/admin/settings` | Nama brand dan teks sambutan (admin) |
+| `/admin/operations` | Metrik 7 hari, alert pilot, dan kesiapan (admin) |
+| `/api/v1/admin/readiness` | Readiness JSON: database, cache, provider, heartbeat (admin) |
 | `/admin` | Panel admin (admin/editor/staff; kelola akun dan departemen khusus admin) |
 | `/up` | Health check framework |
 | `/dev/ui` | Galeri komponen (hanya local/testing) |
@@ -110,8 +112,22 @@ Tanpa provider (atau `ASSISTANT_ENABLED=false`), chat tetap tampil dan memberi f
 | `composer setup` | Setup awal non-destruktif |
 | `composer dev` | Server, queue listener, dan Vite bersamaan |
 | `npm run dev` / `npm run build` | Vite dev server / build produksi |
+| `composer test` | PHPUnit (PostgreSQL `corporate_ai_test` dari `.env.testing`) |
+| `php vendor/bin/pint --test` | Cek gaya kode PHP |
+| `npm run lint:ui` | Cek konvensi UI (token warna, Alpine tunggal) |
+| `npm run test:ui` | Tes Node (API helper, safe-card-renderer, lint UI) |
+| `php artisan corporate:recover-turns` | Pulihkan turn AI yang macet (terjadwal tiap menit) |
+| `php artisan corporate:purge-data [--dry-run]` | Retensi data (terjadwal 02:00 WIB) |
+| `php artisan corporate:eval` | Evaluasi model dengan corpus sintetis ([docs/evals](docs/evals/README.md)) |
+| `python scripts/generate-visual-assets.py` | Bangun ulang ilustrasi SVG di `public/assets/corporate` |
 
-Skrip pengujian (`composer test`, `npm run test:ui`, `npm run lint:ui`) dan CI diselesaikan di Plan 8 sesuai [kebijakan pengujian](docs/README.md#kebijakan-pengujian).
+### Pengujian
+
+Salin `.env.testing.example` menjadi `.env.testing`, isi `DB_PASSWORD`, dan buat role `corporate_ai` serta database `corporate_ai_test` di PostgreSQL 17. Lalu `composer test`. Tes konkurensi (`--group=postgres`) hanya berjalan di PostgreSQL. Iterasi cepat tanpa PostgreSQL: `DB_CONNECTION=sqlite DB_DATABASE=:memory: php artisan test` (bukan pengganti run PostgreSQL). CI ada di `.github/workflows/ci.yml`.
+
+### Operasional dan rilis
+
+Runbook production (setup, scheduler, backup/restore, retensi, alert, insiden) ada di [docs/OPERATIONS.md](docs/OPERATIONS.md); contoh konfigurasi nginx, supervisor, PHP, env, dan skrip backup ada di [`deploy/`](deploy).
 
 ## UI: layout, komponen, dan tema
 
@@ -133,9 +149,10 @@ app/Http/Middleware/      AssignRequestId, SetLocale, EnsureAccountIsActive, Ens
 app/Modules/Identity/     ActorContext, actions akun, aturan validasi, AdminGuard
 app/Modules/Experience/   SceneCode, BuildScene/SceneData, SceneImages, CompanySettings
 app/Modules/Knowledge/    actions artikel/revisi, KnowledgeRetriever, VisibleRevisions, TextNormalizer
-app/Modules/Assistant/    gateway chat completions, PromptComposer, AnswerValidator, ToolRegistry
+app/Modules/Assistant/    gateway chat completions, PromptComposer, AnswerValidator, tool registry/executor dan lima tool
 app/Modules/Conversation/ percakapan AI: AppendTurn, ExecuteTurn, history, lease, recovery
 app/Modules/Support/      tiket HR/IT: draft, konfirmasi idempoten, assignment, status, pesan, notifikasi
+app/Modules/Operations/   retensi data, metrik operasional, readiness, heartbeat
 app/Support/Http/         ApiResponse, ApiException, ApiExceptionRenderer (envelope JSON /api/v1)
 app/Support/Ui/           ComponentStyles, FieldState
 config/corporate.php      brand, timezone tampilan, locale, retensi, aset scene

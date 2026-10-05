@@ -8,14 +8,14 @@ Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis b
 
 | Plan | Dokumen | Hasil | Dependensi | Status |
 |---|---|---|---|---|
-| 1 | [Setup](PLAN_01_SETUP.md) | Laravel/PostgreSQL, Tailwind/Alpine, template guest/admin/user, tema, dan komponen | Master + kontrak | Implemented |
+| 1 | [Setup](PLAN_01_SETUP.md) | Laravel/PostgreSQL, Tailwind/Alpine, template guest/admin/user, tema, dan komponen | Master + kontrak | Done |
 | 2 | [Akun dan akses](PLAN_02_IDENTITY_AND_ACCESS.md) | Login, provisioning, departemen, role, staff/editor assignment, dan audit | 1 | Implemented |
-| 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Implemented |
+| 3 | [Virtual office](PLAN_03_VIRTUAL_OFFICE.md) | Scene kantor, karakter, navigasi, branding, dan tiga bahasa | 2 | Done |
 | 4 | [CMS pengetahuan](PLAN_04_KNOWLEDGE_CMS.md) | Artikel/revisi/terjemahan, publikasi, audience, dan retrieval manual | 3 | Implemented |
 | 5 | [Percakapan dan AI](PLAN_05_CONVERSATION_AND_AI.md) | Chat tersimpan, gateway seperti hotel, sumber jawaban, lease, dan recovery | 4 | Implemented |
 | 6 | [Tiket HR dan IT](PLAN_06_HR_IT_TICKETS.md) | Draft/konfirmasi, antrean staf, pesan, status, notifikasi, dan idempotensi | 5 | Implemented |
-| 7 | [Tool AI dan workflow](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md) | Tool calling dan perjalanan SOP sampai tiket/balasan staf | 6 | Implemented |
-| 8 | [Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md) | Seluruh pengujian Plan1–7, CI/lint, aset visual final, evaluasi model, retensi, readiness, staging/deployment artifacts, dan pilot | 7 | Ready |
+| 7 | [Tool AI dan workflow](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md) | Tool calling dan perjalanan SOP sampai tiket/balasan staf | 6 | Done |
+| 8 | [Kualitas dan rilis](PLAN_08_QUALITY_AND_RELEASE.md) | Seluruh pengujian Plan1–7, CI/lint, aset visual final, evaluasi model, retensi, readiness, staging/deployment artifacts, dan pilot | 7 | In Progress |
 
 Master plan bernomor000 merupakan acuan produk, bukan Plan1. Penyebutan "Plan1", "Plan2", dan seterusnya mengacu ke tabel di atas. Urutan lama010/020/... diganti oleh dokumen aktual PLAN_01/...; file010/020 tersebut sebelumnya hanya nama yang direncanakan dan tidak pernah dibuat.
 

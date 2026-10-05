@@ -3,9 +3,9 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 8 |
-| Status | Ready |
+| Status | In Progress |
 | Dependensi | [Plan 7](PLAN_07_AI_TOOLS_AND_WORKFLOWS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
-| Hasil implementasi | Belum dikerjakan |
+| Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
 ## Hasil yang harus tersedia
 
@@ -143,4 +143,60 @@ Rollout: staging → pilot terbatas → perluasan akses setelah quality gate lul
 
 ## Catatan hasil implementasi
 
-Belum dikerjakan. Pisahkan hasil pemeriksaan otomatis, review manual, evaluasi model nyata, staging, dan production. Setiap bagian yang belum dijalankan ditulis jelas beserta input yang kurang.
+### Hasil (5 Oktober 2026)
+
+**Status: In Progress.** Semua artefak dan pemeriksaan yang bisa dijalankan lokal selesai. Tersisa: run suite di PostgreSQL (menunggu `.env.testing` dari pengguna), CI di GitHub, review manual mobile/aksesibilitas, staging, dan pilot (menunggu input deployment).
+
+**Keputusan pengguna**: database tes PostgreSQL diisi pengguna di `.env.testing` (tidak dilacak); aset visual final berupa ilustrasi SVG flat buatan sendiri.
+
+#### Artefak yang dibuat
+
+- Infrastruktur tes: `.env.testing.example` (+ `.env.testing` lokal tanpa password), `TestCase::withoutVite()`, trait `BuildsCorporateData` dan `TalksToAssistant`, worker `tests/Support/concurrent-action.php` untuk race antarproses. `npm run test:ui` kini menjalankan semua `tests/js/*.test.js`.
+- `scripts/check-ui-conventions.mjs` (`npm run lint:ui`, hanya Node built-ins): literal warna, palette Tailwind, bg-white/text-black, arbitrary color, inline style warna, Alpine CDN/`Alpine.start()` ganda, class warna dinamis. Tidak ada pengecualian yang diperlukan.
+- CI `.github/workflows/ci.yml`: PostgreSQL 17, PHP 8.4, Node 22; composer validate, install dari lock, PHPUnit, Pint, npm ci, lint:ui, test:ui, build, composer audit, npm audit --omit=dev.
+- Operasional: `corporate:recover-turns` (tiap menit, juga heartbeat scheduler), `corporate:purge-data [--dry-run]` (02:00 Asia/Jakarta, withoutOverlapping, onOneServer, batch 200; tiket dihapus sebelum draft karena FK sirkular), `/admin/operations` (admin; metrik 7 hari + tiga alert pilot), `/api/v1/admin/readiness` (admin; DB, cache, setting provider tanpa memanggil model, heartbeat scheduler/worker). Kolom baru `ai_turns.outcome` (migrasi `000010`) untuk menghitung retrieval no-match. Modul baru `App\Modules\Operations` (retensi lintas modul tidak cocok di satu modul yang ada).
+- `docs/OPERATIONS.md`; `deploy/nginx.conf.example`, `supervisor.conf.example`, `php-production.ini.example`, `env.production.example`, `deploy/scripts/backup.sh`, `restore-staging.sh`.
+- Aset visual final: `scripts/generate-visual-assets.py` → `public/assets/corporate/{reception,knowledge,hr,it,requests,assistant,logo}.svg`, `public/favicon.svg|ico`, `apple-touch-icon.png`, ikon 192/512, `site.webmanifest`; brand mark di `x-navigation.brand` (SVG inline memakai token tema). Semua dibuat sendiri, tanpa lisensi pihak ketiga. `SCENE_IMAGE_SOURCE` default `local`; production selalu `local` walau dikonfigurasi placeholder. Ikon `chart-bar` ditambahkan ke whitelist `ComponentStyles` (perubahan komponen bersama).
+- Evaluasi: `docs/evals/` (10 artikel sintetis, 90 skenario, `build_corpus.py`), perintah `corporate:eval` (hanya local/testing, database bernama `*eval*`).
+
+#### Pemeriksaan otomatis (lokal, Windows)
+
+| Pemeriksaan | Hasil |
+|---|---|
+| PHPUnit pada SQLite `:memory:` | 190 lulus, 5 dilewati (grup `postgres`), 885 asersi |
+| PHPUnit pada PostgreSQL 17 | **Belum dijalankan**: `.env.testing` belum berisi password |
+| Pint `--test` | Lulus (setelah memperbaiki format beberapa file Plan 2/6) |
+| `composer validate --strict` | Lulus |
+| `npm run lint:ui` | Lulus (96 file) |
+| `npm run test:ui` | 26 lulus |
+| `npm run build` | Lulus |
+| `composer audit`, `npm audit` (runtime dan semua) | 0 kerentanan |
+| CI GitHub Actions | Belum dijalankan (repo belum di-push) |
+
+Cakupan katalog: SetupSmoke/UiPreview/UiComponentContract/ApiEnvelope (Plan1, sudah ada), `IdentityAccessTest` (Plan2), `OfficeSceneTest` (Plan3), `KnowledgeTest` (Plan4), `ModelGatewayTest` + `ConversationTest` (Plan5), `TicketWorkflowTest` (Plan6), `AssistantToolsTest` (Plan7 registry, loop, journey), `OperationsTest` (retensi, metrik, readiness, jadwal), `PostgresConcurrencyTest` (konfirmasi bersamaan, dua admin saling menurunkan, publish bersamaan, partial unique index; dua proses PHP nyata). Node: `api-client`, `safe-card-renderer`, `ui-conventions`.
+
+Temuan saat menulis tes: `public/hot` membuat view menunjuk Vite dev server sehingga tes kini memanggil `withoutVite()`; tes smoke lama masih menguji landing page yang dihapus Plan 3 dan diperbarui.
+
+#### Review manual (browser, akun demo lokal)
+
+Diperiksa di desktop: ilustrasi resepsionis, karakter, dan logo baru tampil; chat "printer macet, buatkan permintaan ke IT" → kartu draft → konfirmasi dua langkah → kartu "Permintaan terkirim" dengan nomor referensi dan status Terbuka; tidak ada error console. Perbaikan dari review: tombol "Periksa dan ubah" ganda di bawah kartu draft disembunyikan. Review 375×812/768×1024, keyboard/focus, reduced motion, dan kontras belum dilakukan menyeluruh (lihat checklist).
+
+#### Evaluasi model nyata
+
+`docs/evals/results/2026-10-05-qwen36-35b-a3b-uncensored-hauhaucs-aggressive.md`: provider LM Studio, model `qwen3.6-35b-a3b-uncensored-hauhaucs-aggressive`, prompt `corporate-v2`, tools aktif, `reasoning_effort=none`. **90/90** (30/30 per bahasa), semua akses terlarang ditolak, 0 tiket tanpa klik, 0 efek ganda saat retry, latensi p50 3,4 s / p95 7,0 s, sekitar 162 ribu token. Pemeriksaan bersifat otomatis (sumber, fakta kunci, efek domain); jawaban perlu dibaca manusia. Corpus kecil dan sintetis: hasil ini bukan jaminan akurasi pada knowledge perusahaan nyata. Label model *uncensored/aggressive* tetap menjadi risiko kebijakan yang perlu diputuskan sebelum pilot.
+
+#### Staging, production, dan pilot
+
+Belum dilakukan. Input yang belum ada: hostname/TLS, server PHP 8.4 + PostgreSQL 17, kredensial database, lokasi backup privat. Langkahnya ada di `docs/OPERATIONS.md` bagian 2, 4, dan 7.
+
+#### Status plan
+
+Plan1, Plan3, Plan7 menjadi **Done** (seluruh skenario katalognya lulus dan tidak bergantung PostgreSQL). Plan2, Plan4, Plan5, Plan6 tetap **Implemented**: skenario non-konkurensi lulus, tetapi skenario wajib PostgreSQL (lock admin terakhir, publish bersamaan, dedup/lease, konfirmasi bersamaan) baru bisa dinyatakan lulus setelah `composer test` di PostgreSQL. Plan8 menjadi Done setelah run PostgreSQL, CI hijau, review manual lengkap, dan staging/pilot.
+
+#### Checklist untuk pengguna
+
+1. Isi `DB_PASSWORD` di `.env.testing`, buat role `corporate_ai` dan database `corporate_ai_test`, lalu jalankan `composer test` (atau minta saya menjalankannya).
+2. Tinjau gaya ilustrasi/logo di `/office`; minta revisi bila perlu (`scripts/generate-visual-assets.py`).
+3. Cek tampilan di ponsel (375×812) dan tablet: chat dock, kartu draft, wizard `?draft=`, `/admin/operations`.
+4. Baca jawaban di laporan evaluasi; putuskan apakah model *uncensored* boleh dipakai untuk pilot atau perlu model instruksi standar (jalankan ulang `corporate:eval`).
+5. Siapkan input deployment (bagian 1 `docs/OPERATIONS.md`) bila ingin lanjut ke staging.

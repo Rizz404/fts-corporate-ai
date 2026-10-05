@@ -3,7 +3,7 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 3 |
-| Status | Implemented |
+| Status | Done |
 | Dependensi | [Plan 2](PLAN_02_IDENTITY_AND_ACCESS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
 | Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 

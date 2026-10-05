@@ -3,7 +3,7 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 1 |
-| Status | Implemented |
+| Status | Done |
 | Diperbarui | 5 Oktober 2026 |
 | Dependensi | [Master](000_MASTER_PLAN.md), [kontrak teknis](TECHNICAL_CONTRACTS.md), [fondasi UI](UI_FOUNDATION.md) |
 | Hasil implementasi | [Bagian 11](#11-referensi-dan-catatan-implementasi) |

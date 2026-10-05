@@ -3,7 +3,7 @@
 | Metadata | Nilai |
 |---|---|
 | ID | 7 |
-| Status | Implemented |
+| Status | Done |
 | Dependensi | [Plan 6](PLAN_06_HR_IT_TICKETS.md), [kontrak teknis](TECHNICAL_CONTRACTS.md) |
 | Hasil implementasi | [Catatan hasil implementasi](#catatan-hasil-implementasi) |
 
