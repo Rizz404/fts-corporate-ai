@@ -24,6 +24,10 @@ return [
     'updated' => 'Updated',
     'more' => 'More options',
 
+    'brand' => [
+        'subtitle' => 'Virtual office · AI',
+    ],
+
     'nav' => [
         'admin' => 'Admin navigation',
         'office' => 'Office rooms',
@@ -66,6 +70,8 @@ return [
 
     'chat' => [
         'title' => 'Assistant',
+        'online' => 'Online and ready to help',
+        'ask_ai' => 'Ask AI',
         'open' => 'Open assistant',
         'close' => 'Close assistant',
         'intro' => 'Ask about company SOPs and policies. Answers come from official articles and show their sources.',
@@ -285,6 +291,26 @@ return [
     'office' => [
         'welcome' => 'Welcome, :name',
         'assistant_name' => 'Office assistant',
+        'explore' => 'Explore the office',
+        'skip' => 'Skip',
+        'ask_prompt' => 'What can I help you with today?',
+        'command_placeholder' => 'Ask about SOPs, policies, or request HR/IT help…',
+        'tour' => [
+            'label' => 'App introduction',
+            'slides' => 'Slides',
+            'agenda' => 'Agenda',
+            'start' => 'Start the tour',
+            'points' => 'What we can help with',
+            'enter' => 'Enter :room',
+            'ask_here' => 'Ask AI about this',
+            'finale' => 'I am ready to help any time. Type your question here, or pick an example.',
+            'captions' => 'Assistant narration',
+            'autoplay' => 'Autoplay',
+            'pause' => 'Pause',
+            'prev' => 'Previous slide',
+            'next' => 'Next slide',
+            'ask_label' => 'Ask AI',
+        ],
         'narrator_play' => 'Read aloud',
         'narrator_stop' => 'Stop reading',
         'sound_on' => 'Sound on',

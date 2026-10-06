@@ -24,6 +24,10 @@ return [
     'updated' => '更新日',
     'more' => 'その他の操作',
 
+    'brand' => [
+        'subtitle' => 'バーチャルオフィス · AI',
+    ],
+
     'nav' => [
         'admin' => '管理ナビゲーション',
         'office' => 'オフィスの部屋',
@@ -66,6 +70,8 @@ return [
 
     'chat' => [
         'title' => 'アシスタント',
+        'online' => 'オンライン · すぐにお答えします',
+        'ask_ai' => 'AIに質問',
         'open' => 'アシスタントを開く',
         'close' => 'アシスタントを閉じる',
         'intro' => '会社の SOP や規程について質問できます。回答は公式記事に基づき、出典を表示します。',
@@ -285,6 +291,26 @@ return [
     'office' => [
         'welcome' => 'ようこそ、:name さん',
         'assistant_name' => 'オフィスアシスタント',
+        'explore' => 'オフィスを巡る',
+        'skip' => 'スキップ',
+        'ask_prompt' => '今日は何をお手伝いしましょうか？',
+        'command_placeholder' => 'SOP・規程の質問や、HR/ITへの依頼をどうぞ…',
+        'tour' => [
+            'label' => 'アプリの紹介',
+            'slides' => 'スライド',
+            'agenda' => 'アジェンダ',
+            'start' => 'ツアーを始める',
+            'points' => 'サポート内容',
+            'enter' => ':room に入る',
+            'ask_here' => 'これについてAIに質問',
+            'finale' => 'いつでもお手伝いします。ここに質問を入力するか、例を選んでください。',
+            'captions' => 'アシスタントのナレーション',
+            'autoplay' => '自動再生',
+            'pause' => '一時停止',
+            'prev' => '前のスライド',
+            'next' => '次のスライド',
+            'ask_label' => 'AIに質問',
+        ],
         'narrator_play' => '読み上げる',
         'narrator_stop' => '読み上げを停止',
         'sound_on' => 'サウンド オン',

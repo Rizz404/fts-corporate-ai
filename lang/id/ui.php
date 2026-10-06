@@ -24,6 +24,10 @@ return [
     'updated' => 'Diperbarui',
     'more' => 'Opsi lainnya',
 
+    'brand' => [
+        'subtitle' => 'Kantor virtual · AI',
+    ],
+
     'nav' => [
         'admin' => 'Navigasi admin',
         'office' => 'Ruang kantor',
@@ -66,6 +70,8 @@ return [
 
     'chat' => [
         'title' => 'Asisten',
+        'online' => 'Online, siap membantu',
+        'ask_ai' => 'Tanya AI',
         'open' => 'Buka asisten',
         'close' => 'Tutup asisten',
         'intro' => 'Tanyakan SOP dan kebijakan perusahaan. Jawaban berasal dari artikel resmi dan menampilkan sumbernya.',
@@ -285,6 +291,26 @@ return [
     'office' => [
         'welcome' => 'Selamat datang, :name',
         'assistant_name' => 'Asisten kantor',
+        'explore' => 'Jelajahi kantor',
+        'skip' => 'Lewati',
+        'ask_prompt' => 'Apa yang bisa saya bantu hari ini?',
+        'command_placeholder' => 'Tanya SOP, kebijakan, atau minta bantuan HR/IT…',
+        'tour' => [
+            'label' => 'Pengenalan aplikasi',
+            'slides' => 'Slide',
+            'agenda' => 'Agenda',
+            'start' => 'Mulai tur',
+            'points' => 'Yang bisa dibantu',
+            'enter' => 'Masuk ke :room',
+            'ask_here' => 'Tanya AI soal ini',
+            'finale' => 'Aku siap membantu kapan saja. Tulis pertanyaanmu di sini, atau pilih salah satu contoh.',
+            'captions' => 'Narasi asisten',
+            'autoplay' => 'Putar otomatis',
+            'pause' => 'Jeda',
+            'prev' => 'Slide sebelumnya',
+            'next' => 'Slide berikutnya',
+            'ask_label' => 'Tanya AI',
+        ],
         'narrator_play' => 'Bacakan',
         'narrator_stop' => 'Berhenti membaca',
         'sound_on' => 'Suara aktif',
