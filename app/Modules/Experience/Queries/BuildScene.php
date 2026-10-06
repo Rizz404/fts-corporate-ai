@@ -52,7 +52,7 @@ final class BuildScene
     }
 
     /**
-     * @return list<array{code: string, label: string, href: ?string, icon: string, active: bool}>
+     * @return list<array{code: string, label: string, href: ?string, icon: string, image: string, active: bool}>
      */
     private function menu(SceneCode $current): array
     {
@@ -61,6 +61,7 @@ final class BuildScene
             'label' => $scene->label(),
             'href' => route($scene->routeName()),
             'icon' => $scene->icon(),
+            'image' => $this->images->backdrop($scene),
             'active' => $scene === $current,
         ], SceneCode::cases());
     }

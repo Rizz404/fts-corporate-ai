@@ -11,7 +11,7 @@ use App\Modules\Experience\Enums\SceneCode;
 final class SceneData
 {
     /**
-     * @param  list<array{code: string, label: string, href: ?string, icon: string, active: bool}>  $menu
+     * @param  list<array{code: string, label: string, href: ?string, icon: string, image: string, active: bool}>  $menu
      * @param  list<string>  $suggestedTopics
      * @param  array{scene: string, article_id: ?int, ticket_public_id: ?string}  $context
      */
