@@ -1,36 +1,93 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="Office assistant">
-<title>Office assistant</title>
-<rect x="0" y="0" width="600" height="800" rx="0" fill="#CDE8E4" />
-<circle cx="300" cy="330" r="230" fill="#FFFFFF" opacity="0.55"/>
-<circle cx="470" cy="150" r="40" fill="#FFFFFF" opacity="0.6"/>
-<circle cx="110" cy="560" r="26" fill="#FFFFFF" opacity="0.6"/>
-<path d="M110 800 C110 600 180 520 300 520 C420 520 490 600 490 800 Z" fill="#0F766E" />
-<path d="M255 520 L300 600 L345 520 Z" fill="#FFFFFF" />
-<path d="M300 600 L280 640 L300 700 L320 640 Z" fill="#203551" />
-<path d="M190 560 L255 520 L280 640 L230 800 L170 800 Z" fill="#115E59" opacity="0.35"/>
-<path d="M410 560 L345 520 L320 640 L370 800 L430 800 Z" fill="#115E59" opacity="0.35"/>
-<rect x="360" y="640" width="70" height="36" rx="6" fill="#FFFFFF" />
-<rect x="370" y="650" width="50" height="6" rx="3" fill="#0F766E" />
-<rect x="370" y="662" width="34" height="5" rx="2.5" fill="#526579" />
-<rect x="268" y="440" width="64" height="90" rx="24" fill="#D69B72" />
-<circle cx="300" cy="360" r="108" fill="#E9B48C" />
-<path d="M192 360 C180 250 250 205 312 210 C385 214 425 270 410 360 C395 300 350 280 300 286 C250 290 215 310 192 360 Z" fill="#2B2F3A" />
-<path d="M195 345 C186 400 196 440 214 460 L222 370 Z" fill="#2B2F3A" />
-<circle cx="258" cy="372" r="10" fill="#142337" />
-<circle cx="342" cy="372" r="10" fill="#142337" />
-<path d="M262 418 C285 440 315 440 338 418" fill="none" stroke="#142337" stroke-width="7" stroke-linecap="round"/>
-<circle cx="232" cy="405" r="14" fill="#F2B94B" opacity="0.35"/>
-<circle cx="368" cy="405" r="14" fill="#F2B94B" opacity="0.35"/>
-<path d="M196 360 C196 250 404 250 404 360" fill="none" stroke="#203551" stroke-width="12" stroke-linecap="round"/>
-<rect x="182" y="340" width="30" height="60" rx="12" fill="#203551" />
-<rect x="388" y="340" width="30" height="60" rx="12" fill="#203551" />
-<path d="M400 395 C400 440 370 455 335 455" fill="none" stroke="#203551" stroke-width="7" stroke-linecap="round"/>
-<circle cx="332" cy="455" r="9" fill="#203551" />
-<path d="M478 640 C520 600 540 520 520 470" fill="none" stroke="#0F766E" stroke-width="58" stroke-linecap="round"/>
-<circle cx="522" cy="452" r="34" fill="#E9B48C" />
-<rect x="70" y="120" width="150" height="100" rx="24" fill="#FFFFFF" />
-<path d="M150 220 L180 250 L180 218 Z" fill="#FFFFFF" />
-<circle cx="110" cy="170" r="10" fill="#0F766E" />
-<circle cx="145" cy="170" r="10" fill="#0F766E" />
-<circle cx="180" cy="170" r="10" fill="#0F766E" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="600" height="800" role="img" aria-label="AI assistant">
+<title>AI assistant</title>
+<defs>
+  <linearGradient id="blazer" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2B3475"/>
+    <stop offset="1" stop-color="#171D45"/>
+  </linearGradient>
+  <linearGradient id="hair" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#4A3030"/>
+    <stop offset="1" stop-color="#2A1B1E"/>
+  </linearGradient>
+  <linearGradient id="skin" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#F9DAC1"/>
+    <stop offset="1" stop-color="#F0C3A2"/>
+  </linearGradient>
+</defs>
+
+<!-- Back hair -->
+<path d="M205 310 C185 200 245 140 300 140 C355 140 415 200 395 310 C425 390 445 490 420 610 L180 610 C155 490 175 390 205 310 Z" fill="url(#hair)"/>
+
+<!-- Torso: blazer -->
+<path d="M92 800 C92 660 150 580 255 556 L345 556 C450 580 508 660 508 800 Z" fill="url(#blazer)"/>
+<path d="M455 600 C478 650 488 720 490 800" fill="none" stroke="#3A4596" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+
+<!-- Blouse and chest -->
+<path d="M238 552 L300 700 L362 552 Z" fill="#F7F5FF"/>
+<path d="M256 552 L300 636 L344 552 Z" fill="url(#skin)"/>
+
+<!-- Neck and chin shadow -->
+<path d="M266 440 L334 440 L338 552 C322 580 278 580 262 552 Z" fill="url(#skin)"/>
+<ellipse cx="300" cy="452" rx="58" ry="16" fill="#D9A582" opacity="0.55"/>
+
+<!-- Lapels -->
+<path d="M256 552 L300 636 L268 722 L196 612 C214 590 238 566 256 552 Z" fill="#323E8C"/>
+<path d="M344 552 L300 636 L332 722 L404 612 C386 590 362 566 344 552 Z" fill="#323E8C"/>
+<path d="M256 552 L300 636 L268 722" fill="none" stroke="#4B58B0" stroke-width="2.5" stroke-linejoin="round"/>
+<path d="M344 552 L300 636 L332 722" fill="none" stroke="#4B58B0" stroke-width="2.5" stroke-linejoin="round"/>
+
+<!-- Lapel pin: the assistant's spark -->
+<path d="M230 624 L235 637 L248 642 L235 647 L230 660 L225 647 L212 642 L225 637 Z" fill="#2DD4BF"/>
+
+<!-- Ears -->
+<ellipse cx="210" cy="338" rx="14" ry="22" fill="#F3CBAA"/>
+<ellipse cx="390" cy="338" rx="14" ry="22" fill="#F3CBAA"/>
+
+<!-- Head -->
+<path d="M208 320 C208 240 250 214 300 214 C350 214 392 240 392 320 C392 392 350 440 300 440 C250 440 208 392 208 320 Z" fill="url(#skin)"/>
+
+<!-- Front hair: cap, side-swept fringe, and long side locks -->
+<path d="M204 322 C192 214 252 156 306 158 C362 160 410 214 396 322 C386 268 356 236 318 226 C282 238 238 262 204 322 Z" fill="url(#hair)"/>
+<path d="M240 250 C268 230 300 226 330 236" fill="none" stroke="#6B4848" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+<path d="M204 322 C176 400 170 490 190 572 C216 530 226 430 228 352 Z" fill="url(#hair)"/>
+<path d="M396 322 C424 400 430 490 410 572 C384 530 374 430 372 352 Z" fill="url(#hair)"/>
+<path d="M196 430 C192 480 196 520 204 548" fill="none" stroke="#6B4848" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+<path d="M404 430 C408 480 404 520 396 548" fill="none" stroke="#6B4848" stroke-width="4" stroke-linecap="round" opacity="0.5"/>
+
+<!-- Earrings -->
+<circle cx="214" cy="372" r="6" fill="#2DD4BF"/>
+<circle cx="386" cy="372" r="6" fill="#2DD4BF"/>
+
+<!-- Eyebrows -->
+<path d="M250 310 Q270 300 290 308" fill="none" stroke="#3A2626" stroke-width="5" stroke-linecap="round"/>
+<path d="M310 308 Q330 300 350 310" fill="none" stroke="#3A2626" stroke-width="5" stroke-linecap="round"/>
+
+<!-- Eyes -->
+<ellipse cx="270" cy="338" rx="14" ry="10" fill="#FFFFFF"/>
+<ellipse cx="270" cy="338" rx="8.5" ry="9.5" fill="#4A2F27"/>
+<circle cx="270" cy="338" r="4" fill="#1E1210"/>
+<circle cx="274" cy="334" r="3" fill="#FFFFFF"/>
+<path d="M254 335 Q270 322 287 335" fill="none" stroke="#1E1210" stroke-width="3.5" stroke-linecap="round"/>
+<ellipse cx="330" cy="338" rx="14" ry="10" fill="#FFFFFF"/>
+<ellipse cx="330" cy="338" rx="8.5" ry="9.5" fill="#4A2F27"/>
+<circle cx="330" cy="338" r="4" fill="#1E1210"/>
+<circle cx="334" cy="334" r="3" fill="#FFFFFF"/>
+<path d="M313 335 Q330 322 346 335" fill="none" stroke="#1E1210" stroke-width="3.5" stroke-linecap="round"/>
+
+<!-- Nose, cheeks, smile -->
+<path d="M300 352 Q295 370 304 372" fill="none" stroke="#D9A88A" stroke-width="2.5" stroke-linecap="round"/>
+<circle cx="246" cy="376" r="15" fill="#FF8A65" opacity="0.3"/>
+<circle cx="354" cy="376" r="15" fill="#FF8A65" opacity="0.3"/>
+<path d="M278 392 Q300 414 322 392 Q300 400 278 392 Z" fill="#B4474F"/>
+
+<!-- Welcoming arm (viewer's left): sleeve, cuff, open palm -->
+<path d="M138 628 L66 728 L96 612" fill="none" stroke="#2B3475" stroke-width="58" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M118 640 L80 700" fill="none" stroke="#3A4596" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+<ellipse cx="97" cy="598" rx="30" ry="10" transform="rotate(-12 97 598)" fill="#F7F5FF"/>
+<ellipse cx="100" cy="566" rx="30" ry="34" fill="url(#skin)"/>
+<ellipse cx="68" cy="578" rx="9" ry="22" transform="rotate(-38 68 578)" fill="url(#skin)"/>
+<rect x="76" y="514" width="13" height="40" rx="6.5" transform="rotate(-14 82 560)" fill="url(#skin)"/>
+<rect x="89" y="506" width="13" height="42" rx="6.5" transform="rotate(-5 95 560)" fill="url(#skin)"/>
+<rect x="103" y="506" width="13" height="42" rx="6.5" transform="rotate(4 109 560)" fill="url(#skin)"/>
+<rect x="116" y="512" width="13" height="38" rx="6.5" transform="rotate(14 122 560)" fill="url(#skin)"/>
 </svg>
