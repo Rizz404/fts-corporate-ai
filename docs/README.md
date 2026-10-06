@@ -2,7 +2,7 @@
 
 Folder ini berisi delapan plan teknis yang dapat dikerjakan AI satu per satu. Setiap plan menentukan dependensi, paket atau skema, endpoint, urutan pekerjaan, pengujian, dan syarat selesai. Status implementasi tiap plan tercantum pada tabel di bawah.
 
-Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis bersama](TECHNICAL_CONTRACTS.md) untuk interface yang dipakai antar tahap. [Fondasi UI](UI_FOUNDATION.md) menetapkan tema, template, dan komponen reusable yang dibangun Plan1. Referensi sumber adalah [analisis FTS Hotel AI](../../ANALISIS_FTS_HOTEL_AI.md) dan kode di `../fts-hotel-ai` relatif terhadap root proyek.
+Baca [master plan](000_MASTER_PLAN.md) untuk tujuan produk dan [kontrak teknis bersama](TECHNICAL_CONTRACTS.md) untuk interface yang dipakai antar tahap. [Fondasi UI](UI_FOUNDATION.md) menetapkan tema, template, dan komponen reusable yang dibangun Plan1. [Daftar gambar visual](VISUAL_ASSETS.md) mencatat gambar scene/karakter yang dibutuhkan (sementara memakai placeholder acak). Referensi sumber adalah [analisis FTS Hotel AI](../../ANALISIS_FTS_HOTEL_AI.md) dan kode di `../fts-hotel-ai` relatif terhadap root proyek.
 
 ## Urutan pengerjaan
 

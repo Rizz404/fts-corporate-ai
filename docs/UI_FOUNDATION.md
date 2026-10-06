@@ -11,9 +11,9 @@ Template dibuat internal dengan Blade, Tailwind, Alpine, dan Heroicons. Tidak me
 | Blade component | Tanggung jawab dan slot |
 |---|---|
 | x-layouts.base | html/head/body, lang, title, meta CSRF, satu Vite bundle, skip link, toast container; slot utama dan head tambahan |
-| x-layouts.guest | Frame guest/login berpusat, brand, language switch, panel form, footer; title dan slot utama |
+| x-layouts.guest | Halaman login: form di kartu, panel showcase (karakter menyapa + prompt nyata dari ruang kantor) di layar lebar, brand + language switch, footer; title, heading, description, slot utama |
 | x-layouts.admin | Sidebar, mobile drawer, topbar, breadcrumb, judul/actions, main content; title, navigation, breadcrumbs, actions, slot utama |
-| x-layouts.user | Shell karyawan, header brand, language switch, navigasi kantor, area scene/content dan chat dock; title, navigation, backdrop, character, slot utama, chat |
+| x-layouts.user | Presenter karyawan (bagian 7): slide sorter, top bar dengan command pill "Tanya AI", konten (deck/kanvas), panel copilot; title, mode, accent, scene, sceneLabel, avatar, stage, navigation, topbar, flash, slot utama, chat |
 
 Semua layout selain base menyusun x-layouts.base. Masing-masing halaman memasang satu layout teratas, sehingga head/Vite/Alpine tidak terduplikasi. Admin dipakai juga editor/staff sesuai menu yang diotorisasi server; nama layout tidak menentukan role.
 
@@ -46,17 +46,17 @@ theme.css mendefinisikan nilai dasar melalui `@theme static` agar seluruh token 
 
 | Token warna | Nilai awal | Pemakaian |
 |---|---|---|
-| primary | #0F766E | CTA utama dan pilihan aktif |
-| primary-hover | #115E59 | Hover CTA utama |
-| secondary | #142337 | Sidebar, header scene |
-| secondary-hover | #203551 | Hover di permukaan secondary |
-| accent | #2563EB | Aksen/link bila diperlukan |
-| canvas | #F4F7FB | Latar aplikasi |
+| primary | #4F46E5 | CTA utama dan pilihan aktif (indigo) |
+| primary-hover | #4338CA | Hover CTA utama |
+| secondary | #0E1220 | Slide sorter, sidebar admin, permukaan gelap (ink) |
+| secondary-hover | #1A2036 | Hover di permukaan secondary |
+| accent | #0D9488 | Aksen/link bila diperlukan |
+| canvas | #F4F5FA | Latar aplikasi |
 | surface | #FFFFFF | Panel dan input |
-| surface-muted | #EDF2F7 | Area sekunder/readonly |
-| text | #172A3A | Teks utama |
-| muted | #526579 | Teks pendukung |
-| border | #D7E0EA | Garis pemisah |
+| surface-muted | #ECEEF6 | Area sekunder/readonly |
+| text | #0E1220 | Teks utama |
+| muted | #586079 | Teks pendukung |
+| border | #DCE0EC | Garis pemisah |
 | success | #15803D | Indikasi sukses |
 | success-soft | #F0FDF4 | Latar sukses |
 | warning | #B45309 | Indikasi perhatian |
@@ -70,20 +70,27 @@ theme.css mendefinisikan nilai dasar melalui `@theme static` agar seluruh token 
 | focus | alias var(--color-primary) | Focus ring |
 | transparent | transparent | Permukaan transparan |
 | current | currentColor | SVG mengikuti warna teks |
-| overlay | rgb(20 35 55 / 0.6) | Backdrop modal |
+| overlay | rgb(14 18 32 / 0.55) | Backdrop modal |
+| iris | #818CF8 | Aksen slide, gradient AI (bukan untuk teks) |
+| mint | #2DD4BF | Aksen slide, gradient AI (bukan untuk teks) |
+| coral | #FF8A65 | Aksen slide, gradient AI (bukan untuk teks) |
+| ink-soft | #AEB6D4 | Teks sekunder di atas permukaan ink (sorter, sidebar) |
+| online | #34D399 | Titik status online asisten |
 
 Nama variable `--color-primary` menghasilkan utility `bg-primary`, `text-primary`, dan seterusnya. Literal tabel hanya ditulis ke theme.css. Contoh consumer: `bg-surface text-text border-border`, `bg-primary hover:bg-primary-hover text-on-primary`, `focus-visible:ring-focus`.
 
 Token tambahan:
 - `--font-sans`: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif. Font tidak harus diunduh dari jaringan.
-- `--radius-control: 0.5rem`, `--radius-card: 1rem`, `--radius-dialog: 1rem`.
-- `--shadow-card: 0 1px 3px rgb(20 35 55 / 0.08)`.
-- `--shadow-overlay: 0 20px 40px rgb(20 35 55 / 0.16)`.
+- `--font-display`: "Segoe UI Variable Display", "SF Pro Display", system-ui, ... (sans, tracking rapat). Dipakai untuk judul hero/ruang, kartu login, dan halaman admin (utility `font-display`).
+- `--font-mono`: ui-monospace, "SF Mono", "Cascadia Code", ... untuk label teknis kecil (eyebrow, kbd, breadcrumb, kode bahasa).
+- `--radius-control: 0.75rem`, `--radius-card: 1.25rem`, `--radius-dialog: 1.25rem`.
+- `--shadow-card`, `--shadow-overlay`: bayangan lembut berwarna ink; `--shadow-glow`: cahaya indigo untuk elemen AI/aktif. `--accent` (properti terdaftar di theme.css) adalah aksen slide/ruang yang berganti.
+- `--ease-cine: cubic-bezier(0.22, 0.8, 0.24, 1)` (utility `ease-cine`): kurva standar semua animasi masuk dan transisi scene.
 - `--text-page-title: 1.5rem` dengan line-height 2rem; section-title 1.125rem/1.75rem; body 0.875rem/1.5rem; caption 0.75rem/1rem.
 - `--spacing` tetap 0.25rem. Gunakan gap-2/3/4/6/8; panel p-4 mobile dan md:p-6 desktop.
-- Motion normal maksimum200ms untuk kontrol; class motion-reduce menghilangkan animasi yang tidak perlu.
+- Motion normal maksimum200ms untuk kontrol; animasi masuk/keluar scene mengikuti bagian 7. Class motion-reduce dan `prefers-reduced-motion` menghilangkan animasi yang tidak perlu.
 
-base.css hanya memuat base/layout rules lintas halaman: x-cloak, focus/skip link, reduced motion, default body, dan kelas dasar kontrol bila perlu. Warna di base.css merujuk token, bukan literal baru. Style scene khusus tetap dapat dibuat dengan selector terlingkup dan variable tema.
+base.css hanya memuat base/layout rules lintas halaman: x-cloak, focus/skip link, reduced motion, view transition, default body, dan kelas dasar kontrol bila perlu. `presentation.css` memuat selector bertingkup untuk presenter AI (bagian 7). Warna di base.css merujuk token, bukan literal baru. Style scene khusus tetap dapat dibuat dengan selector terlingkup dan variable tema.
 
 Ilustrasi final (dibuat Plan 8) di public/assets/corporate dapat memakai literal fill karena stylesheet luar tidak diwarisi oleh gambar img. Warna visual utamanya mengikuti palette ini; ilustrasi tidak menjadi sumber warna UI baru. Asset library/vendor dan binary tidak masuk pemeriksaan source color.
 
@@ -173,6 +180,32 @@ Scan resources/views, resources/js, resources/css milik aplikasi. Kecualikan han
 Jangan melarang arbitrary dimensions atau background image yang sah. Jika static scan mempunyai false positive, gunakan pengecualian kecil dengan alasan dan path/line spesifik; bukan mengecualikan seluruh modul. Jangan scan docs karena dokumen ini sengaja memuat contoh warna terlarang.
 
 Gallery review pada375x812,768x1024,1440x900: keyboard/focus, drawer, modal, outside click, Escape, validation errors, contrast body text minimal4.5:1, reduced motion, serta no flash x-cloak. Review ini dilakukan pengguna lewat checklist tiap plan dan diformalkan di Plan8; catat manual review terpisah dari tes backend.
+
+## 7. Presenter AI: deck presentasi, animasi, transisi
+
+Konsep: karakter AI memperkenalkan aplikasi seperti presentasi. Reception adalah deck slide yang dipandu karakter; ruang-ruang kantor adalah slide-slide yang bisa dimasuki. Warna hanya dari token (bagian 2); selector berada di `resources/css/presentation.css` dan dipakai oleh `x-layouts.user` dan `x-layouts.guest`.
+
+**Karakter:** potret berbingkai lengkung (arch) dengan lingkaran cahaya beraksen, podium bercahaya, dan dua ikon melayang (`x-office-character`). Foto placeholder acak dipotong mengikuti arch; ilustrasi final berlatar transparan berdiri di depan arch dan boleh menembus tepi atasnya (deteksi lewat `data-placeholder`). Karakter bergerak pelan (melayang), "berbicara" saat teks diketik atau suara dibacakan, dan berpindah sisi kiri/kanan antar slide.
+
+**Reception = deck (desktop ≥1024px, 100dvh tanpa scroll):** kiri adalah slide sorter (thumbnail bernomor dengan gambar ruang, seperti panel PowerPoint); tengah adalah stage; bawah adalah bar subtitle. Slide 01 sambutan (nama, tagline, agenda berupa tautan ke ruang, tombol Mulai tur); slide 02-05 satu per ruang (angka besar berkontur, judul, ringkasan, poin layanan/contoh, tombol "Masuk ke ..." dan "Tanya AI soal ini"); slide terakhir "Tanya AI" berisi command bar dan chip prompt. Konten dan karakter bergantian sisi per slide.
+
+**Bar subtitle:** menampilkan narasi slide yang diketik (titik berpikir lalu huruf demi huruf, tombol Lewati), titik navigasi slide, tombol suara (Web Speech), putar otomatis (bar progres mengisi selama jeda), sebelumnya, dan berikutnya. Teks lengkap tersedia untuk pembaca layar lewat region `aria-live` yang berganti per slide.
+
+**Navigasi deck:** tombol, thumbnail, titik, keyboard (← → PageUp PageDown Home End), geser di layar sentuh, dan hash `#slide-N`. Ctrl/Cmd+K atau `/` melompat ke slide "Tanya AI" dan memfokuskan command bar; di halaman lain membuka copilot.
+
+**Aksen per slide/ruang:** `--accent` (properti terdaftar, jadi bisa dianimasikan) berganti iris/mint/coral/primary; latar, arch, angka, titik navigasi, dan bar progres ikut berubah warna dengan transisi halus.
+
+**Ruang (non-reception):** slide canvas. Kiri, presenter yang menempel (karakter kecil + bubble sambutan yang diketik, chip prompt kontekstual, tombol Lewati/Dengarkan); kanan, kanvas bernomor dengan header sampul dan isi halaman. Di mobile presenter menjadi bubble ringkas dan sorter menjadi tab bar bawah.
+
+**Copilot (chat):** panel dari kanan (layar penuh di mobile) dengan chip konteks ruang aktif; dibuka dari command pill "Tanya AI" di top bar, chip prompt, atau `chat:ask`. Escape menutup dan fokus kembali ke command pill.
+
+**Animasi:** isi slide masuk bertahap dari arah navigasi (`slide-in-next` / `slide-in-prev`), slide lama keluar ke arah sebaliknya, karakter muncul dengan pop, gradient judul mengalir, cincin arch berdenyut. Semua memakai `--ease-cine` dan fill `backwards` agar tidak menyisakan transform.
+
+**Transisi antar-halaman:** klik tautan `/office/*` menambah `.is-leaving` (konten memudar naik, 300 ms) lalu navigasi. Browser dengan cross-document View Transitions menjaga top bar, sorter, dan latar tetap diam sementara `ws-main` bergeser.
+
+**Aksesibilitas dan motion:** `prefers-reduced-motion` mematikan animasi, ketikan, dan view transition (slide berganti seketika). Seluruh kontrol adalah elemen native yang dapat difokus; slide non-aktif disembunyikan (`display: none`). Panel copilot tertutup memakai `visibility`. Tanpa JavaScript, slide pertama dan tautan agenda tetap dapat dipakai.
+
+**Gambar:** URL dibangun `SceneImages`. Gambar ruang dipakai di thumbnail sorter dan header kanvas; karakter dipakai besar di arch dan kecil sebagai avatar. Daftar dan placeholder acak: [VISUAL_ASSETS.md](VISUAL_ASSETS.md).
 
 ## Referensi
 

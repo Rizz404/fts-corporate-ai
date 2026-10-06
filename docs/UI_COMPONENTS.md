@@ -38,7 +38,7 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 ```
 
 - **Admin:** sidebar 16rem pada ≥1024px; di bawahnya menjadi drawer (`role="dialog"`, `x-trap.inert.noscroll`, Escape/klik luar menutup, fokus kembali ke tombol menu). Nama layout tidak menentukan role; item menu dikirim server.
-- **User:** header secondary dengan menu ruang; di <768px menu menjadi panel collapse. Slot `chat` memunculkan tombol dock; dock layar penuh di mobile, panel 24rem di desktop, Escape menutup.
+- **User:** presenter AI ([UI_FOUNDATION §7](UI_FOUNDATION.md)): slide sorter di kiri (tab bar bawah di mobile), top bar dengan command pill, konten (deck di reception, kanvas di ruang lain), dan panel copilot dari kanan (layar penuh di mobile; Escape menutup).
 - **Guest:** panel tengah dengan brand dan language switch; dipakai login/ganti password.
 - **Halaman admin** menerima `$navItems` otomatis dari view composer (`AppServiceProvider` + `App\Modules\Identity\Presenters\AdminNavigation`) untuk semua view `admin.*`; item disaring berdasarkan kemampuan server.
 
@@ -46,11 +46,11 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 
 ### Scene kantor
 
-`x-office-stage` (`resources/views/components/office-stage.blade.php`) adalah satu-satunya cara menyusun halaman `/office/*`. Props: `scene` (`App\Modules\Experience\Data\SceneData` dari `BuildScene`), `adminHref`. Slot default = panel konten ruang; slot `chat` opsional (Plan5).
+`x-office-stage` (`resources/views/components/office-stage.blade.php`) adalah satu-satunya cara menyusun halaman `/office/*`. Props: `scene` (`App\Modules\Experience\Data\SceneData` dari `BuildScene`), `adminHref`. Reception menjadi deck presentasi yang dipandu karakter (sambutan, satu slide per ruang, slide "Tanya AI"); ruang lain menjadi kanvas bernomor dengan presenter di sisi kiri dan slot default sebagai isinya. Slot `chat` opsional (Plan5).
 
-- Gambar backdrop/karakter berasal dari `SceneImages` (placeholder acak ber-seed atau file lokal) dengan fallback bila gagal dimuat (`Alpine.data('sceneImage')`). Gambar bersifat dekoratif (`alt=""`).
-- Menu ruang memakai `x-navigation.user-menu` lewat `navItems` dari `SceneData::$menu`.
-- Narrator (Web Speech) dan suara (Web Audio) hanya aktif atas aksi pengguna; transisi keluar 200ms untuk link `/office*` (`Alpine.data('officeStage')`).
+- Gambar scene (thumbnail sorter, header kanvas) dan karakter berasal dari `SceneImages` (placeholder acak ber-seed atau file lokal); karakter/avatar punya fallback bila gagal dimuat (`Alpine.data('sceneImage')`); `x-office-character` membingkai karakter dalam arch. Gambar bersifat dekoratif (`alt=""`). Item `SceneData::$menu` membawa `image`.
+- Menu ruang (rail/tab bar) memakai `x-navigation.user-menu` lewat `navItems` dari `SceneData::$menu`.
+- Narrator (Web Speech) dan suara (Web Audio) hanya aktif atas aksi pengguna; transisi keluar 300ms untuk link `/office*`, subtitle yang diketik, dan kendali deck: slide, autoplay, keyboard, swipe, hash `#slide-N` (`Alpine.data('officeStage')`).
 - Context scene tersedia di `<script type="application/json" id="office-context">`. Context ini bukan identitas; server tetap memverifikasi.
 
 ```blade
@@ -63,7 +63,7 @@ Setiap halaman memakai tepat satu layout teratas. Semua layout menyusun `x-layou
 
 | Komponen | Source | Props | Catatan |
 |---|---|---|---|
-| `x-office-chat` | `components/office-chat.blade.php` | `scene` | Chat dock asisten (Plan5); `Alpine.data('corporateChat')`, kartu lewat `safe-card-renderer.js`. Dipasang otomatis oleh `x-office-stage`. |
+| `x-office-chat` | `components/office-chat.blade.php` | `scene` | Isi panel copilot (Plan5); `Alpine.data('corporateChat')`, kartu lewat `safe-card-renderer.js`. Dipasang otomatis oleh `x-office-stage`. |
 | `x-ticket-thread` | `components/ticket-thread.blade.php` | `ticket`, `staff` (false), `assigneeOptions` | Percakapan tiket + aksi status (`Alpine.data('ticketThread')`, polling 5 s saat halaman terlihat). Mode staf menambah visibilitas internal, assignment, dan transisi. |
 | `x-navigation.notification-bell` | `components/navigation/notification-bell.blade.php` | `variant` (`light`/`dark`) | Notifikasi in-app dari `/api/v1/notifications`; sudah dipasang di header layout admin dan user. |
 
@@ -73,7 +73,7 @@ Wizard permintaan (`office/requests-create`) memakai `Alpine.data('ticketWizard'
 
 | Komponen | Source | Props | Catatan |
 |---|---|---|---|
-| `x-navigation.brand` | `components/navigation/brand.blade.php` | `variant` (`light`/`dark`), `href` | Nama dari `config('corporate.brand')` |
+| `x-navigation.brand` | `components/navigation/brand.blade.php` | `variant` (`light`/`dark`), `href`, `subtitle` (bool), `compact` (hanya tanda) | Nama dari `config('corporate.brand')` |
 | `x-navigation.admin-sidebar` | `…/admin-sidebar.blade.php` | `items` | `aria-current="page"` untuk item aktif |
 | `x-navigation.user-menu` | `…/user-menu.blade.php` | `items`, `orientation` (`horizontal`/`vertical`) | Untuk header gelap |
 | `x-navigation.language-switch` | `…/language-switch.blade.php` | `variant` (`light`/`dark`) | Link `?lang=xx` pada URL saat ini; `SetLocale` menyimpan pilihan di session |
@@ -84,7 +84,7 @@ Wizard permintaan (`office/requests-create`) memakai `Alpine.data('ticketWizard'
 
 | Komponen | Props (default) | Perilaku |
 |---|---|---|
-| `x-ui.button` | `variant` primary/secondary/outline/ghost/danger (`primary`), `size` sm/md/lg (`md`), `type` button/submit/reset (`button`), `loading` (false), `disabled` (false) | Native `<button>`. `loading` menambah `disabled`, `aria-busy="true"`, dan spinner; label tetap terbaca. Type tidak dikenal menjadi `button`. |
+| `x-ui.button` | `variant` primary/secondary/outline/ghost/danger/ai/glass (`primary`; `ai` = CTA pil bergradient AI, `glass` = tombol pil transparan di top bar), `size` sm/md/lg (`md`), `type` button/submit/reset (`button`), `loading` (false), `disabled` (false) | Native `<button>`. `loading` menambah `disabled`, `aria-busy="true"`, dan spinner; label tetap terbaca. Type tidak dikenal menjadi `button`. |
 | `x-ui.link-button` | `href`, `variant`, `size`, `disabled` | `<a>` dengan style yang sama (resolver bersama). `disabled` atau tanpa `href` menjadi `<span role="link" aria-disabled="true">`. |
 | `x-ui.icon` | `name` (whitelist `ComponentStyles::ICONS`), `size` sm/md/lg (`md`), `label` (null) | Heroicons outline. Tanpa `label`: `aria-hidden`. Dengan `label`: `role="img"` + `aria-label`. Tambah nama baru ke whitelist sebelum dipakai. |
 | `x-ui.spinner` | `size` (`md`), `label` (null) | Dengan `label`: `role="status"` + teks sr-only; tanpa label dekoratif. `motion-reduce` menghentikan animasi. |
