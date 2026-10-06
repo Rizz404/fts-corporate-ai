@@ -71,6 +71,11 @@ export function corporateChat(config = {}) {
         onAsk: null,
 
         init() {
+            // The workspace orb reacts while the assistant is working.
+            this.$watch('pending', (value) => {
+                window.dispatchEvent(new CustomEvent('chat:pending', { detail: { pending: value } }));
+            });
+
             this.conversationId = readStorage(storageKey(config.userId));
             if (this.conversationId) {
                 this.loadHistory();
