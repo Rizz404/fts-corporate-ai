@@ -2,23 +2,26 @@
  * FTS Corporate AI theme: the single source of visual values.
  * Spec: docs/UI_FOUNDATION.md section 2. Add new tokens here (and in the
  * spec); never introduce colors in views, scripts, or other stylesheets.
+ *
+ * Visual language: an "AI workspace" (light canvas, ink rail, a living
+ * iris/mint/coral aurora and orb that represent the assistant).
  */
 
 @theme static {
     /* Drop Tailwind's default palette; only semantic colors below exist. */
     --color-*: initial;
 
-    --color-primary: #0F766E;
-    --color-primary-hover: #115E59;
-    --color-secondary: #142337;
-    --color-secondary-hover: #203551;
-    --color-accent: #2563EB;
-    --color-canvas: #F4F7FB;
+    --color-primary: #4F46E5;
+    --color-primary-hover: #4338CA;
+    --color-secondary: #0E1220;
+    --color-secondary-hover: #1A2036;
+    --color-accent: #0D9488;
+    --color-canvas: #F4F5FA;
     --color-surface: #FFFFFF;
-    --color-surface-muted: #EDF2F7;
-    --color-text: #172A3A;
-    --color-muted: #526579;
-    --color-border: #D7E0EA;
+    --color-surface-muted: #ECEEF6;
+    --color-text: #0E1220;
+    --color-muted: #586079;
+    --color-border: #DCE0EC;
     --color-success: #15803D;
     --color-success-soft: #F0FDF4;
     --color-warning: #B45309;
@@ -30,16 +33,28 @@
     --color-info-soft: #EFF6FF;
     --color-transparent: transparent;
     --color-current: currentColor;
-    --color-overlay: rgb(20 35 55 / 0.6);
+    --color-overlay: rgb(14 18 32 / 0.55);
+
+    /* The assistant's colors: aurora backdrop, orb, glows, gradient text. */
+    --color-iris: #818CF8;
+    --color-mint: #2DD4BF;
+    --color-coral: #FF8A65;
+    --color-ink-soft: #AEB6D4;
+    --color-online: #34D399;
 
     --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif;
+    --font-display: "Segoe UI Variable Display", "SF Pro Display", system-ui, -apple-system, "Segoe UI", "Noto Sans JP", sans-serif;
+    --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
 
-    --radius-control: 0.5rem;
-    --radius-card: 1rem;
-    --radius-dialog: 1rem;
+    --radius-control: 0.75rem;
+    --radius-card: 1.25rem;
+    --radius-dialog: 1.25rem;
 
-    --shadow-card: 0 1px 3px rgb(20 35 55 / 0.08);
-    --shadow-overlay: 0 20px 40px rgb(20 35 55 / 0.16);
+    --shadow-card: 0 1px 2px rgb(14 18 32 / 0.05), 0 10px 28px -14px rgb(14 18 32 / 0.14);
+    --shadow-overlay: 0 28px 70px -16px rgb(14 18 32 / 0.34), 0 2px 8px rgb(14 18 32 / 0.1);
+    --shadow-glow: 0 0 0 1px rgb(79 70 229 / 0.22), 0 12px 40px -12px rgb(79 70 229 / 0.55);
+
+    --ease-cine: cubic-bezier(0.22, 0.8, 0.24, 1);
 
     --text-page-title: 1.5rem;
     --text-page-title--line-height: 2rem;
@@ -54,4 +69,14 @@
 @theme inline {
     --color-on-primary: var(--color-surface);
     --color-focus: var(--color-primary);
+}
+
+/*
+ * The accent of the current slide/room. Registered so that moving between
+ * slides animates the color (washes, arch, numerals) instead of snapping.
+ */
+@property --accent {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #818CF8;
 }
