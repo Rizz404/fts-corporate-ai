@@ -1,6 +1,6 @@
 <x-office-stage :scene="$scene" :admin-href="$adminHref">
     <div class="flex flex-wrap items-center justify-between gap-3">
-        <h2 class="text-section-title font-semibold text-on-primary">{{ __('ui.tickets.my_requests') }}</h2>
+        <h2 class="text-section-title font-semibold text-text">{{ __('ui.tickets.my_requests') }}</h2>
         <x-ui.link-button :href="route('office.requests.create')">
             <x-ui.icon name="plus" size="sm" />
             {{ __('ui.office.requests.new') }}

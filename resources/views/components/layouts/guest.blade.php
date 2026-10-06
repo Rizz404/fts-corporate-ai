@@ -1,4 +1,9 @@
-{{-- Centered frame for sign-in, password change, and other guest pages. --}}
+{{--
+    Sign-in page for login, password change, and other guest pages: the form on a calm tinted canvas, and on wide
+    screens a showcase panel where the AI character greets you and a mock command bar "reads" real prompts
+    from the office rooms.
+    Slots: default (form), before (above the card header), head. Props: heading/description appear in the card header.
+--}}
 @props([
     'title' => null,
     'heading' => null,
@@ -7,7 +12,14 @@
 ])
 
 @php
-    $widthClass = $width === 'lg' ? 'max-w-2xl' : 'max-w-md';
+    $images = app(\App\Modules\Experience\Support\SceneImages::class);
+    $placeholder = $images->source() === \App\Modules\Experience\Support\SceneImages::SOURCE_PLACEHOLDER;
+    $greeting = __('ui.office.scenes.reception.intro');
+    $prompts = collect(\App\Modules\Experience\Enums\SceneCode::values())
+        ->flatMap(fn (string $code) => (array) __('ui.office.scenes.'.$code.'.topics'))
+        ->filter(fn ($prompt) => is_string($prompt) && $prompt !== '')
+        ->values()
+        ->all();
 @endphp
 
 <x-layouts.base :title="$title">
@@ -15,37 +27,61 @@
         <x-slot:head>{{ $head }}</x-slot:head>
     @endisset
 
-    <div class="flex min-h-dvh flex-col">
-        <header class="flex items-center justify-between gap-4 px-4 py-4 md:px-8">
-            <x-navigation.brand />
-            <x-navigation.language-switch />
-        </header>
+    <div x-data="loginDemo(@js($prompts), @js($greeting))" x-bind:class="{ 'is-busy': busy }" class="auth">
+        <div class="ws-bg" aria-hidden="true"><i></i></div>
 
-        <main id="main-content" tabindex="-1" class="flex flex-1 items-center justify-center px-4 py-8 focus:outline-none">
-            <div class="w-full {{ $widthClass }} space-y-4">
-                @if (session('status'))
-                    <x-ui.alert tone="info">{{ session('status') }}</x-ui.alert>
-                @endif
+        <div class="auth-side">
+            <header class="auth-top">
+                <x-navigation.brand subtitle />
+                <x-navigation.language-switch />
+            </header>
 
-                {{ $before ?? '' }}
+            <main id="main-content" tabindex="-1" class="auth-main focus:outline-none">
+                <div class="auth-mini" aria-hidden="true">
+                    <x-office-character :url="$images->character()" :placeholder="$placeholder" :floaters="false" />
+                </div>
 
-                <div class="rounded-card border border-border bg-surface p-6 shadow-card md:p-8">
+                <div class="auth-card" data-width="{{ $width === 'lg' ? 'lg' : 'md' }}">
+                    @if (session('status'))
+                        <x-ui.alert tone="info" class="mb-4">{{ session('status') }}</x-ui.alert>
+                    @endif
+
+                    {{ $before ?? '' }}
+
                     @if ($heading !== null)
-                        <div class="mb-6 space-y-1">
-                            <h1 class="text-page-title font-semibold text-text">{{ $heading }}</h1>
+                        <div class="auth-card-head">
+                            <p class="eyebrow"><span class="status-dot" aria-hidden="true"></span>{{ __('ui.brand.subtitle') }}</p>
+                            <h1 class="auth-title">{{ $heading }}</h1>
                             @if ($description !== null)
-                                <p class="text-body text-muted">{{ $description }}</p>
+                                <p class="mt-2 text-body text-muted">{{ $description }}</p>
                             @endif
                         </div>
                     @endif
 
                     {{ $slot }}
                 </div>
-            </div>
-        </main>
+            </main>
 
-        <footer class="px-4 py-6 text-center text-caption text-muted">
-            &copy; {{ now()->year }} {{ config('corporate.brand.name') }} · {{ __('ui.footer.internal') }}
-        </footer>
+            <footer class="auth-foot">
+                &copy; {{ now()->year }} {{ config('corporate.brand.name') }} · {{ __('ui.footer.internal') }}
+            </footer>
+        </div>
+
+        <aside class="auth-showcase" aria-hidden="true">
+            <x-office-character :url="$images->character()" :placeholder="$placeholder" />
+
+            <div class="auth-bubble" x-bind:class="{ 'is-typing': typingGreeting }">
+                <p class="caption-name">{{ __('ui.office.assistant_name') }}</p>
+                <p class="ai-text mt-1" x-text="said">{{ $greeting }}</p>
+            </div>
+
+            @if ($prompts !== [])
+                <div class="mock-cmd" x-bind:class="{ 'is-typing': typing }">
+                    <x-ui.icon name="sparkles" class="text-mint" />
+                    <span class="ai-text min-w-0 flex-1 truncate" x-text="shown">{{ $prompts[0] }}</span>
+                    <span class="send-btn"><x-ui.icon name="paper-airplane" size="sm" /></span>
+                </div>
+            @endif
+        </aside>
     </div>
 </x-layouts.base>

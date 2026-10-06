@@ -16,8 +16,9 @@
 
         <x-ui.checkbox name="remember" id="login-remember">{{ __('ui.auth.remember') }}</x-ui.checkbox>
 
-        <x-ui.button type="submit" class="w-full" x-bind:disabled="submitting" x-bind:aria-busy="submitting">
+        <x-ui.button type="submit" variant="ai" size="lg" class="w-full" x-bind:disabled="submitting" x-bind:aria-busy="submitting">
             {{ __('ui.auth.login') }}
+            <x-ui.icon name="arrow-right" size="sm" />
         </x-ui.button>
 
         <p class="text-caption text-muted">{{ __('ui.auth.forgot_hint') }}</p>

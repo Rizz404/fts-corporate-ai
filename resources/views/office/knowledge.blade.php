@@ -16,7 +16,7 @@
 
     @if ($results !== null)
         <section aria-labelledby="knowledge-results-title" class="space-y-3">
-            <h2 id="knowledge-results-title" class="text-section-title font-semibold text-on-primary">
+            <h2 id="knowledge-results-title" class="text-section-title font-semibold text-text">
                 {{ trans_choice('ui.knowledge.results_count', count($results), ['count' => count($results), 'query' => $query]) }}
             </h2>
 
@@ -39,7 +39,7 @@
         </section>
     @else
         <section aria-labelledby="knowledge-latest-title" class="space-y-3">
-            <h2 id="knowledge-latest-title" class="text-section-title font-semibold text-on-primary">{{ __('ui.knowledge.latest_title') }}</h2>
+            <h2 id="knowledge-latest-title" class="text-section-title font-semibold text-text">{{ __('ui.knowledge.latest_title') }}</h2>
 
             @forelse ($latest as $revision)
                 @php $translation = $revision->translation(app()->getLocale()); @endphp

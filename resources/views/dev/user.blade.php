@@ -1,17 +1,4 @@
 <x-layouts.user :title="__('ui.dev.user_title')" :nav-items="$navItems">
-    <x-slot:backdrop>
-        <div class="h-full w-full bg-surface-muted"></div>
-    </x-slot:backdrop>
-
-    <x-slot:character>
-        <div class="flex aspect-[3/4] items-center justify-center rounded-card border border-dashed border-border bg-surface/80 text-center text-caption text-muted">
-            <span class="flex flex-col items-center gap-2">
-                <x-ui.icon name="sparkles" size="lg" class="text-primary" />
-                {{ __('ui.dev.user_character') }}
-            </span>
-        </div>
-    </x-slot:character>
-
     <div class="space-y-4">
         @include('dev._banner')
 

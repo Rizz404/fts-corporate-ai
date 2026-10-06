@@ -36,14 +36,33 @@
     ];
 @endphp
 
-<div x-data="corporateChat(@js($chatConfig))" class="flex h-full min-h-0 flex-col">
-    <div x-ref="log" class="min-h-0 flex-1 space-y-3 overflow-y-auto p-4" role="log" aria-live="polite" aria-relevant="additions">
-        <p x-show="messages.length === 0" class="text-body text-muted">{{ __('ui.chat.intro') }}</p>
+<div x-data="corporateChat(@js($chatConfig))" class="flex min-h-0 flex-1 flex-col">
+    <div x-ref="log" class="min-h-0 flex-1 space-y-3 overflow-y-auto scroll-smooth p-4" role="log" aria-live="polite" aria-relevant="additions">
+        <div x-show="messages.length === 0" class="chat-bubble flex flex-col items-center gap-4 px-2 py-8 text-center">
+            <span class="orb orb-sm" style="--size: 72px" aria-hidden="true"><i class="orb-ring"></i><span class="orb-core"></span></span>
+            <p class="max-w-xs text-body text-muted">{{ __('ui.chat.intro') }}</p>
+            @if ($scene->suggestedTopics !== [])
+                <ul class="flex flex-col items-stretch gap-2" aria-label="{{ __('ui.office.suggested_topics') }}">
+                    @foreach ($scene->suggestedTopics as $topic)
+                        <li>
+                            <button
+                                type="button"
+                                class="flex w-full items-center gap-2 rounded-control border border-border bg-surface px-3 py-2 text-left text-body transition duration-200 hover:border-primary hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus motion-reduce:transition-none"
+                                x-on:click="$dispatch('chat:ask', { message: {{ \Illuminate\Support\Js::from($topic) }} })"
+                            >
+                                <x-ui.icon name="sparkles" size="sm" class="text-primary" />
+                                <span>{{ $topic }}</span>
+                            </button>
+                        </li>
+                    @endforeach
+                </ul>
+            @endif
+        </div>
 
         <template x-for="message in messages" x-bind:key="message.key">
             <div
-                class="rounded-card px-3 py-2 text-body"
-                x-bind:class="message.role === 'user' ? 'ml-8 bg-primary text-on-primary' : 'mr-4 border border-border bg-surface-muted text-text'"
+                class="chat-bubble rounded-card px-3.5 py-2.5 text-body"
+                x-bind:class="message.role === 'user' ? 'ml-8 rounded-br-md bg-linear-to-br from-primary to-iris text-on-primary' : 'mr-4 rounded-bl-md border border-border bg-surface text-text shadow-card'"
             >
                 <span class="sr-only" x-text="message.role === 'user' ? @js(__('ui.chat.you')) : @js(__('ui.chat.title'))"></span>
                 <p class="break-words whitespace-pre-line" x-text="message.text"></p>
@@ -169,8 +188,8 @@
             </div>
         </template>
 
-        <div x-show="pending" x-cloak class="flex items-center gap-2 text-caption text-muted">
-            <x-ui.spinner size="sm" />
+        <div x-show="pending" x-cloak class="chat-bubble flex items-center gap-2 text-caption text-muted">
+            <span class="thinking-dots text-primary" aria-hidden="true"><i style="--i: 0"></i><i style="--i: 1"></i><i style="--i: 2"></i></span>
             <span>{{ __('ui.chat.thinking') }}</span>
         </div>
     </div>
@@ -182,23 +201,25 @@
         </button>
     </div>
 
-    <form x-on:submit.prevent="send()" class="border-t border-border p-3">
+    <form x-on:submit.prevent="send()" class="chat-composer">
         <label for="chat-input" class="sr-only">{{ __('ui.chat.input_label') }}</label>
         <textarea
             id="chat-input"
             x-model="draft"
             x-on:keydown.enter="onEnter($event)"
             x-bind:maxlength="maxInput"
-            rows="2"
+            rows="1"
             placeholder="{{ __('ui.chat.placeholder') }}"
-            class="form-textarea {{ \App\Support\Ui\ComponentStyles::control() }} resize-none"
+            class="form-textarea {{ \App\Support\Ui\ComponentStyles::control() }} flex-1 resize-none"
         ></textarea>
-        <div class="mt-2 flex items-center justify-between gap-2">
-            <span class="text-caption text-muted" x-text="draft.length + ' / ' + maxInput"></span>
-            <x-ui.button type="submit" size="sm" x-bind:disabled="pending || ! draft.trim()">
-                <x-ui.icon name="paper-airplane" size="sm" />
-                {{ __('ui.chat.send') }}
-            </x-ui.button>
-        </div>
+        <button
+            type="submit"
+            class="chat-send focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+            x-bind:disabled="pending || ! draft.trim()"
+        >
+            <x-ui.icon name="paper-airplane" />
+            <span class="sr-only">{{ __('ui.chat.send') }}</span>
+        </button>
+        <span class="sr-only" x-text="draft.length + ' / ' + maxInput"></span>
     </form>
 </div>
