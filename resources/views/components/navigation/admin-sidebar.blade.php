@@ -19,7 +19,7 @@
                     <a
                         href="{{ $href }}"
                         @if ($active) aria-current="page" @endif
-                        class="flex items-center gap-3 rounded-control px-3 py-2 text-body font-medium transition-colors duration-150 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-on-primary {{ $active ? 'bg-secondary-hover text-on-primary' : 'text-on-primary/80 hover:bg-secondary-hover hover:text-on-primary' }}"
+                        class="relative flex items-center gap-3 rounded-control px-3 py-2 text-body font-medium transition-colors duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-iris {{ $active ? 'bg-secondary-hover text-on-primary before:absolute before:inset-y-2 before:left-0 before:w-0.5 before:rounded-full before:bg-iris' : 'text-on-primary/80 hover:bg-secondary-hover hover:text-on-primary' }}"
                     >
                         @if (! empty($item['icon']))<x-ui.icon :name="$item['icon']" />@endif
                         <span class="truncate">{{ $item['label'] }}</span>

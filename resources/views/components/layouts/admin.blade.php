@@ -76,7 +76,7 @@
         </div>
 
         <div class="flex min-h-dvh flex-col">
-            <header class="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-surface px-4 md:px-6">
+            <header class="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-surface/80 px-4 backdrop-blur-md md:px-6">
                 <button
                     type="button"
                     x-on:click="openDrawer()"
@@ -101,7 +101,7 @@
                 @endisset
             </header>
 
-            <main id="main-content" tabindex="-1" class="flex-1 px-4 py-6 focus:outline-none md:px-6">
+            <main id="main-content" tabindex="-1" class="page-enter flex-1 px-4 py-6 focus:outline-none md:px-6">
                 <x-navigation.breadcrumbs :items="$breadcrumbs" class="mb-2" />
 
                 @if (session('status'))
@@ -110,7 +110,7 @@
 
                 @if ($heading !== null || isset($actions))
                     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <h1 class="text-page-title font-semibold text-text">{{ $heading ?? $title }}</h1>
+                        <h1 class="font-display text-3xl leading-tight font-semibold tracking-tight text-text">{{ $heading ?? $title }}</h1>
                         @isset($actions)
                             <div class="flex flex-wrap items-center gap-2">{{ $actions }}</div>
                         @endisset

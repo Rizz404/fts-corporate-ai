@@ -17,7 +17,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{ $head ?? '' }}
 </head>
-<body {{ $attributes->class('min-h-dvh bg-canvas font-sans text-body text-text antialiased') }}>
+<body {{ $attributes->class('min-h-dvh font-sans text-body antialiased') }}>
     <a href="#main-content" class="skip-link">{{ __('ui.skip_to_content') }}</a>
 
     {{ $slot }}

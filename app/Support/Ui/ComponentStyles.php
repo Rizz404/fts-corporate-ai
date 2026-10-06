@@ -21,6 +21,8 @@ final class ComponentStyles
         'outline' => 'border border-border bg-surface text-text hover:bg-surface-muted',
         'ghost' => 'bg-transparent text-text hover:bg-surface-muted',
         'danger' => 'bg-danger text-on-primary hover:bg-danger-hover',
+        'ai' => 'rounded-full! bg-linear-to-br from-primary to-iris text-on-primary hover:shadow-glow hover:brightness-110',
+        'glass' => 'rounded-full! border border-border bg-surface/80 text-text backdrop-blur-md hover:bg-surface',
     ];
 
     public const BUTTON_SIZES = [
@@ -99,7 +101,9 @@ final class ComponentStyles
     public const ICONS = [
         'arrow-left-start-on-rectangle',
         'arrow-path',
+        'arrow-left',
         'arrow-right',
+        'arrow-up-right',
         'bars-3',
         'bell',
         'book-open',
@@ -126,8 +130,12 @@ final class ComponentStyles
         'magnifying-glass',
         'paper-airplane',
         'pencil-square',
+        'pause',
+        'play',
         'plus',
         'sparkles',
+        'speaker-wave',
+        'speaker-x-mark',
         'squares-2x2',
         'ticket',
         'trash',

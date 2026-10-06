@@ -5,7 +5,7 @@
 
 @auth
     <div x-data="notificationBell" {{ $attributes }}>
-        <x-ui.dropdown align="right" :trigger-variant="$variant === 'dark' ? 'secondary' : 'ghost'">
+        <x-ui.dropdown align="right" :trigger-variant="match ($variant) { 'dark' => 'secondary', 'glass' => 'glass', default => 'ghost' }">
             <x-slot:trigger class="relative px-2">
                 <x-ui.icon name="bell" :label="__('ui.notifications.title')" />
                 <span

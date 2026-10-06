@@ -13,7 +13,7 @@
 @endphp
 
 @if ($user !== null)
-    <x-ui.dropdown align="right" :trigger-variant="$variant === 'dark' ? 'secondary' : 'outline'" {{ $attributes }}>
+    <x-ui.dropdown align="right" :trigger-variant="match ($variant) { 'dark' => 'secondary', 'glass' => 'glass', default => 'outline' }" {{ $attributes }}>
         <x-slot:trigger>
             <x-ui.icon name="user-circle" />
             <span class="hidden max-w-40 truncate sm:inline">{{ $user->name }}</span>
